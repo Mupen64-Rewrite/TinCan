@@ -20,11 +20,11 @@ namespace tnp {
     int heightForWidth(int w) const override;
     QSize sizeHint() const override;
     
-  signals:
+  Q_SIGNALS:
     void xPosChanged(int value);
     void yPosChanged(int value);
     
-  public slots:
+  public Q_SLOTS:
     void setXPos(int value);
     void setYPos(int value);
   

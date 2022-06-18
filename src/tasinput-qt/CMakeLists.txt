@@ -14,3 +14,4 @@ set_target_properties(tasinput-qt PROPERTIES
 )
 target_include_directories(tasinput-qt PRIVATE "${CONFIG_DIR}")
 target_link_libraries(tasinput-qt Qt6::Widgets Qt6::Gui)
+target_compile_definitions(tasinput-qt PRIVATE QT_NO_KEYWORDS)

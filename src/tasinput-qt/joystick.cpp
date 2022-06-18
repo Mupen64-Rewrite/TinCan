@@ -42,7 +42,7 @@ namespace tnp {
     if (p_xPos == value)
       return;
     p_xPos = value;
-    emit Joystick::xPosChanged(value);
+    Q_EMIT Joystick::xPosChanged(value);
   }
 
   int Joystick::yPos() const { return p_yPos; }
@@ -50,7 +50,7 @@ namespace tnp {
     if (p_yPos == value)
       return;
     p_yPos = std::clamp(value, -128, 127);
-    emit Joystick::yPosChanged(value);
+    Q_EMIT Joystick::yPosChanged(value);
   }
 
   bool Joystick::hasHeightForWidth() const { return true; }
