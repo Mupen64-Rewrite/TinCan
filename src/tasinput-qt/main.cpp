@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
         sync(cout) << "ERR_INVALID_QUERY" << std::endl;
       }
     }
+    w.reset();
   });
   int res = a.exec();
   ioThread.join();
