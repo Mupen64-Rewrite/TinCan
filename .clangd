@@ -1,0 +1,5 @@
+Diagnostics:
+  Suppress: '*'
+
+If:
+  PathMatch: '.+\.hpp.in'
