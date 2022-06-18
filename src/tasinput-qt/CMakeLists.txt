@@ -1,6 +1,4 @@
 add_executable(tasinput-qt
-  "oslib/plibdl.hpp"
-  "oslib/strconv.hpp"
   "joystick.cpp"
   "joystick.hpp"
   "main.cpp"

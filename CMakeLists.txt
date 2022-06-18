@@ -14,3 +14,4 @@ include(ConfigGen)
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
 
 add_subdirectory(src/tasinput-qt)
+add_subdirectory(src/tasinput-plugin)
