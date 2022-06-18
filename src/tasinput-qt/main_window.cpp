@@ -1,8 +1,6 @@
 #include "main_window.hpp"
-#include <qboxlayout.h>
-#include <qnamespace.h>
-#include <qsizepolicy.h>
 #include <QBoxLayout>
+#include <QWindow>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLayoutItem>
@@ -14,7 +12,6 @@
 #include <QWidget>
 #include "joystick.hpp"
 #include "mupen64plus/m64p_plugin.h"
-#include "titlebar.hpp"
 
 #define with(var) if (var; true)
 
@@ -66,20 +63,20 @@ namespace tnp {
     res.A_BUTTON     = btnfButtonA->isChecked();
     return res;
   }
+  
+  void MainWindow::mousePressEvent(QMouseEvent* event) {
+    switch (event->button()) {
+      case Qt::LeftButton: {
+        windowHandle()->startSystemMove();
+      }
+      default: break;
+    }
+  }
 
   void MainWindow::setupRootLayout() {
     QWidget* root = new QWidget(this);
-    baseLayout    = new QVBoxLayout(root);
     rootLayout    = new QVBoxLayout(root);
-    
-    baseLayout->setContentsMargins(0, 0, 0, 0);
-    
-    { 
-      titleBar = new TitleBar(this);
-      baseLayout->addWidget(titleBar, 0);
-      baseLayout->addLayout(rootLayout);
-      rootLayout->setContentsMargins(8, 8, 8, 8);
-    }
+    rootLayout->setContentsMargins(8, 8, 8, 8);
 
     setCentralWidget(root);
   }

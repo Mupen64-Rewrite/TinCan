@@ -16,7 +16,6 @@
 #include <iostream>
 #include "joystick.hpp"
 #include "mupen64plus/m64p_plugin.h"
-#include "titlebar.hpp"
 
 namespace tnp {
   class MainWindow : public QMainWindow {
@@ -28,17 +27,10 @@ namespace tnp {
     Q_INVOKABLE BUTTONS buttonMask();
 
   protected:
-    void resizeEvent(QResizeEvent* event) override {
-      const auto& size = event->size();
-      //std::cout << "New size: " << size.width() << "x" << size.height() << '\n';
-    }
-
+    void mousePressEvent(QMouseEvent* event) override;
   private:
     // XML-based UI seems to not work, so
     // it's manually programmed
-    QVBoxLayout* baseLayout;
-    TitleBar* titleBar;
-    
     QVBoxLayout* rootLayout;
 
     // Button frame

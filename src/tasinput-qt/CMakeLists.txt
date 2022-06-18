@@ -6,8 +6,6 @@ add_executable(tasinput-qt
   "main.cpp"
   "main_window.cpp"
   "main_window.hpp"
-  "titlebar.cpp"
-  "titlebar.hpp"
 )
 target_compile_features(tasinput-qt PRIVATE cxx_std_20)
 set_target_properties(tasinput-qt PROPERTIES
