@@ -1,3 +1,4 @@
+#include <qnamespace.h>
 #include <QApplication>
 #include <QMainWindow>
 #include <QMetaObject>
@@ -9,16 +10,27 @@
 #include <thread>
 
 #include "main_window.hpp"
+#include "config.hpp"
 
 #define ERR(str) ("ERR:" str)
+
+#define ERR(str) ("ERR:" str)
+
+struct qobject_deleter {
+  template <std::derived_from<QObject> T>
+  void operator()(T* obj) {
+    obj->deleteLater();
+  }
+};
 
 int main(int argc, char* argv[]) {
   // Ensures that the app stays open
   // as long as the plugin has the pipe open
   QApplication a(argc, argv);
   a.setQuitOnLastWindowClosed(false);
+  a.setApplicationVersion(TNP_VERSION_STR);
 
-  auto w = std::make_unique<tnp::MainWindow>();
+  std::unique_ptr<tnp::MainWindow, qobject_deleter> w(new tnp::MainWindow());
   
   std::thread ioThread([&]() {
     using std::cin, std::cout, std::ios, std::string;
@@ -29,10 +41,10 @@ int main(int argc, char* argv[]) {
     while (true) {
       std::getline(cin, x);
       if (x == "show") {
-        w->show();
+        QMetaObject::invokeMethod(w.get(), "show", Qt::BlockingQueuedConnection);
       }
       else if (x == "hide") {
-        w->hide();
+        QMetaObject::invokeMethod(w.get(), "hide", Qt::BlockingQueuedConnection);
       }
       else if (x == "query") {
         if (!w->isVisible()) {
@@ -51,8 +63,9 @@ int main(int argc, char* argv[]) {
         }
       }
       else if (x == "quit") {
+        w->hide();
         w.reset();
-        a.exit(0);
+        a.quit();
         return;
       }
       else {
