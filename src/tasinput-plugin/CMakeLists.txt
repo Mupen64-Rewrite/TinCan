@@ -4,5 +4,5 @@ add_library(tasinput MODULE
   "oslib/strconv.hpp"
   "plugin.cpp"
 )
-target_compile_features(tasinput-qt PRIVATE cxx_std_20)
+target_compile_features(tasinput PRIVATE cxx_std_20)
 target_link_libraries(tasinput PRIVATE m64p::api)

@@ -1,14 +1,21 @@
+
 #define M64P_PLUGIN_PROTOTYPES
 
 #include <mupen64plus/m64p_types.h>
 #include <mupen64plus/m64p_common.h>
 #include <mupen64plus/m64p_plugin.h>
 
+#include <optional>
+
 #include "cpp-subprocess/subprocess.hpp"
+
+namespace subp = subprocess;
 
 namespace {
   void* debug_ctx;
   void (* debug_fn)(void* debug_ctx, int level, const char* str);
+  
+  std::optional<subp::Popen> tasinput_app;
 }
 
 extern "C" {

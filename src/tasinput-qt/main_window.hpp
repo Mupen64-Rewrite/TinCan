@@ -1,8 +1,6 @@
 #ifndef TNP_MAIN_WINDOW_HPP_
 #define TNP_MAIN_WINDOW_HPP_
 
-#include <qboxlayout.h>
-#include <qtmetamacros.h>
 #include <QBoxLayout>
 #include <QGridLayout>
 #include <QGroupBox>
@@ -28,6 +26,9 @@ namespace tnp {
 
   protected:
     void mousePressEvent(QMouseEvent* event) override;
+    void closeEvent(QCloseEvent* event) override {
+      event->ignore();
+    }
   private:
     // XML-based UI seems to not work, so
     // it's manually programmed
