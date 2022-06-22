@@ -41,10 +41,13 @@ int main(int argc, char* argv[]) {
     while (true) {
       std::getline(cin, x);
       if (x == "show") {
+        std::cerr << "show()\n";
         QMetaObject::invokeMethod(w.get(), "show", Qt::BlockingQueuedConnection);
+        sync(cout) << "DONE" << std::endl;
       }
       else if (x == "hide") {
         QMetaObject::invokeMethod(w.get(), "hide", Qt::BlockingQueuedConnection);
+        sync(cout) << "DONE" << std::endl;
       }
       else if (x == "query") {
         if (!w->isVisible()) {
@@ -66,6 +69,7 @@ int main(int argc, char* argv[]) {
         w->hide();
         w.reset();
         a.quit();
+        sync(cout) << "DONE" << std::endl;
         return;
       }
       else {

@@ -9,14 +9,14 @@ namespace oslib {
   inline path_string utf8_to_path(const char* str);
   inline path_string utf8_to_path(std::string_view str);
   
-  #if 1
+  #if defined(__linux__) || defined(__APPLE__)
   inline path_string utf8_to_path(const char* str) {
     return std::string(str);
   }
   inline path_string utf8_to_path(std::string_view str) {
     return std::string(str);
   }
-  #elif 1
+  #elif defined(_WIN32)
   inline path_string utf8_to_path(const char* str) {
     int len = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, str, -1, NULL, 0);
     std::wstring res(len + 1, L'\0');
