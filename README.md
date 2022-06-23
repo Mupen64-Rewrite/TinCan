@@ -1,2 +1,0 @@
-# TASInput-Qt
-A rewrite of TASInput from the ground up. I originally [used gtkmm](https://github.com/jgcodes2020/tas-input-v2) to do this, but it turns out GTK is a huge pain on anything besides Linux.
