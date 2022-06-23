@@ -9,8 +9,8 @@
 #include <syncstream>
 #include <thread>
 
-#include "main_window.hpp"
 #include "config.hpp"
+#include "main_window.hpp"
 
 #define ERR(str) ("ERR:" str)
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
   a.setApplicationVersion(TNP_VERSION_STR);
 
   std::unique_ptr<tnp::MainWindow, qobject_deleter> w(new tnp::MainWindow());
-  
+
   std::thread ioThread([&]() {
     using std::cin, std::cout, std::ios, std::string;
     using sync = std::osyncstream;
@@ -41,12 +41,13 @@ int main(int argc, char* argv[]) {
     while (true) {
       std::getline(cin, x);
       if (x == "show") {
-        std::cerr << "show()\n";
-        QMetaObject::invokeMethod(w.get(), "show", Qt::BlockingQueuedConnection);
+        QMetaObject::invokeMethod(
+          w.get(), "show", Qt::BlockingQueuedConnection);
         sync(cout) << "DONE" << std::endl;
       }
       else if (x == "hide") {
-        QMetaObject::invokeMethod(w.get(), "hide", Qt::BlockingQueuedConnection);
+        QMetaObject::invokeMethod(
+          w.get(), "hide", Qt::BlockingQueuedConnection);
         sync(cout) << "DONE" << std::endl;
       }
       else if (x == "query") {
@@ -61,13 +62,14 @@ int main(int argc, char* argv[]) {
 
           auto flags = cout.flags();
           sync(cout) << std::hex << std::uppercase << std::setw(8)
-                    << std::setfill('0') << res.Value << std::endl;
+                     << std::setfill('0') << res.Value << std::endl;
           cout.flags(flags);
         }
       }
       else if (x == "quit") {
-        w->hide();
-        w.reset();
+        QMetaObject::invokeMethod(
+          w.get(), "hide", Qt::BlockingQueuedConnection);
+        w->deleteLater();
         a.quit();
         sync(cout) << "DONE" << std::endl;
         return;

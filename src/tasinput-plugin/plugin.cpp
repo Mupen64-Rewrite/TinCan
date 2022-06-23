@@ -1,5 +1,3 @@
-#include "backward/backward.hpp"
-
 #include <array>
 #include <cstdio>
 #include <cstdlib>
@@ -95,7 +93,6 @@ m64p_error PluginStartup(
   void (*debug_fn)(void*, int, const char*)) {
   ::debug_ctx = debug_ctx;
   ::debug_fn  = debug_fn;
-  ::init_exceptions();
 // Load config functions
 #define M64P_LOAD(fn) fn = oslib::pdlsym<ptr_##fn>(core_hnd, #fn);
   M64P_LOAD(ConfigOpenSection)
@@ -159,7 +156,7 @@ m64p_error PluginGetVersion(
 }
 
 int RomOpen() {
-  if (std::string resp = query_proc("show"); resp != "DONE") {
+  if (std::string resp = query_proc("show"); resp.starts_with("ERR:")) {
     resp.erase(0, 4);
     tnp::m64p_log(M64MSG_ERROR, resp.c_str());
     return false;
@@ -168,7 +165,7 @@ int RomOpen() {
 }
 
 void RomClosed() {
-  if (std::string resp = query_proc("hide"); resp != "DONE") {
+  if (std::string resp = query_proc("hide"); resp.starts_with("ERR:")) {
     resp.erase(0, 4);
     tnp::m64p_log(M64MSG_ERROR, resp.c_str());
   }
