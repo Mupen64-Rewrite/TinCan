@@ -192,15 +192,21 @@ namespace {
   fs::path get_own_path() {
     HMODULE mod;
 
-    if (!GetModuleHandleExW(
+    if (GetModuleHandleExA(
           GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
             GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-          reinterpret_cast<const char*>(&PluginStartup), &mod)) {
+          reinterpret_cast<LPCSTR>(&PluginStartup), &mod)) {
       int err = GetLastError();
       throw std::system_error(err, std::system_category());
     }
+    auto path_buf = std::make_unique<wchar_t[]>(MAX_PATH);
+    if (GetModuleFileNameW(mod, path_buf.get(), MAX_PATH)) {
+      int err = GetLastError();
+      throw std::system_error(err, std::system_category());
+    }
+    
     // temporary
-    return "C:\\"
+    return path_buf.get();
   }
 #endif
 }  // namespace
