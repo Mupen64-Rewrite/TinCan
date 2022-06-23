@@ -13,5 +13,13 @@ include(ConfigGen)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
 
+# Need windeployqt on Windows, not sure about MacOS
+if (MSVC)
+  find_program(TOOL_WINDEPLOYQT_Debug windeployqt.debug.bat)
+  find_program(TOOL_WINDEPLOYQT_Release windeployqt)
+
+  message(STATUS "Found windeployqt (dbg): ${TOOL_WINDEPLOYQT_Debug}")
+  message(STATUS "Found windeployqt (rel): ${TOOL_WINDEPLOYQT_Release}")
+endif()
 add_subdirectory(src/tasinput-qt)
 add_subdirectory(src/tasinput-plugin)

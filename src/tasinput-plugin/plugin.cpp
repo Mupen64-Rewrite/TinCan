@@ -1,3 +1,5 @@
+#include "backward/backward.hpp"
+
 #include <array>
 #include <cstdio>
 #include <cstdlib>
@@ -28,6 +30,7 @@
 
 #include "subp/subprocess.hpp"
 
+
 namespace fs = std::filesystem;
 namespace sp = subprocess;
 
@@ -45,7 +48,6 @@ namespace {
   fs::path tasinput_path;
 
   fs::path get_own_path();
-  std::string freadline(FILE* stream);
   
   std::optional<sp::Popen> proc;
   
@@ -62,7 +64,25 @@ namespace {
     res.pop_back();
     return res;
   }
+  #ifdef _WIN32
+  HMODULE self_hmod;
+  fs::path get_own_path() { 
+    wchar_t buffer[MAX_PATH] = {};
+    if (!GetModuleFileNameW(self_hmod, buffer, sizeof(buffer))) {
+      int err = GetLastError();
+      throw std::system_error(err, std::system_category());
+    }
+    return buffer;
+  }
+  #endif
 }  // namespace
+
+#ifdef _WIN32
+BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, LPVOID reserved) {
+  self_hmod = hmod;
+  return TRUE;
+}
+#endif
 
 namespace tnp {
   void m64p_log(int level, const char* msg) { debug_fn(debug_ctx, level, msg); }
@@ -75,7 +95,7 @@ m64p_error PluginStartup(
   void (*debug_fn)(void*, int, const char*)) {
   ::debug_ctx = debug_ctx;
   ::debug_fn  = debug_fn;
-
+  ::init_exceptions();
 // Load config functions
 #define M64P_LOAD(fn) fn = oslib::pdlsym<ptr_##fn>(core_hnd, #fn);
   M64P_LOAD(ConfigOpenSection)
@@ -89,16 +109,18 @@ m64p_error PluginStartup(
   ConfigOpenSection("TASInput", &sect_hnd);
 
   const char* bin_path = ConfigGetParamString(sect_hnd, "TASInputBinary");
-  if (bin_path[0] == '\0') {
+  if (bin_path == nullptr || bin_path[0] == '\0') {
     auto expect = get_own_path().parent_path() / EXEFILE("tasinput-qt");
     if (!fs::exists(expect)) {
       tnp::m64p_log(M64MSG_ERROR, "Could not find " EXEFILE("tasinput-qt"));
+      puts("After not finding exe");
       return M64ERR_FILES;
     }
     ConfigSetDefaultString(
       sect_hnd, "TASInputBinary",
       reinterpret_cast<const char*>(expect.u8string().c_str()),
       "Path to " EXEFILE("tasinput-qt") ".");
+    ConfigSaveFile();
     tasinput_path = expect;
   }
   else {
@@ -106,7 +128,8 @@ m64p_error PluginStartup(
   }
   
   tnp::m64p_log(M64MSG_STATUS, "Loading TASInput binary");
-  proc.emplace({tasinput_path.string().c_str()}, sp::output(sp::PIPE), sp::input(sp::PIPE));
+  auto path_str = tasinput_path.string();
+  proc.emplace({path_str.c_str()}, sp::output(sp::PIPE), sp::input(sp::PIPE));
 
   return M64ERR_SUCCESS;
 }
@@ -187,26 +210,6 @@ namespace {
     Dl_info info;
     dladdr(reinterpret_cast<void*>(&PluginStartup), &info);
     return info.dli_fname;
-  }
-#elif defined(_WIN32)
-  fs::path get_own_path() {
-    HMODULE mod;
-
-    if (GetModuleHandleExA(
-          GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
-            GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-          reinterpret_cast<LPCSTR>(&PluginStartup), &mod)) {
-      int err = GetLastError();
-      throw std::system_error(err, std::system_category());
-    }
-    auto path_buf = std::make_unique<wchar_t[]>(MAX_PATH);
-    if (GetModuleFileNameW(mod, path_buf.get(), MAX_PATH)) {
-      int err = GetLastError();
-      throw std::system_error(err, std::system_category());
-    }
-    
-    // temporary
-    return path_buf.get();
   }
 #endif
 }  // namespace
