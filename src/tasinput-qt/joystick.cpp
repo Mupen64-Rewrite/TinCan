@@ -30,7 +30,7 @@ namespace tnp {
 
     // set size policy
     QSizePolicy policy {
-      QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred};
+      QSizePolicy::Policy::Maximum, QSizePolicy::Policy::Maximum};
     policy.setHeightForWidth(true);
     setSizePolicy(policy);
   }

@@ -12,6 +12,7 @@
 #include <QWidget>
 
 #include <iostream>
+#include "aspect_layout.hpp"
 #include "joystick.hpp"
 #include "mupen64plus/m64p_plugin.h"
 
@@ -65,6 +66,7 @@ namespace tnp {
     QGroupBox* jsFrame;
     QGridLayout* jsfLayout;
     
+    AspectLayout* jsfSLayout;
     Joystick* jsfStick;
     
     QGroupBox* jsfGroupX;

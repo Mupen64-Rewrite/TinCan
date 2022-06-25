@@ -1,4 +1,7 @@
 #include "main_window.hpp"
+#include <qlabel.h>
+#include <qnamespace.h>
+#include <qstringliteral.h>
 #include <QBoxLayout>
 #include <QWindow>
 #include <QGridLayout>
@@ -10,6 +13,7 @@
 #include <QSpinBox>
 #include <QStatusBar>
 #include <QWidget>
+#include "aspect_layout.hpp"
 #include "joystick.hpp"
 #include "mupen64plus/m64p_plugin.h"
 
@@ -17,7 +21,7 @@
 
 namespace {
   const QString BUTTON_STYLING = R"!css!(
-    min-width: 1.5em;
+    min-width: 1.3em;
   )!css!";
 }
 
@@ -88,7 +92,9 @@ namespace tnp {
     jsFrame->setTitle("Joystick");
     {
       jsfStick = new Joystick(this);
-      jsfLayout->addWidget(jsfStick, 0, 0, 2, 1);
+      jsfSLayout = new AspectLayout(nullptr, 1);
+      jsfSLayout->addWidget(jsfStick);
+      jsfLayout->addLayout(jsfSLayout, 0, 0, 2, 1);
 
       jsfGroupX   = new QGroupBox(this);
       jsfGXLayout = new QVBoxLayout(jsfGroupX);
@@ -120,6 +126,8 @@ namespace tnp {
       QObject::connect(
         jsfStick, &Joystick::yPosChanged, jsfSpinY, &QSpinBox::setValue);
     }
+    jsfLayout->setColumnStretch(0, 0);
+    jsfLayout->setColumnStretch(1, 1);
     rootLayout->addWidget(jsFrame);
   }
 
@@ -150,11 +158,19 @@ namespace tnp {
       setupButton(btnfButtonDD, "▼", 3, 1);
       setupButton(btnfButtonDL, "◀", 2, 0);
       setupButton(btnfButtonDR, "▶", 2, 2);
+      labelD = new QLabel(this);
+      labelD->setText(QStringLiteral("D"));
+      labelD->setAlignment(Qt::AlignCenter);
+      btnfLayout->addWidget(labelD, 2, 1);
 
       setupButton(btnfButtonCU, "▲", 1, 7);
       setupButton(btnfButtonCD, "▼", 3, 7);
       setupButton(btnfButtonCL, "◀", 2, 6);
       setupButton(btnfButtonCR, "▶", 2, 8);
+      labelC = new QLabel(this);
+      labelC->setText(QStringLiteral("C"));
+      labelC->setAlignment(Qt::AlignCenter);
+      btnfLayout->addWidget(labelC, 2, 7);
 
       setupButton(btnfButtonS, "S", 2, 4);
       setupButton(btnfButtonB, "B", 4, 5);
