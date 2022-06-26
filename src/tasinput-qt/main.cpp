@@ -29,6 +29,9 @@ int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
   a.setQuitOnLastWindowClosed(false);
   a.setApplicationVersion(TNP_VERSION_STR);
+  a.setApplicationDisplayName("TASInput");
+  a.setApplicationName("TASInput");
+  a.setDesktopFileName("io.github.jgcodes.tasinput-qt");
 
   std::unique_ptr<tnp::MainWindow, qobject_deleter> w(new tnp::MainWindow());
 
