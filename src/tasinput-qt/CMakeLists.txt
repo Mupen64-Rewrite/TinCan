@@ -1,10 +1,10 @@
 add_executable(tasinput-qt
-  "joystick.cpp"
-  "joystick.hpp"
-  "main.cpp"
-  "main_window.cpp"
-  "main_window.hpp"
-  "aspect_layout.hpp"
+  "src/joystick.cpp"
+  "src/joystick.hpp"
+  "src/main.cpp"
+  "src/main_window.cpp"
+  "src/main_window.hpp"
+  "src/aspect_layout.hpp"
 )
 target_compile_features(tasinput-qt PRIVATE cxx_std_20)
 set_target_properties(tasinput-qt PROPERTIES

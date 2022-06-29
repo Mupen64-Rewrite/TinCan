@@ -1,0 +1,15 @@
+syntax = "proto3";
+package tnp.shmipc;
+
+import "google/protobuf/any.proto";
+
+message MessageRequest {
+  string service = 1;
+  string method = 2;
+  google.protobuf.Any data = 3;
+}
+
+message MessageReply {
+  fixed32 status = 1;
+  optional google.protobuf.Any data = 2;
+}
