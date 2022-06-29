@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <stdexcept>
 #include <string_view>
+#include <syncstream>
 #include <system_error>
 #define M64P_PLUGIN_PROTOTYPES
 
@@ -26,11 +27,11 @@
 #include "config.hpp"
 #include "oslib/plibdl.hpp"
 
-#include "subp/subprocess.hpp"
+#include <boost/process.hpp>
 
 
 namespace fs = std::filesystem;
-namespace sp = subprocess;
+namespace bp = boost::process;
 
 namespace {
 #define M64P_FN(name) ptr_##name name;
@@ -44,25 +45,20 @@ namespace {
   CONTROL* ctrl_arr;
 
   fs::path tasinput_path;
-
   fs::path get_own_path();
   
-  std::optional<sp::Popen> proc;
+  std::optional<bp::child> proc;
+  std::optional<bp::opstream> proc_cin;
+  std::optional<bp::ipstream> proc_cout;
   
   std::string query_proc(const std::string& input) {
-    // working within the limitations of
-    // the library. 4k should be enough for any query.
-    thread_local std::array<char, 4096> ibuf {0};
+    *proc_cin << input << std::endl;
     
-    fputs((input + '\n').c_str(), proc->input());
-    fflush(proc->input());
-    fgets(ibuf.data(), ibuf.size(), proc->output());
-    
-    auto res = std::string(ibuf.data());
-    res.pop_back();
+    std::string res;
+    std::getline(*proc_cout, res);
     return res;
   }
-  #ifdef _WIN32
+  #if defined(_WIN32)
   HMODULE self_hmod;
   fs::path get_own_path() { 
     wchar_t buffer[MAX_PATH] = {};
@@ -72,10 +68,16 @@ namespace {
     }
     return buffer;
   }
+  #elif defined(__linux__) || defined(__APPLE__)
+    fs::path get_own_path() {
+      Dl_info info;
+      dladdr(reinterpret_cast<void*>(&PluginStartup), &info);
+      return info.dli_fname;
+    }
   #endif
 }  // namespace
 
-#ifdef _WIN32
+#if defined(_WIN32)
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, LPVOID reserved) {
   self_hmod = hmod;
   return TRUE;
@@ -101,12 +103,13 @@ m64p_error PluginStartup(
   M64P_LOAD(ConfigSaveFile)
 #undef M64P_LOAD
 
-  // See if a config file entry exists
   m64p_handle sect_hnd;
   ConfigOpenSection("TASInput", &sect_hnd);
-
+  
+  // Check if there is already a config entry
   const char* bin_path = ConfigGetParamString(sect_hnd, "TASInputBinary");
   if (bin_path == nullptr || bin_path[0] == '\0') {
+    // If there isn't a config entry, then try to autodetect
     auto expect = get_own_path().parent_path() / EXEFILE("tasinput-qt");
     if (!fs::exists(expect)) {
       tnp::m64p_log(M64MSG_ERROR, "Could not find " EXEFILE("tasinput-qt"));
@@ -125,8 +128,10 @@ m64p_error PluginStartup(
   }
   
   tnp::m64p_log(M64MSG_STATUS, "Loading TASInput binary");
-  auto path_str = tasinput_path.string();
-  proc.emplace({path_str.c_str()}, sp::output(sp::PIPE), sp::input(sp::PIPE));
+  
+  proc_cin.emplace();
+  proc_cout.emplace();
+  proc.emplace(tasinput_path.c_str(), bp::std_in < *proc_cin, bp::std_out > *proc_cout);
 
   return M64ERR_SUCCESS;
 }
@@ -199,14 +204,3 @@ void ReadController(int Control, unsigned char* Command) {}
 void SDL_KeyDown(int keymod, int keysym) {}
 void SDL_KeyUp(int keymod, int keysym) {}
 }
-
-namespace {
-
-#if defined(__linux__) || defined(__APPLE__)
-  fs::path get_own_path() {
-    Dl_info info;
-    dladdr(reinterpret_cast<void*>(&PluginStartup), &info);
-    return info.dli_fname;
-  }
-#endif
-}  // namespace

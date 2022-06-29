@@ -9,17 +9,17 @@ it turns out GTK is a huge pain on anything besides Linux.
 
 == Building on Linux
 You should have CMake and make/ninja before building.
-You should also install Qt 6:
+You should also install Qt 6, Boost, and Protobuf:
 [cols="1,2"]
 |===
 | Ubuntu/Debian Testing
-| `sudo apt install qt6-base-dev`
+| `sudo apt install qt6-base-dev libboost-all-dev libprotobuf-dev`
 
 | Fedora/RHEL/CentOS
-| `sudo dnf install qt6-qtbase-devel`
+| `sudo dnf install qt6-qtbase-devel boost-devel protobuf-devel`
 
 | Arch/Manjaro
-| `sudo pacman -S qt6-base`
+| `sudo pacman -S qt6-base boost protobuf`
 |===
 
 From there:
@@ -36,11 +36,11 @@ You should have Visual Studio 2022 and CMake. CMake should be installed separate
 Then, setup https://github.com/microsoft/vcpkg[vcpkg] and clone this repository.
 Keep note of where vcpkg is installed, as it'll be important later.
 
-Install Qt 6:
+Install Qt 6, Boost, and Protobuf:
 [source,powershell]
 ----
 cd <vcpkg root>
-.\vcpkg install qtbase:x64-windows
+.\vcpkg install qtbase:x64-windows boost:x64-windows protobuf:x64-windows
 ----
 This can take a *very* long time, as vcpkg currently compiles everything from source, Qt included.
 

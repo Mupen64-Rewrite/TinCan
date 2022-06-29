@@ -12,6 +12,8 @@ include(M64PApi)
 include(ConfigGen)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
+find_package(Boost REQUIRED)
+find_package(Protobuf REQUIRED)
 
 # Need windeployqt on Windows, not sure about MacOS
 if (MSVC)
