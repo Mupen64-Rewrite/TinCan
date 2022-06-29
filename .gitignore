@@ -1,6 +1,5 @@
 build/
 build-*/
-.cache/
-.vs/
+.*/
 
 CMakeUserPresets.json
