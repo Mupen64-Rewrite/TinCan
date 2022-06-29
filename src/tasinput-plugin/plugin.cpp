@@ -33,15 +33,6 @@
 namespace fs = std::filesystem;
 namespace bp = boost::process;
 
-#define TMP_MACRO                                            \
-  struct __guard__ {                                         \
-    std::string fn;                                          \
-    __guard__(const std::string& fn) : fn(fn) {              \
-      std::cout << "begin " << fn << std::endl;              \
-    }                                                        \
-    ~__guard__() { std::cout << "end " << fn << std::endl; } \
-  } x {__FUNCTION__ + std::string("()")};
-
 namespace {
 #define M64P_FN(name) ptr_##name name;
   M64P_FN(ConfigOpenSection)
@@ -102,7 +93,6 @@ extern "C" {
 m64p_error PluginStartup(
   m64p_dynlib_handle core_hnd, void* debug_ctx,
   void (*debug_fn)(void*, int, const char*)) {
-  TMP_MACRO
   ::debug_ctx = debug_ctx;
   ::debug_fn  = debug_fn;
 // Load config functions
@@ -148,7 +138,6 @@ m64p_error PluginStartup(
 }
 
 m64p_error PluginShutdown() {
-  TMP_MACRO
   if (query_proc("quit") != "DONE\n") {
     return M64ERR_INTERNAL;
   }
@@ -161,7 +150,6 @@ m64p_error PluginShutdown() {
 m64p_error PluginGetVersion(
   m64p_plugin_type* type, int* version, int* api_version,
   const char** plugin_name, int* caps) {
-  TMP_MACRO
   if (type)
     *type = M64PLUGIN_INPUT;
   if (version)
@@ -177,7 +165,6 @@ m64p_error PluginGetVersion(
 }
 
 int RomOpen() {
-  TMP_MACRO
   if (std::string resp = query_proc("show"); resp.starts_with("ERR:")) {
     resp.erase(0, 4);
     tnp::m64p_log(M64MSG_ERROR, resp.c_str());
@@ -194,7 +181,6 @@ void RomClosed() {
 }
 
 void InitiateControllers(CONTROL_INFO ControlInfo) {
-  TMP_MACRO
   ctrl_arr = ControlInfo.Controls;
 
   ctrl_arr[0].Present = true;
@@ -202,7 +188,6 @@ void InitiateControllers(CONTROL_INFO ControlInfo) {
 }
 
 void GetKeys(int ctrl, BUTTONS* keys) {
-  TMP_MACRO
   if (ctrl != 0) {
     keys->Value = 0;
     return;
