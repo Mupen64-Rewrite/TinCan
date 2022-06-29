@@ -1,7 +1,6 @@
 add_library(tasinput MODULE
   "oslib/plibdl.hpp"
   "oslib/strconv.hpp"
-  "subp/subprocess.hpp"
   "plugin.cpp"
 )
 target_include_directories(tasinput PRIVATE "${CONFIG_DIR}")

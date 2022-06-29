@@ -28,7 +28,9 @@
 #include "config.hpp"
 #include "oslib/plibdl.hpp"
 
-#include <boost/process.hpp>
+#include <boost/process/child.hpp>
+#include <boost/process/pipe.hpp>
+#include <boost/process/io.hpp>
 
 namespace fs = std::filesystem;
 namespace bp = boost::process;
