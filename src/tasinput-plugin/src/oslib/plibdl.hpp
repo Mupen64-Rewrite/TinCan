@@ -1,5 +1,5 @@
-#ifndef _PLIBDL_HPP_
-#define _PLIBDL_HPP_
+#ifndef OSLIB_PLIBDL_HPP_INCLUDED
+#define OSLIB_PLIBDL_HPP_INCLUDED
 /*
 Implementation of a dlsym-like API for managing shared libraries.
 */

@@ -1,5 +1,5 @@
-#ifndef TNP_JOYSTICK_HPP_
-#define TNP_JOYSTICK_HPP_
+#ifndef TNP_JOYSTICK_HPP_INCLUDED
+#define TNP_JOYSTICK_HPP_INCLUDED
 
 #include <QEvent>
 #include <QWidget>

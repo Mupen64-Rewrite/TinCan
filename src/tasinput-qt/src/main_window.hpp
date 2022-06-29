@@ -1,5 +1,5 @@
-#ifndef TNP_MAIN_WINDOW_HPP_
-#define TNP_MAIN_WINDOW_HPP_
+#ifndef TNP_MAIN_WINDOW_HPP_INCLUDED
+#define TNP_MAIN_WINDOW_HPP_INCLUDED
 
 #include <QBoxLayout>
 #include <QGridLayout>

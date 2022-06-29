@@ -18,8 +18,8 @@ SOFTWARE.
 */
 // Pavel's code was adapted to fit the patterns of design I use in this project.
 
-#ifndef TNP_ASPECT_LAYOUT_HPP_
-#define TNP_ASPECT_LAYOUT_HPP_
+#ifndef TNP_ASPECT_LAYOUT_HPP_INCLUDED
+#define TNP_ASPECT_LAYOUT_HPP_INCLUDED
 
 #include <qnamespace.h>
 #include <qsize.h>

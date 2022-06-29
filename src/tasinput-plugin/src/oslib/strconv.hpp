@@ -1,5 +1,5 @@
-#ifndef _STRCONV_HPP_
-#define _STRCONV_HPP_
+#ifndef OSLIB_STRCONV_HPP_INCLUDED
+#define OSLIB_STRCONV_HPP_INCLUDED
 
 #include <filesystem>
 #include <string_view>
