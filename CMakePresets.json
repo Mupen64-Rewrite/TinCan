@@ -12,6 +12,10 @@
       "description": "Default build using Ninja",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      },
       "condition": {
         "type": "notEquals",
         "lhs": "${hostSystemName}",

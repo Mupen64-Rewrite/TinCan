@@ -1,4 +1,0 @@
-#ifndef TNP_SHM_SERVER_HPP_INCLUDED
-#define TNP_SHM_SERVER_HPP_INCLUDED
-
-#endif
