@@ -22,7 +22,7 @@
 #include "shmipc.pb.h"
 #include "tnp/wrapper.hpp"
 
-namespace tnp {
+namespace tnp::ipc {
   namespace bip = boost::interprocess;
   namespace pb  = google::protobuf;
 
@@ -40,7 +40,7 @@ namespace tnp {
       // 0 = ready
       // 1 = held by client
       // 2 = held by server
-      std::atomic_uint8_t s = 0;
+      std::atomic_uint8_t st = 0;
     } sgn;
     std::array<char, size - sizeof(sgn)> data;
 
@@ -48,8 +48,8 @@ namespace tnp {
       std::string_view method, std::string_view service,
       const pb::Message& params, pb::Message* retval = nullptr) {
       std::unique_lock lk(sgn.m);
-      sgn.cv.wait(lk, [&]() { return sgn.s == 0; });
-      sgn.s = 1;
+      sgn.cv.wait(lk, [&]() { return sgn.st == 0; });
+      sgn.st = 1;
 
       tnp::shmipc::MessageRequest rq;
       *(rq.mutable_method())  = method;
@@ -62,10 +62,10 @@ namespace tnp {
       memset(data.data(), 0, data.size());
       rq.SerializeToArray(data.data(), data.size());
 
-      sgn.s = 2;
+      sgn.st = 2;
       sgn.cv.notify_one();
 
-      sgn.cv.wait(lk, [&]() { return sgn.s == 1; });
+      sgn.cv.wait(lk, [&]() { return sgn.st == 1; });
 
       tnp::shmipc::MessageReply rp;
       rp.ParseFromArray(data.data(), data.size());
@@ -84,7 +84,7 @@ namespace tnp {
         }
       }
 
-      sgn.s = 0;
+      sgn.st = 0;
       sgn.cv.notify_one();
     }
     void server_loop(
@@ -95,7 +95,7 @@ namespace tnp {
       std::unique_lock lk(sgn.m);
       bool flag = false;
       while (true) {
-        sgn.cv.wait(lk, [&]() { return (flag = stop_flag.test()) || sgn.s == 2; });
+        sgn.cv.wait(lk, [&]() { return (flag = stop_flag.test()) || sgn.st == 2; });
         if (flag)
           break;
 
@@ -111,7 +111,7 @@ namespace tnp {
           rp.clear_data();
         }
 
-        sgn.s = 1;
+        sgn.st = 1;
         sgn.cv.notify_one();
       }
     }

@@ -13,7 +13,7 @@
   #include <boost/interprocess/windows_shared_memory.hpp>
 #endif
 
-namespace tnp {
+namespace tnp::ipc {
   namespace bip = boost::interprocess;
 
   class shm_wrapper;

@@ -1,6 +1,6 @@
 add_library(tasinput-ipc STATIC
   "src/shmipc.proto"
-  "src/shm_server.cpp"
+  "src/rpc_client.cpp"
 )
 gen_protobuf(tasinput-ipc)
 list_sources(tasinput-ipc)
