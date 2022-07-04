@@ -1,0 +1,23 @@
+syntax = "proto3";
+package tnp.ipc;
+
+import "google/protobuf/any.proto";
+
+message Exception {
+  string type = 1;
+  optional string detail = 2;
+}
+
+message MessageRequest {
+  fixed64 id = 1;
+  string service = 2;
+  string method = 3;
+  google.protobuf.Any data = 4;
+}
+
+message MessageReply {
+  fixed64 id = 1;
+  // If true, the payload is a tnp.ipc.Exception
+  bool error = 2;
+  optional google.protobuf.Any data = 3;
+}
