@@ -7,6 +7,8 @@
 #include <mutex>
 #include <optional>
 #include <stdexcept>
+#include <type_traits>
+#include "tnp_ipc.pb.h"
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #if defined(__linux__) || defined(__APPLE__)
   #include <boost/interprocess/shared_memory_object.hpp>
@@ -16,73 +18,96 @@
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
 namespace tnp::ipc {
-  template <size_t max_len>
+  template <uint32_t max_len>
   class pbuf_msg {
   public:
-    pbuf_msg(const google::protobuf::Message& msg) :
-      m_len(msg.ByteSizeLong()) {
+    pbuf_msg(const tnp::ipc::MessageRequest& msg) : m_len(msg.ByteSizeLong()), m_is_reply(false) {
       if (m_len > max_len) {
         throw std::out_of_range("Message is too long to serialize");
-      }  
+      }
       msg.SerializeToArray(m_data.data(), m_len);
     }
-    
+    pbuf_msg(const tnp::ipc::MessageReply& msg) : m_len(msg.ByteSizeLong()), m_is_reply(true) {
+      if (m_len > max_len) {
+        throw std::out_of_range("Message is too long to serialize");
+      }
+      msg.SerializeToArray(m_data.data(), m_len);
+    }
+
     void deserialize(google::protobuf::Message& msg) {
       msg.ParseFromArray(m_data.data(), m_len);
     }
     
+    bool is_reply() {
+      return m_is_reply;
+    }
+
   private:
-    size_t m_len;
+    uint32_t m_len;
+    bool m_is_reply;
     std::array<std::byte, max_len> m_data;
   };
-  
+
   template <class T, size_t S>
   class shared_blocking_queue {
-    static_assert(S != 0, "shared_blocking_queue requires at least 1 element of space");
+    static_assert(
+      S != 0, "shared_blocking_queue requires at least 1 element of space");
+
   public:
     shared_blocking_queue() :
-      m_head(0),
-      m_len(0),
-      m_sem_remain(S),
-      m_sem_filled(0),
-      m_mutex() {}
-      
+      m_head(0), m_len(0), m_sem_remain(S), m_sem_filled(0), m_mutex() {}
+
     void send(const T& value) {
       m_sem_remain.wait();
       {
         std::scoped_lock _lock(m_mutex);
-        
-        m_data[(m_head + m_len) % S] = value;
+
+        new (&m_data[(m_head + m_len) % S]) T(value);
         m_len += 1;
       }
       m_sem_filled.post();
     }
-    
+
     void send(T&& value) {
       m_sem_remain.wait();
       {
         std::scoped_lock _lock(m_mutex);
-        
-        m_data[(m_head + m_len) % S] = value;
+
+        new (&m_data[(m_head + m_len) % S]) T(value);
         m_len += 1;
       }
       m_sem_filled.post();
     }
-    
+
+    template <class... Args>
+    requires std::is_constructible_v<T, Args...>
+    void emplace(Args&&... args) {
+      m_sem_remain.wait();
+      {
+        std::scoped_lock _lock(m_mutex);
+
+        new (&m_data[(m_head + m_len) % S]) T(std::forward<Args>(args)...);
+        m_len += 1;
+      }
+      m_sem_filled.post();
+    }
+
     T receive() {
       std::optional<T> res;
       m_sem_filled.wait();
       {
         std::scoped_lock _lock(m_mutex);
         res = m_data[m_head];
+        m_data[m_head].~T();
         
         m_head = (m_head + 1) % S;
         m_len -= 1;
       }
       m_sem_remain.post();
-      
+
       return *res;
     }
+
   private:
     std::array<T, S> m_data;
     size_t m_head;
