@@ -12,6 +12,8 @@
 #include <mupen64plus/m64p_config.h>
 #include <mupen64plus/m64p_plugin.h>
 #include <mupen64plus/m64p_types.h>
+#undef IMPORT
+#undef EXPORT
 
 #if defined(__linux__) || defined(__APPLE__)
   #include <dlfcn.h>
@@ -29,13 +31,43 @@
 #include "oslib/plibdl.hpp"
 
 #include <boost/process/child.hpp>
-#include <boost/process/pipe.hpp>
 #include <boost/process/io.hpp>
+#include <boost/process/pipe.hpp>
+
+#include <tnp/ipc_layout.hpp>
+
+#include <tnp_prtc.pb.h>
 
 namespace fs = std::filesystem;
 namespace bp = boost::process;
 
 namespace {
+  // Simple union that handles the delayed construction of an object. The object
+  // must be constructed at some point to avoid invoking UB. Accessing the value
+  // is UB before calling construct().
+  template <class T>
+  union delay_ctor {
+  private:
+    char _dummy_please_ignore;
+
+  public:
+    T v;
+
+    delay_ctor() : _dummy_please_ignore(0) {}
+    ~delay_ctor() { v.~T(); }
+
+    operator T&() { return v; }
+    
+    T* operator->() {
+      return std::addressof(v);
+    }
+
+    template <class... Args>
+    void construct(Args... args) {
+      new (&v) T(std::forward<Args>(args)...);
+    }
+  };
+
 #define M64P_FN(name) ptr_##name name;
   M64P_FN(ConfigOpenSection)
   M64P_FN(ConfigGetParamString)
@@ -52,6 +84,8 @@ namespace {
   std::optional<bp::child> proc;
   std::optional<bp::opstream> proc_cin;
   std::optional<bp::ipstream> proc_cout;
+
+  delay_ctor<tnp::shm_server> server;
 
   std::string query_proc(const std::string& input) {
     *proc_cin << input << std::endl;
@@ -130,12 +164,17 @@ m64p_error PluginStartup(
   }
 
   tnp::m64p_log(M64MSG_STATUS, "Loading TASInput binary");
-
+  
+  server.construct();
+  
   proc_cin.emplace();
   proc_cout.emplace();
   proc.emplace(
-    tasinput_path.c_str(), bp::std_in<*proc_cin, bp::std_out> * proc_cout);
-
+    tasinput_path.c_str(), server.v.id(), bp::std_in<(*proc_cin), bp::std_out>(*proc_cout));
+  
+  tnp::prtc::Ping msg;
+  server->ipc_data().push_request(&tnp::ipc_layout::mq_p2e, msg, "ping");
+  
   return M64ERR_SUCCESS;
 }
 
@@ -204,9 +243,7 @@ void GetKeys(int ctrl, BUTTONS* keys) {
   keys->Value = std::stoul(resp, nullptr, 16);
 }
 
-void ControllerCommand(int Control, unsigned char* Command) {
-  
-}
+void ControllerCommand(int Control, unsigned char* Command) {}
 void ReadController(int Control, unsigned char* Command) {}
 
 void SDL_KeyDown(int keymod, int keysym) {}

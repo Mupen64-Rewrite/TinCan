@@ -56,8 +56,7 @@ function(gen_protobuf target)
     add_custom_command(
       OUTPUT ${_file_outputs}
       COMMAND "${CMAKE_COMMAND}"
-      ARGS "-DPROTOC=${_protoc_exe}" "-DFILE=${_file}" "-DOUTDIR=${_outdir}" 
-        "-DHDRDIR=${_hdrdir}" "-DIMPDIRS=${_import_dirs}" -P "${tas-input-qt_SOURCE_DIR}/cmake/protoc_runner.cmake"
+      ARGS "-DOUTDIR=${_outdir}" "-DHDRDIR=${_hdrdir}" -P "${tas-input-qt_SOURCE_DIR}/cmake/protoc_runner.cmake" "${_protoc_exe}" "${_file}" "--cpp_out=${_outdir}" ${_import_dirs}
       DEPENDS ${_file} protobuf::protoc "${tas-input-qt_SOURCE_DIR}/cmake/protoc_runner.cmake"
       COMMENT "Compiling C++ protocol buffer for ${_file}"
     )

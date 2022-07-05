@@ -14,7 +14,9 @@
 #include <iostream>
 #include "aspect_layout.hpp"
 #include "joystick.hpp"
+
 #include "mupen64plus/m64p_plugin.h"
+#undef IMPORT
 
 namespace tnp {
   class MainWindow : public QMainWindow {

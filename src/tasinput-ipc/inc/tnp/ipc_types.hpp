@@ -56,6 +56,13 @@ namespace tnp::ipc {
   public:
     shared_blocking_queue() :
       m_head(0), m_len(0), m_sem_remain(S), m_sem_filled(0), m_mutex() {}
+      
+    ~shared_blocking_queue() {
+      size_t end = (m_head + m_len) % S;
+      for (size_t i = m_head; i != end; i = (i + 1) % S) {
+        m_data[i].value.~T();
+      }
+    }
 
     void send(const T& value) {
       m_sem_remain.wait();
@@ -73,7 +80,7 @@ namespace tnp::ipc {
       {
         std::scoped_lock _lock(m_mutex);
 
-        new (&m_data[(m_head + m_len) % S]) T(value);
+        new (&m_data[(m_head + m_len) % S].value) T(value);
         m_len += 1;
       }
       m_sem_filled.post();
@@ -86,7 +93,7 @@ namespace tnp::ipc {
       {
         std::scoped_lock _lock(m_mutex);
 
-        new (&m_data[(m_head + m_len) % S]) T(std::forward<Args>(args)...);
+        new (&m_data[(m_head + m_len) % S].value) T(std::forward<Args>(args)...);
         m_len += 1;
       }
       m_sem_filled.post();
@@ -97,8 +104,8 @@ namespace tnp::ipc {
       m_sem_filled.wait();
       {
         std::scoped_lock _lock(m_mutex);
-        res = m_data[m_head];
-        m_data[m_head].~T();
+        res = std::move(m_data[m_head].value);
+        m_data[m_head].value.~T();
         
         m_head = (m_head + 1) % S;
         m_len -= 1;
@@ -109,7 +116,14 @@ namespace tnp::ipc {
     }
 
   private:
-    std::array<T, S> m_data;
+    union element_data {
+      char dummy = 0;
+      T value;
+      
+      element_data() : dummy(0) {}
+    };
+  
+    std::array<element_data, S> m_data;
     size_t m_head;
     size_t m_len;
     boost::interprocess::interprocess_semaphore m_sem_remain;

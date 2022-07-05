@@ -15,6 +15,8 @@
 #include <QWidget>
 #include "aspect_layout.hpp"
 #include "joystick.hpp"
+
+
 #include "mupen64plus/m64p_plugin.h"
 
 #define with(var) if (var; true)

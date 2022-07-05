@@ -11,6 +11,9 @@
 
 #include "config.hpp"
 #include "main_window.hpp"
+#include "tnp_ipc.pb.h"
+
+#include "tnp/ipc_layout.hpp"
 
 #define ERR(str) ("ERR:" str)
 
@@ -23,7 +26,41 @@ struct qobject_deleter {
   }
 };
 
+namespace {
+  template <class T>
+  union delay_ctor {
+  private:
+    char _dummy_please_ignore;
+
+  public:
+    T v;
+
+    delay_ctor() : _dummy_please_ignore(0) {}
+    ~delay_ctor() { v.~T(); }
+
+    operator T&() { return v; }
+    
+    T* operator->() {
+      return std::addressof(v);
+    }
+
+    template <class... Args>
+    void construct(Args... args) {
+      new (&v) T(std::forward<Args>(args)...);
+    }
+  };
+  
+  delay_ctor<tnp::shm_client> client;
+}
+
 int main(int argc, char* argv[]) {
+  if (argc < 2)
+    return 69;
+  client.construct(argv[1]);
+  auto data = client->ipc_data().pull(&tnp::ipc_layout::mq_p2e);
+  
+  std::clog << "Request called method " << std::get<tnp::ipc::MessageRequest>(data).method() << std::endl;
+  
   // Ensures that the app stays open
   // as long as the plugin has the pipe open
   QApplication a(argc, argv);
