@@ -31,12 +31,12 @@ namespace tnp {
     message_queue_t mq_e2p;
 
     void push_request(
-      message_queue_t ipc_layout::*queue, const google::protobuf::Message& msg,
+      message_queue_t ipc_layout::*queue, uint64_t id, const google::protobuf::Message& msg,
       std::string_view method,
       std::string_view service = "io.github.jgcodes.tasinput-qt") {
       // Initialize request object
       tnp::ipc::MessageRequest rq;
-      rq.set_id(counter.fetch_add(1));
+      rq.set_id(id);
       *(rq.mutable_service()) = service;
       *(rq.mutable_method())  = method;
       rq.mutable_data()->PackFrom(msg);

@@ -1,7 +1,10 @@
+#include <any>
 #include <array>
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <semaphore>
 #include <stdexcept>
 #include <string_view>
 #include <syncstream>
@@ -57,10 +60,8 @@ namespace {
     ~delay_ctor() { v.~T(); }
 
     operator T&() { return v; }
-    
-    T* operator->() {
-      return std::addressof(v);
-    }
+
+    T* operator->() { return std::addressof(v); }
 
     template <class... Args>
     void construct(Args... args) {
@@ -84,6 +85,11 @@ namespace {
   std::optional<bp::child> proc;
   std::optional<bp::opstream> proc_cin;
   std::optional<bp::ipstream> proc_cout;
+
+  struct waiter {
+    std::binary_semaphore sem;
+    std::any data;
+  };
 
   delay_ctor<tnp::shm_server> server;
 
@@ -164,16 +170,20 @@ m64p_error PluginStartup(
   }
 
   tnp::m64p_log(M64MSG_STATUS, "Loading TASInput binary");
-  
+
   server.construct();
-  
+
   proc_cin.emplace();
   proc_cout.emplace();
   proc.emplace(
-    tasinput_path.c_str(), server.v.id(), bp::std_in<(*proc_cin), bp::std_out>(*proc_cout));
+    tasinput_path.c_str(), server.v.id(),
+    bp::std_in<(*proc_cin), bp::std_out>(*proc_cout));
   
-  tnp::prtc::Ping msg;
-  server->ipc_data().push_request(&tnp::ipc_layout::mq_p2e, msg, "ping");
+  {
+    tnp::prtc::Ping msg;
+    uint64_t id = server->ipc_data().counter.fetch_add(1);
+    server->ipc_data().push_request(&tnp::ipc_layout::mq_p2e, id, msg, "ping");
+  }
   
   return M64ERR_SUCCESS;
 }
