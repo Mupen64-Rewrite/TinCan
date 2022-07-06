@@ -61,7 +61,6 @@ namespace {
   };
 
   delay_ctor<tnp::shm_client> client;
-
   std::unordered_map<uint64_t, waiter> waiter_map;
 }  // namespace
 

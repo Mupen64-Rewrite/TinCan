@@ -21,7 +21,7 @@ namespace tnp::ipc {
   template <uint32_t max_len>
   class pbuf_msg {
   public:
-    pbuf_msg(const tnp::ipc::MessageRequest& msg) : m_len(msg.ByteSizeLong()), m_is_reply(false) {
+    pbuf_msg(const tnp::ipc::MessageQuery& msg) : m_len(msg.ByteSizeLong()), m_is_reply(false) {
       if (m_len > max_len) {
         throw std::out_of_range("Message is too long to serialize");
       }

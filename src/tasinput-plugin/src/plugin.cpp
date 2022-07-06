@@ -35,7 +35,6 @@
 
 #include <boost/process/child.hpp>
 #include <boost/process/io.hpp>
-#include <boost/process/pipe.hpp>
 
 #include <tnp/ipc_layout.hpp>
 
@@ -83,8 +82,6 @@ namespace {
   fs::path get_own_path();
 
   std::optional<bp::child> proc;
-  std::optional<bp::opstream> proc_cin;
-  std::optional<bp::ipstream> proc_cout;
 
   struct waiter {
     std::binary_semaphore sem;
@@ -92,14 +89,8 @@ namespace {
   };
 
   delay_ctor<tnp::shm_server> server;
-
-  std::string query_proc(const std::string& input) {
-    *proc_cin << input << std::endl;
-
-    std::string res;
-    std::getline(*proc_cout, res);
-    return res;
-  }
+  std::unordered_map<uint64_t, waiter> waiter_map;
+  
 #if defined(_WIN32)
   HMODULE self_hmod;
   fs::path get_own_path() {
@@ -172,12 +163,7 @@ m64p_error PluginStartup(
   tnp::m64p_log(M64MSG_STATUS, "Loading TASInput binary");
 
   server.construct();
-
-  proc_cin.emplace();
-  proc_cout.emplace();
-  proc.emplace(
-    tasinput_path.c_str(), server.v.id(),
-    bp::std_in<(*proc_cin), bp::std_out>(*proc_cout));
+  proc.emplace(tasinput_path.c_str(), server.v.id());
   
   {
     tnp::prtc::Ping msg;

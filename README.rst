@@ -11,17 +11,22 @@ Building on Linux
 -----------------
 
 You should have CMake and make/ninja before building. You should also
-install Qt 6, Boost, and Protobuf:
+install Qt 6, Boost, and Protobuf. This handy table should tell you what
+packages to install.
 
-+-------------------------+--------------------------------------------------------------------+
-| Distribution            | Install command                                                    |
-+=========================+====================================================================+
-| Ubuntu/Debian Testing   | ``sudo apt install qt6-base-dev libboost-all-dev libprotobuf-dev`` |
-+-------------------------+--------------------------------------------------------------------+
-| Fedora/RHEL/CentOS      | ``sudo dnf install qt6-qtbase-devel boost-devel protobuf-devel``   |
-+-------------------------+--------------------------------------------------------------------+
-| Arch/Manjaro            | ``sudo pacman -S qt6-base boost protobuf``                         |
-+-------------------------+--------------------------------------------------------------------+
++-------------+------------------------+-----------------------+---------------+
+| Dependency  | Ubuntu/Debian Testing  | Fedora/RHEL/CentOS    | Arch/Manjaro  |
++=============+========================+=======================+===============+
+| Qt 6        | ``qt6-base-dev``       | ``qt6-qtbase-devel``  | ``qt6-base``  |
++-------------+------------------------+-----------------------+---------------+
+| Boost       | ``libboost-dev``       | ``boost-devel``       | ``boost``     |
++-------------+------------------------+-----------------------+---------------+
+| Protobuf    | ``libprotoc-dev``*     | ``protobuf-devel``    | ``protobuf``  |
++-------------+------------------------+-----------------------+---------------+
+| fmt         | ``libfmt-dev``         | ``fmt-devel``         | ``fmt``       |
++-------------+------------------------+-----------------------+---------------+
+
+\* libprotoc-dev depends on libprotobuf-dev, and should provide the needed headers.
 
 From there:
 

@@ -8,7 +8,7 @@ message Exception {
   optional string detail = 2;
 }
 
-message MessageRequest {
+message MessageQuery {
   fixed64 id = 1;
   string service = 2;
   string method = 3;

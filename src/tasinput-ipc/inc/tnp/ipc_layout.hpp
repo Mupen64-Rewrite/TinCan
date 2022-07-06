@@ -35,7 +35,7 @@ namespace tnp {
       std::string_view method,
       std::string_view service = "io.github.jgcodes.tasinput-qt") {
       // Initialize request object
-      tnp::ipc::MessageRequest rq;
+      tnp::ipc::MessageQuery rq;
       rq.set_id(id);
       *(rq.mutable_service()) = service;
       *(rq.mutable_method())  = method;
@@ -68,7 +68,7 @@ namespace tnp {
       (this->*queue).emplace(rp);
     }
 
-    std::variant<tnp::ipc::MessageRequest, tnp::ipc::MessageReply> pull(
+    std::variant<tnp::ipc::MessageQuery, tnp::ipc::MessageReply> pull(
       message_queue_t ipc_layout::*queue) {
       auto msg = (this->*queue).receive();
       if (msg.is_reply()) {
@@ -77,7 +77,7 @@ namespace tnp {
         return rp;
       }
       else {
-        tnp::ipc::MessageRequest rp;
+        tnp::ipc::MessageQuery rp;
         msg.deserialize(rp);
         return rp;
       }
