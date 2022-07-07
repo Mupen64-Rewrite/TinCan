@@ -7,8 +7,10 @@
 #include <semaphore>
 #include <stdexcept>
 #include <string_view>
-#include <syncstream>
 #include <system_error>
+#include <thread>
+#include <variant>
+#include "tnp_ipc.pb.h"
 #define M64P_PLUGIN_PROTOTYPES
 
 #include <mupen64plus/m64p_common.h>
@@ -63,10 +65,17 @@ namespace {
     T* operator->() { return std::addressof(v); }
 
     template <class... Args>
-    void construct(Args... args) {
+    void construct(Args&&... args) {
       new (&v) T(std::forward<Args>(args)...);
     }
   };
+  
+  template <class... Fs>
+  struct overload : Fs... {
+    using Fs::operator()...;
+  };
+  template <class... Fs>
+  overload(Fs&&...) -> overload<Fs...>;
 
 #define M64P_FN(name) ptr_##name name;
   M64P_FN(ConfigOpenSection)
@@ -88,7 +97,9 @@ namespace {
     std::any data;
   };
 
-  delay_ctor<tnp::shm_server> server;
+  delay_ctor<tnp::shm_server> shm_server;
+  delay_ctor<tnp::prtc::AppServiceClient> client;
+  delay_ctor<std::jthread> ipc_thread;
   std::unordered_map<uint64_t, waiter> waiter_map;
   
 #if defined(_WIN32)
@@ -162,25 +173,35 @@ m64p_error PluginStartup(
 
   tnp::m64p_log(M64MSG_STATUS, "Loading TASInput binary");
 
-  server.construct();
-  proc.emplace(tasinput_path.c_str(), server.v.id());
+  shm_server.construct();
+  client.construct(shm_server->ipc_data().mq_p2e);
+  proc.emplace(tasinput_path.c_str(), shm_server.v.id());
   
-  {
-    tnp::prtc::Ping msg;
-    uint64_t id = server->ipc_data().counter.fetch_add(1);
-    server->ipc_data().push_request(&tnp::ipc_layout::mq_p2e, id, msg, "ping");
-  }
+  ipc_thread.construct([]() {
+    auto&& var = shm_server->ipc_data().pull(&tnp::ipc_layout::mq_e2p);
+    std::visit(overload {
+      [](const tnp::ipc::MessageQuery& x) -> void {
+        // handle other requests
+      },
+      [](const tnp::ipc::MessageReply& x) -> void {
+        decltype(client.v)::receive(x);
+      }
+    }, var);
+  });
+  
+  
   
   return M64ERR_SUCCESS;
 }
 
 m64p_error PluginShutdown() {
-  if (query_proc("quit") != "DONE\n") {
+  try {
+    client->QuitApp(tnp::prtc::QuitAppQuery {});
+  }
+  catch (const tnp::ipc::remote_call_error& e) {
     return M64ERR_INTERNAL;
   }
   proc->wait();
-  proc_cin.reset();
-  proc_cout.reset();
   return M64ERR_SUCCESS;
 }
 
@@ -202,18 +223,27 @@ m64p_error PluginGetVersion(
 }
 
 int RomOpen() {
-  if (std::string resp = query_proc("show"); resp.starts_with("ERR:")) {
-    resp.erase(0, 4);
-    tnp::m64p_log(M64MSG_ERROR, resp.c_str());
-    return false;
+  try {
+    auto query = tnp::prtc::ShowControllerQuery {};
+    query.set_index(0);
+    query.set_state(true);
+    client->ShowController(query);
+  }
+  catch (const tnp::ipc::remote_call_error& e) {
+    return M64ERR_INTERNAL;
   }
   return true;
 }
 
 void RomClosed() {
-  if (std::string resp = query_proc("hide"); resp.starts_with("ERR:")) {
-    resp.erase(0, 4);
-    tnp::m64p_log(M64MSG_ERROR, resp.c_str());
+  try {
+    auto query = tnp::prtc::ShowControllerQuery {};
+    query.set_index(0);
+    query.set_state(false);
+    client->ShowController(query);
+  }
+  catch (const tnp::ipc::remote_call_error& e) {
+    tnp::m64p_log(M64MSG_ERROR, e.what());
   }
 }
 
@@ -225,18 +255,8 @@ void InitiateControllers(CONTROL_INFO ControlInfo) {
 }
 
 void GetKeys(int ctrl, BUTTONS* keys) {
-  if (ctrl != 0) {
-    keys->Value = 0;
-    return;
-  }
-  std::string resp = query_proc("query");
-  if (resp.starts_with("ERR:")) {
-    resp.erase(0, 4);
-    tnp::m64p_log(M64MSG_ERROR, resp.c_str());
-    keys[ctrl].Value = 0;
-    return;
-  }
-  keys->Value = std::stoul(resp, nullptr, 16);
+  // atomically get data
+  keys->Value = std::atomic_ref<uint32_t>(shm_server->ipc_data().ctrl_state[ctrl]);
 }
 
 void ControllerCommand(int Control, unsigned char* Command) {}

@@ -1,9 +1,9 @@
 #include "main_window.hpp"
 #include <qlabel.h>
 #include <qnamespace.h>
+#include <qspinbox.h>
 #include <qstringliteral.h>
 #include <QBoxLayout>
-#include <QWindow>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLayoutItem>
@@ -13,11 +13,13 @@
 #include <QSpinBox>
 #include <QStatusBar>
 #include <QWidget>
+#include <QWindow>
+#include <atomic>
 #include "aspect_layout.hpp"
 #include "joystick.hpp"
 
-
 #include "mupen64plus/m64p_plugin.h"
+#include "shared_objects.hpp"
 
 #define with(var) if (var; true)
 
@@ -69,13 +71,19 @@ namespace tnp {
     res.A_BUTTON     = btnfButtonA->isChecked();
     return res;
   }
-  
+
+  void MainWindow::onControlsChanged() {
+    std::atomic_ref<uint32_t>(tnp::app_shm_client->ipc_data().ctrl_state[0]) =
+      buttonMask().Value;
+  }
+
   void MainWindow::mousePressEvent(QMouseEvent* event) {
     switch (event->button()) {
       case Qt::LeftButton: {
         windowHandle()->startSystemMove();
       }
-      default: break;
+      default:
+        break;
     }
   }
 
@@ -93,7 +101,7 @@ namespace tnp {
 
     jsFrame->setTitle("Joystick");
     {
-      jsfStick = new Joystick(this);
+      jsfStick   = new Joystick(this);
       jsfSLayout = new AspectLayout(nullptr, 1);
       jsfSLayout->addWidget(jsfStick);
       jsfLayout->addLayout(jsfSLayout, 0, 0, 2, 1);
@@ -127,6 +135,13 @@ namespace tnp {
         jsfSpinY, &QSpinBox::valueChanged, jsfStick, &Joystick::setYPos);
       QObject::connect(
         jsfStick, &Joystick::yPosChanged, jsfSpinY, &QSpinBox::setValue);
+
+      QObject::connect(
+        jsfSpinX, &QSpinBox::valueChanged, this,
+        &MainWindow::onControlsChanged);
+      QObject::connect(
+        jsfSpinY, &QSpinBox::valueChanged, this,
+        &MainWindow::onControlsChanged);
     }
     jsfLayout->setColumnStretch(0, 0);
     jsfLayout->setColumnStretch(1, 1);
@@ -150,6 +165,10 @@ namespace tnp {
         btn->setStyleSheet(BUTTON_STYLING);
 
         btnfLayout->addWidget(btn, row, col, rowSpan, colSpan);
+
+        QObject::connect(
+          btn, &QPushButton::toggled, this,
+          &tnp::MainWindow::onControlsChanged);
       };
 
       setupButton(btnfButtonL, "L", 0, 0, 1, 3);

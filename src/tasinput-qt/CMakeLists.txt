@@ -4,6 +4,8 @@ add_executable(tasinput-qt
   "src/main.cpp"
   "src/main_window.cpp"
   "src/main_window.hpp"
+  "src/shared_objects.cpp"
+  "src/shared_objects.hpp"
   "src/aspect_layout.hpp"
 )
 target_compile_features(tasinput-qt PRIVATE cxx_std_20)

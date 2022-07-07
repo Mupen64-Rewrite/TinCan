@@ -3,7 +3,7 @@
 
 #include <google/protobuf/message.h>
 #include <atomic>
-#include "tnp_ipc.pb.h"
+#include <tnp_ipc.pb.h>
 #include <boost/core/demangle.hpp>
 #include <boost/interprocess/detail/os_file_functions.hpp>
 #include <boost/interprocess/mapped_region.hpp>
@@ -25,7 +25,6 @@ namespace tnp {
     using message_queue_t =
       tnp::ipc::shared_blocking_queue<tnp::ipc::pbuf_msg<512>, 8>;
 
-    std::atomic_uint64_t counter = 0;
     std::array<uint32_t, 4> ctrl_state;
     message_queue_t mq_p2e;
     message_queue_t mq_e2p;

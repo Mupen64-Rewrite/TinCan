@@ -62,39 +62,43 @@ constexpr std::string_view literal_strip(
   return s.substr(b, s.length() - (b + e));
 }
 
+// Server templates
+// ================
+
 constexpr std::string_view include_list = literal_strip(R"!cpp!(
 #include <boost/core/demangle.hpp>
 #include <tnp/ipc_proto.hpp>
 #include <tnp_ipc.pb.h>
+#include <fmt/core.h>
 )!cpp!");
 
 constexpr std::string_view server_class_decl = literal_strip(R"!cpp!(
 class {0}Server : public ::tnp::ipc::Server {{
 private:
-  {1}
+{1}
 public:
   bool handle_request(
-    const tnp::ipc::MessageQuery& query, 
-    tnp::ipc::MessageReply& reply) const override;
+    const ::tnp::ipc::MessageQuery& query, 
+    ::tnp::ipc::MessageReply& reply) const override;
 }};
 )!cpp!"sv);
 
 constexpr std::string_view server_method_stub = literal_strip(
   R"!cpp!(
-  void {0}(const {1}& query, {2}& reply);
-)!cpp!"sv,
-  1, 0);
+  void {0}(const {1}& query, {2}& reply) const;
+)!cpp!"sv);
 
 constexpr std::string_view server_handle_def = literal_strip(R"!cpp!(
 bool {0}Server::handle_request(
-  const tnp::ipc::MessageQuery& query, 
-  tnp::ipc::MessageReply& reply) const {{
+  const ::tnp::ipc::MessageQuery& query, 
+  ::tnp::ipc::MessageReply& reply) const {{
   
-  if (query.service() != "{0}")
+  if (query.service() != "{1}")
     return false;
   
   std::string_view method = query.method();
-  {1}
+{2}
+  return false;
 }}
 )!cpp!");
 
@@ -124,67 +128,112 @@ constexpr std::string_view server_branch = literal_strip(
     reply.mutable_data()->PackFrom(reply_data);
     return true;
   }}
-)!cpp!"sv,
-  1, 0);
+)!cpp!"sv);
+
+// Client templates
+// ================
+constexpr std::string_view client_class_decl = literal_strip(R"!cpp!(
+class {0}Client : public ::tnp::ipc::Client {{
+public:
+  using ::tnp::ipc::Client::Client;
+private:
+  using ::tnp::ipc::Client::call;
+public:
+{1}
+}};
+)!cpp!");
+
+constexpr std::string_view client_method_stub = literal_strip(R"!cpp!(
+  {2} {0}(const {1}& query) const;
+)!cpp!"sv);
+
+constexpr std::string_view client_method_decl = literal_strip(R"!cpp!(
+{3} {0}Client::{1}(const {2}& query) const {{
+  ::tnp::ipc::MessageReply queue_reply = call(query, "{4}", "{1}");
+  if (queue_reply.error()) {{
+    ::tnp::ipc::Exception exc;
+    queue_reply.data().UnpackTo(&exc);
+    
+    auto out = fmt::format("RPC threw {{}}: {{}}", exc.type(), exc.detail());
+    throw ::tnp::ipc::remote_call_error(out);
+  }}
+  {3} reply;
+  queue_reply.data().UnpackTo(&reply);
+  return reply;
+}}
+)!cpp!");
+
 namespace std {
   template <class T>
   unique_ptr(T*) -> unique_ptr<T>;
 }
 
-
 class IPCCodeGenerator : public protoc::CodeGenerator {
+public:
   bool Generate(
     const proto::FileDescriptor* file, const std::string& parameter,
     protoc::GeneratorContext* generator_context,
     std::string* error) const override {
-      
     std::string stem = protoc::StripProto(file->name());
-    
+
     if (file->service_count() == 0) {
       // do not generate anything if there are no services
       return true;
     }
-      
+
     // includes
     {
-      std::unique_ptr file(generator_context->OpenForInsert(stem + ".pb.h", "includes"));
+      std::unique_ptr file(
+        generator_context->OpenForInsert(stem + ".pb.h", "includes"));
       proto::io::CodedOutputStream cos(file.get());
       cos.WriteString(std::string(include_list));
     }
-    
+
     // declaration gen
     {
       std::string out_buffer;
-      std::string method_stubs;
+      std::string server_methods;
+      std::string client_methods;
       for (size_t i = 0; i < file->service_count(); i++) {
         const auto* service = file->service(i);
 
-        method_stubs.clear();
+        // SERVER
+        // =========
+
+        server_methods.clear();
+        client_methods.clear();
         for (size_t j = 0; j < service->method_count(); j++) {
           const auto* method     = service->method(j);
-          std::string input_type = method->input_type()->full_name();
+          std::string input_type = "::" + method->input_type()->full_name();
           boost::replace_all(input_type, ".", "::");
 
-          std::string output_type = method->output_type()->full_name();
+          std::string output_type = "::" + method->output_type()->full_name();
           boost::replace_all(output_type, ".", "::");
 
-          // Generates stub: void Method(const A& query, B& reply)
+          // Generates stubs for server and client
           fmt::format_to(
-            std::back_inserter(method_stubs), server_method_stub, method->name(),
-            input_type, output_type);
+            std::back_inserter(server_methods), server_method_stub,
+            method->name(), input_type, output_type);
+          fmt::format_to(
+            std::back_inserter(client_methods), client_method_stub,
+            method->name(), input_type, output_type);
         }
 
         // combines stubs with class declaration
         fmt::format_to(
           std::back_inserter(out_buffer), server_class_decl, service->name(),
-          method_stubs);
+          server_methods);
+        fmt::format_to(
+          std::back_inserter(out_buffer), client_class_decl, service->name(),
+          client_methods);
       }
-      
-      std::unique_ptr file(generator_context->OpenForInsert(stem + ".pb.h", "namespace_scope"));
+
+      std::unique_ptr file(
+        generator_context->OpenForInsert(stem + ".pb.h", "namespace_scope"));
       proto::io::CodedOutputStream cos(file.get());
       cos.WriteString(out_buffer);
     }
-    
+
     // definition gen
     {
       std::string out_buffer;
@@ -207,21 +256,28 @@ class IPCCodeGenerator : public protoc::CodeGenerator {
           fmt::format_to(
             std::back_inserter(branches), server_branch, text_else,
             method->name(), input_type, output_type);
+          
+          fmt::format_to(
+            std::back_inserter(out_buffer), client_method_decl, 
+            service->name(), method->name(), input_type, output_type, service->full_name());
         }
 
         // combines stubs with class declaration
         fmt::format_to(
           std::back_inserter(out_buffer), server_handle_def, service->name(),
-          branches);
+          service->full_name(), branches);
       }
-      
-      std::unique_ptr file(generator_context->OpenForInsert(stem + ".pb.cc", "namespace_scope"));
+
+      std::unique_ptr file(
+        generator_context->OpenForInsert(stem + ".pb.cc", "namespace_scope"));
       proto::io::CodedOutputStream cos(file.get());
       cos.WriteString(out_buffer);
     }
-    
+
     return true;
   }
+
+  uint64_t GetSupportedFeatures() const override { return 1; };
 };
 
 int main(int argc, char* argv[]) {

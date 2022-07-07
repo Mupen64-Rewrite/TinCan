@@ -26,12 +26,14 @@ namespace tnp {
     ~MainWindow();
     
     Q_INVOKABLE BUTTONS buttonMask();
-
+  
   protected:
     void mousePressEvent(QMouseEvent* event) override;
     void closeEvent(QCloseEvent* event) override {
       event->ignore();
     }
+  private Q_SLOTS:
+    void onControlsChanged();
   private:
     // XML-based UI seems to not work, so
     // it's manually programmed
