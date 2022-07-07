@@ -114,6 +114,10 @@ namespace tnp::ipc {
 
       return *res;
     }
+    
+    bool empty() const {
+      return m_len == 0;
+    }
 
   private:
     union element_data {

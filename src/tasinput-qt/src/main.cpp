@@ -1,3 +1,4 @@
+#include <fmt/core.h>
 #include <QApplication>
 #include <QMainWindow>
 #include <QMetaObject>
@@ -45,22 +46,25 @@ int main(int argc, char* argv[]) {
   
 
   std::thread postOffice([&]() {
-    auto data = tnp::app_shm_client->ipc_data().pull(&tnp::ipc_layout::mq_p2e);
     bool stop_flag = true;
-    do {
+    while (true) {
+      auto data = tnp::app_shm_client->ipc_data().pull(&tnp::ipc_layout::mq_p2e);
       std::visit(tnp::overload {
         [&stop_flag](const tnp::ipc::MessageQuery& query) -> void {
           tnp::ipc::MessageReply reply;
           tnp::app_server->handle_request(query, reply);
           tnp::app_shm_client->ipc_data().mq_e2p.emplace(reply);
           
-          if (query.method() == "quit" && query.service() == "tnp.prtc.AppService") {
+          if (query.method() == "QuitApp" && query.service() == "tnp.prtc.AppService") {
             stop_flag = false;
           }
         },
         [](const tnp::ipc::MessageReply&) -> void {}
       }, data);
-    } while (stop_flag);
+      
+      if (!stop_flag && tnp::app_shm_client->ipc_data().mq_p2e.empty())
+        break;
+    }
   });
   int res = a.exec();
   postOffice.join();

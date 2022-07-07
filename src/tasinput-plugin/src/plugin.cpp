@@ -1,5 +1,6 @@
 #include <any>
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -99,8 +100,8 @@ namespace {
 
   delay_ctor<tnp::shm_server> shm_server;
   delay_ctor<tnp::prtc::AppServiceClient> client;
-  delay_ctor<std::jthread> ipc_thread;
-  std::unordered_map<uint64_t, waiter> waiter_map;
+  delay_ctor<std::thread> ipc_thread;
+  std::atomic_bool ipc_run_flag = true;
   
 #if defined(_WIN32)
   HMODULE self_hmod;
@@ -178,15 +179,18 @@ m64p_error PluginStartup(
   proc.emplace(tasinput_path.c_str(), shm_server.v.id());
   
   ipc_thread.construct([]() {
-    auto&& var = shm_server->ipc_data().pull(&tnp::ipc_layout::mq_e2p);
-    std::visit(overload {
-      [](const tnp::ipc::MessageQuery& x) -> void {
-        // handle other requests
-      },
-      [](const tnp::ipc::MessageReply& x) -> void {
-        decltype(client.v)::receive(x);
-      }
-    }, var);
+    
+    while (ipc_run_flag) {
+      auto&& var = shm_server->ipc_data().pull(&tnp::ipc_layout::mq_e2p);
+      std::visit(overload {
+        [](const tnp::ipc::MessageQuery& x) -> void {
+          // handle other requests
+        },
+        [](const tnp::ipc::MessageReply& x) -> void {
+          decltype(client.v)::receive(x);
+        }
+      }, var);
+    }
   });
   
   
@@ -196,12 +200,17 @@ m64p_error PluginStartup(
 
 m64p_error PluginShutdown() {
   try {
+    ipc_run_flag = false;
     client->QuitApp(tnp::prtc::QuitAppQuery {});
   }
   catch (const tnp::ipc::remote_call_error& e) {
     return M64ERR_INTERNAL;
   }
+  
   proc->wait();
+  if (ipc_thread->joinable())
+    ipc_thread->join();
+  
   return M64ERR_SUCCESS;
 }
 

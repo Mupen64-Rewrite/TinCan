@@ -49,10 +49,11 @@ namespace tnp::ipc {
       query.mutable_data()->PackFrom(msg);
       
       // push query and wait
-      m_outbound_queue.get().emplace(query);
       waiter_map_t::iterator it;
       {
         std::lock_guard l(waiter_map_mutex);
+        m_outbound_queue.get().emplace(query);
+        
         it = waiter_map.emplace(
           std::piecewise_construct, 
           std::forward_as_tuple(query.id()), 

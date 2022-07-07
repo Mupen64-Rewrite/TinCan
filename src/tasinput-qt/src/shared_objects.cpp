@@ -29,6 +29,6 @@ namespace tnp::prtc {
     const tnp::prtc::QuitAppQuery& query,
     tnp::prtc::QuitAppReply& reply) const {
     w.reset();
-    qApp->quit();
+    qApp->exit();
   }
 }  // namespace tnp::prtc
