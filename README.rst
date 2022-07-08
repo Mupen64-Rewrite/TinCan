@@ -10,9 +10,9 @@ it turns out GTK is a huge pain on anything besides Linux.
 Building on Linux
 -----------------
 
-You should have CMake and make/ninja before building. You should also
-install Qt 6, Boost, and Protobuf. This handy table should tell you what
-packages to install.
+You should have CMake and make/ninja before building. You will also need the 
+dependencies listed below. This handy table should tell you what packages to 
+install.
 
 +-------------+------------------------+-----------------------+---------------+
 | Dependency  | Ubuntu/Debian Testing  | Fedora/RHEL/CentOS    | Arch/Manjaro  |
