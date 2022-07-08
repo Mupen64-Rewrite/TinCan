@@ -21,12 +21,12 @@ install.
 +-------------+------------------------+-----------------------+---------------+
 | Boost       | ``libboost-dev``       | ``boost-devel``       | ``boost``     |
 +-------------+------------------------+-----------------------+---------------+
-| Protobuf    | ``libprotoc-dev``*     | ``protobuf-devel``    | ``protobuf``  |
+| Protobuf    | ``libprotoc-dev``     | ``protobuf-devel``    | ``protobuf``  |
 +-------------+------------------------+-----------------------+---------------+
 | fmt         | ``libfmt-dev``         | ``fmt-devel``         | ``fmt``       |
 +-------------+------------------------+-----------------------+---------------+
-
-\* libprotoc-dev depends on libprotobuf-dev, and should provide the needed headers.
+.. note::
+  libprotoc-dev depends on libprotobuf-dev, and should provide the needed headers.
 
 From there:
 
