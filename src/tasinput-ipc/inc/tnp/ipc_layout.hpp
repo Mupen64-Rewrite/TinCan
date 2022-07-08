@@ -148,6 +148,61 @@ namespace tnp {
   };
 #elif defined(_WIN32)
   using native_shm_type = boost::interprocess::windows_shared_memory;
+  class shm_server {
+  public:
+    shm_server() :
+      m_id(generate_id("tasinput-qt")),
+      m_shm(boost::interprocess::create_only, m_id.c_str(),
+        boost::interprocess::read_write, sizeof(ipc_layout)),
+      m_region(
+        m_shm, boost::interprocess::read_write) {
+      new (m_region.get_address()) ipc_layout;
+    }
+
+    ~shm_server() {
+      reinterpret_cast<ipc_layout*>(m_region.get_address())->~ipc_layout();
+    }
+
+    ipc_layout& ipc_data() {
+      return *reinterpret_cast<ipc_layout*>(m_region.get_address());
+    }
+
+    const std::string& id() { return m_id; }
+
+  private:
+    static std::string generate_id(std::string_view base) {
+      std::random_device rd;
+      uint64_t id = (uint64_t(rd()) << 32) | uint64_t(rd());
+
+      std::ostringstream oss;
+      oss << base << '_' << std::hex << std::setw(16) << std::setfill('0')
+          << std::uppercase << id;
+      return oss.str();
+    }
+
+    std::string m_id;
+    native_shm_type m_shm;
+    boost::interprocess::mapped_region m_region;
+  };
+
+  class shm_client {
+  public:
+    shm_client(std::string_view server_id) :
+      m_id(server_id),
+      m_shm(
+        boost::interprocess::open_only, m_id.c_str(),
+        boost::interprocess::read_write),
+      m_region(m_shm, boost::interprocess::read_write) {}
+
+    ipc_layout& ipc_data() {
+      return *reinterpret_cast<ipc_layout*>(m_region.get_address());
+    }
+
+  private:
+    std::string m_id;
+    native_shm_type m_shm;
+    boost::interprocess::mapped_region m_region;
+  };
 #endif
 }  // namespace tnp
 

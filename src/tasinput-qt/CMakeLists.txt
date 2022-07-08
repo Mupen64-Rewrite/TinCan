@@ -18,7 +18,7 @@ target_link_libraries(tasinput-qt PRIVATE Qt6::Widgets Qt6::Gui m64p::api tasinp
 target_compile_definitions(tasinput-qt PRIVATE QT_NO_KEYWORDS)
 
 # windeployqt is needed to get all dlls for deployment
-if (MSVC)
+if (MSVC AND CMAKE_MSVC_RUNTIME_LIBRARY MATCHES ".+DLL$")
   add_custom_command(TARGET tasinput-qt POST_BUILD
     COMMAND cmd /c "$<IF:$<CONFIG:Debug>,${TOOL_WINDEPLOYQT_Debug},${TOOL_WINDEPLOYQT_Release}>"
     $<TARGET_FILE:tasinput-qt>

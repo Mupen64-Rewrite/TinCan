@@ -4,6 +4,7 @@
 #include <google/protobuf/message.h>
 #include <cassert>
 #include <cstddef>
+#include <array>
 #include <mutex>
 #include <optional>
 #include <stdexcept>
