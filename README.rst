@@ -91,12 +91,14 @@ normal.
   Here's the manual way of patching it, but there's probably a better way to patch Protobuf.
   Open ``<vcpkg root>\installed\<triple>\include\google\protobuf\port_def.inc``, then go to 
   line 641 and change this line:
+  
   .. code:: cpp
     #if defined(__cpp_constinit)
     #define PROTOBUF_CONSTINIT constinit
     #define PROTOBUF_CONSTEXPR constexpr
 
   to this:
+  
   .. code:: cpp
     #if defined(__cpp_constinit) && !defined(_MSC_VER)
     #define PROTOBUF_CONSTINIT constinit
