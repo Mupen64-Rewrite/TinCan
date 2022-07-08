@@ -89,8 +89,8 @@ normal.
   initialization of ``constinit`` entity with a non-constant expression).
   
   Here's the manual way of patching it, but there's probably a better way to patch Protobuf.
-  1. Open ``<vcpkg root>\installed\<triple>\include\google\protobuf\port_def.inc``
-  2. Go to line 641 and change this line:
+  Open ``<vcpkg root>\installed\<triple>\include\google\protobuf\port_def.inc``, then go to 
+  line 641 and change this line:
   .. code:: cpp
     #if defined(__cpp_constinit)
     #define PROTOBUF_CONSTINIT constinit
