@@ -13,8 +13,9 @@ include(ConfigGen)
 include(ProtobufGen)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem)
 find_package(Protobuf REQUIRED)
+find_package(fmt REQUIRED)
 
 # Need windeployqt on Windows, not sure about MacOS
 if (MSVC)
@@ -23,6 +24,9 @@ if (MSVC)
 
   message(STATUS "Found windeployqt (dbg): ${TOOL_WINDEPLOYQT_Debug}")
   message(STATUS "Found windeployqt (rel): ${TOOL_WINDEPLOYQT_Release}")
+endif()
+if (MSVC AND VCPKG_TARGET_TRIPLET MATCHES ".+\\-static")
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 add_subdirectory(src/tasinput-ipc)
 add_subdirectory(src/tasinput-qt)

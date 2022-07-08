@@ -1,0 +1,57 @@
+syntax = "proto3";
+package tnp.prtc;
+
+/*
+This file contains protocol messages sent between client and server.
+*/
+
+message Ping {}
+
+// EXPOSED BY APPLICATION
+// ======================
+
+message ShowControllerQuery {
+  uint32 index = 1;
+  bool state = 2;
+}
+message ShowControllerReply {}
+
+message QuitAppQuery {}
+message QuitAppReply {}
+
+service AppService {
+  rpc ShowController (ShowControllerQuery) returns (ShowControllerReply);
+  rpc QuitApp (QuitAppQuery) returns (QuitAppReply);
+}
+
+// EXPOSED BY PLUGIN
+// =================
+
+message GetConfigKeyQuery {
+  string key = 1;
+}
+message GetConfigKeyReply {
+  oneof value {
+    string str_value = 1;
+    fixed32 int_value = 2;
+    float float_value = 3;
+    bool bool_value = 4;
+  }
+}
+
+message SetConfigKeyQuery {
+  string key = 1;
+  oneof value {
+    string str_value = 2;
+    fixed32 int_value = 3;
+    float float_value = 4;
+    bool bool_value = 5;
+  }
+}
+message SetConfigKeyReply {}
+
+message SetConfigKeyHelpQuery {
+  string key = 1;
+  string help = 2;
+}
+message SetConfigKeyHelpReply {}

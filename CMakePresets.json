@@ -28,7 +28,8 @@
       "description": "Windows build using VS2022 and vcpkg",
       "binaryDir": "${sourceDir}/build-vs",
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
       },
       "generator": "Visual Studio 17 2022",
       "condition": {

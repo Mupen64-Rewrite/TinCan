@@ -1,17 +1,25 @@
+#include <any>
 #include <array>
+#include <atomic>
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <semaphore>
 #include <stdexcept>
 #include <string_view>
-#include <syncstream>
 #include <system_error>
+#include <thread>
+#include <variant>
+#include "tnp_ipc.pb.h"
 #define M64P_PLUGIN_PROTOTYPES
 
 #include <mupen64plus/m64p_common.h>
 #include <mupen64plus/m64p_config.h>
 #include <mupen64plus/m64p_plugin.h>
 #include <mupen64plus/m64p_types.h>
+#undef IMPORT
+#undef EXPORT
 
 #if defined(__linux__) || defined(__APPLE__)
   #include <dlfcn.h>
@@ -29,13 +37,47 @@
 #include "oslib/plibdl.hpp"
 
 #include <boost/process/child.hpp>
-#include <boost/process/pipe.hpp>
 #include <boost/process/io.hpp>
+
+#include <tnp/ipc_layout.hpp>
+
+#include <tnp_prtc.pb.h>
 
 namespace fs = std::filesystem;
 namespace bp = boost::process;
 
 namespace {
+  // Simple union that handles the delayed construction of an object. The object
+  // must be constructed at some point to avoid invoking UB. Accessing the value
+  // is UB before calling construct().
+  template <class T>
+  union delay_ctor {
+  private:
+    char _dummy_please_ignore;
+
+  public:
+    T v;
+
+    delay_ctor() : _dummy_please_ignore(0) {}
+    ~delay_ctor() { v.~T(); }
+
+    operator T&() { return v; }
+
+    T* operator->() { return std::addressof(v); }
+
+    template <class... Args>
+    void construct(Args&&... args) {
+      new (&v) T(std::forward<Args>(args)...);
+    }
+  };
+  
+  template <class... Fs>
+  struct overload : Fs... {
+    using Fs::operator()...;
+  };
+  template <class... Fs>
+  overload(Fs&&...) -> overload<Fs...>;
+
 #define M64P_FN(name) ptr_##name name;
   M64P_FN(ConfigOpenSection)
   M64P_FN(ConfigGetParamString)
@@ -50,16 +92,17 @@ namespace {
   fs::path get_own_path();
 
   std::optional<bp::child> proc;
-  std::optional<bp::opstream> proc_cin;
-  std::optional<bp::ipstream> proc_cout;
 
-  std::string query_proc(const std::string& input) {
-    *proc_cin << input << std::endl;
+  struct waiter {
+    std::binary_semaphore sem;
+    std::any data;
+  };
 
-    std::string res;
-    std::getline(*proc_cout, res);
-    return res;
-  }
+  delay_ctor<tnp::shm_server> shm_server;
+  delay_ctor<tnp::prtc::AppServiceClient> client;
+  delay_ctor<std::thread> ipc_thread;
+  std::atomic_bool ipc_run_flag = true;
+  
 #if defined(_WIN32)
   HMODULE self_hmod;
   fs::path get_own_path() {
@@ -131,21 +174,43 @@ m64p_error PluginStartup(
 
   tnp::m64p_log(M64MSG_STATUS, "Loading TASInput binary");
 
-  proc_cin.emplace();
-  proc_cout.emplace();
-  proc.emplace(
-    tasinput_path.c_str(), bp::std_in<*proc_cin, bp::std_out> * proc_cout);
-
+  shm_server.construct();
+  client.construct(shm_server->ipc_data().mq_p2e);
+  proc.emplace(tasinput_path.c_str(), shm_server.v.id());
+  
+  ipc_thread.construct([]() {
+    
+    while (ipc_run_flag) {
+      auto&& var = shm_server->ipc_data().pull(&tnp::ipc_layout::mq_e2p);
+      std::visit(overload {
+        [](const tnp::ipc::MessageQuery& x) -> void {
+          // handle other requests
+        },
+        [](const tnp::ipc::MessageReply& x) -> void {
+          decltype(client.v)::receive(x);
+        }
+      }, var);
+    }
+  });
+  
+  
+  
   return M64ERR_SUCCESS;
 }
 
 m64p_error PluginShutdown() {
-  if (query_proc("quit") != "DONE\n") {
+  try {
+    ipc_run_flag = false;
+    client->QuitApp(tnp::prtc::QuitAppQuery {});
+  }
+  catch (const tnp::ipc::remote_call_error& e) {
     return M64ERR_INTERNAL;
   }
+  
   proc->wait();
-  proc_cin.reset();
-  proc_cout.reset();
+  if (ipc_thread->joinable())
+    ipc_thread->join();
+  
   return M64ERR_SUCCESS;
 }
 
@@ -167,18 +232,27 @@ m64p_error PluginGetVersion(
 }
 
 int RomOpen() {
-  if (std::string resp = query_proc("show"); resp.starts_with("ERR:")) {
-    resp.erase(0, 4);
-    tnp::m64p_log(M64MSG_ERROR, resp.c_str());
-    return false;
+  try {
+    auto query = tnp::prtc::ShowControllerQuery {};
+    query.set_index(0);
+    query.set_state(true);
+    client->ShowController(query);
+  }
+  catch (const tnp::ipc::remote_call_error& e) {
+    return M64ERR_INTERNAL;
   }
   return true;
 }
 
 void RomClosed() {
-  if (std::string resp = query_proc("hide"); resp.starts_with("ERR:")) {
-    resp.erase(0, 4);
-    tnp::m64p_log(M64MSG_ERROR, resp.c_str());
+  try {
+    auto query = tnp::prtc::ShowControllerQuery {};
+    query.set_index(0);
+    query.set_state(false);
+    client->ShowController(query);
+  }
+  catch (const tnp::ipc::remote_call_error& e) {
+    tnp::m64p_log(M64MSG_ERROR, e.what());
   }
 }
 
@@ -190,23 +264,11 @@ void InitiateControllers(CONTROL_INFO ControlInfo) {
 }
 
 void GetKeys(int ctrl, BUTTONS* keys) {
-  if (ctrl != 0) {
-    keys->Value = 0;
-    return;
-  }
-  std::string resp = query_proc("query");
-  if (resp.starts_with("ERR:")) {
-    resp.erase(0, 4);
-    tnp::m64p_log(M64MSG_ERROR, resp.c_str());
-    keys[ctrl].Value = 0;
-    return;
-  }
-  keys->Value = std::stoul(resp, nullptr, 16);
+  // atomically get data
+  keys->Value = std::atomic_ref<uint32_t>(shm_server->ipc_data().ctrl_state[ctrl]);
 }
 
-void ControllerCommand(int Control, unsigned char* Command) {
-  
-}
+void ControllerCommand(int Control, unsigned char* Command) {}
 void ReadController(int Control, unsigned char* Command) {}
 
 void SDL_KeyDown(int keymod, int keysym) {}

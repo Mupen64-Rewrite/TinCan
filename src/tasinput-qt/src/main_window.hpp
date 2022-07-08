@@ -14,7 +14,9 @@
 #include <iostream>
 #include "aspect_layout.hpp"
 #include "joystick.hpp"
+
 #include "mupen64plus/m64p_plugin.h"
+#undef IMPORT
 
 namespace tnp {
   class MainWindow : public QMainWindow {
@@ -24,12 +26,14 @@ namespace tnp {
     ~MainWindow();
     
     Q_INVOKABLE BUTTONS buttonMask();
-
+  
   protected:
     void mousePressEvent(QMouseEvent* event) override;
     void closeEvent(QCloseEvent* event) override {
       event->ignore();
     }
+  private Q_SLOTS:
+    void onControlsChanged();
   private:
     // XML-based UI seems to not work, so
     // it's manually programmed
