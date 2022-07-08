@@ -32,34 +32,43 @@
 
 void set_icon_theme() {
   if (qApp->platformName() == "wayland") {
-    // Wayland is special. Copy the icon theme into the theme folders.
     QDir local_share =
       QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-    QDir res_share(":/res/share");
+    if (!QFile::exists(
+          local_share.path() + QDir::separator() +
+          "applications/io.github.jgcodes.tasinput-qt.desktop")) {
+      
+      // Wayland is special because it demands us to drop our icons
+      // in the XDG theming folders and provide a .desktop.
+      // Luckily I have this covered.
 
-    QDirIterator qdi(res_share, QDirIterator::Subdirectories);
-    while (qdi.hasNext()) {
-      QFileInfo f = qdi.nextFileInfo();
+      QDir res_share(":/res/share");
 
-      if (f.isDir()) {
-        local_share.mkpath(res_share.relativeFilePath(f.filePath()));
-      }
-      else if (f.isFile()) {
-        QString dst = local_share.path() + QDir::separator() +
-          res_share.relativeFilePath(f.filePath());
-        QFile::copy(f.filePath(), dst);
-        QFile::setPermissions(dst, QFile::Permissions(0x6644));
+      QDirIterator qdi(res_share, QDirIterator::Subdirectories);
+      while (qdi.hasNext()) {
+        QFileInfo f = qdi.nextFileInfo();
+
+        if (f.isDir()) {
+          local_share.mkpath(res_share.relativeFilePath(f.filePath()));
+        }
+        else if (f.isFile()) {
+          QString dst = local_share.path() + QDir::separator() +
+            res_share.relativeFilePath(f.filePath());
+          QFile::copy(f.filePath(), dst);
+          QFile::setPermissions(dst, QFile::Permissions(0x6644));
+        }
       }
     }
   }
   else {
-    QIcon icon(":res/share/icons/hicolor/128x128/apps/io.github.jgcodes.tasinput-qt.png");
+    QIcon icon(
+      ":res/share/icons/hicolor/128x128/apps/io.github.jgcodes.tasinput-qt.png");
     for (auto size : {16, 32, 38, 64, 128}) {
       QString path =
         QStringLiteral(
           ":res/share/icons/hicolor/%1x%1/apps/io.github.jgcodes.tasinput-qt.png")
           .arg(QString::number(size));
-          
+
       icon.addFile(path, QSize(size, size));
     }
     tnp::w->setWindowIcon(icon);
@@ -72,8 +81,6 @@ int main(int argc, char* argv[]) {
   tnp::app_shm_client.construct(argv[1]);
   tnp::app_server.construct();
 
-  // Ensures that the app stays open
-  // as long as the plugin has the pipe open
   QApplication a(argc, argv);
   a.setQuitOnLastWindowClosed(false);
   a.setApplicationVersion(TNP_VERSION_STR);
@@ -84,6 +91,8 @@ int main(int argc, char* argv[]) {
   tnp::w = decltype(tnp::w)(new tnp::MainWindow());
   set_icon_theme();
 
+  // Ok, a post office was my best analogy.
+  // It sorts out requests and replies and deals with them accordingly.
   std::thread postOffice([&]() {
     bool stop_flag = true;
     while (true) {
@@ -96,6 +105,8 @@ int main(int argc, char* argv[]) {
             tnp::app_server->handle_request(query, reply);
             tnp::app_shm_client->ipc_data().mq_e2p.emplace(reply);
 
+            // Since the generated server class can't do this, we'll have to
+            // do this ourselves.
             if (
               query.method() == "QuitApp" &&
               query.service() == "tnp.prtc.AppService") {
@@ -103,6 +114,7 @@ int main(int argc, char* argv[]) {
             }
           },
           [](const tnp::ipc::MessageReply&) -> void {
+            // If message calls sent the other way happen.
           }},
         data);
 
