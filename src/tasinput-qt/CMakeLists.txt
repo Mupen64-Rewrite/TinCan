@@ -1,4 +1,6 @@
 add_executable(tasinput-qt
+  "resources.qrc"
+
   "src/joystick.cpp"
   "src/joystick.hpp"
   "src/main.cpp"
@@ -8,10 +10,13 @@ add_executable(tasinput-qt
   "src/shared_objects.hpp"
   "src/aspect_layout.hpp"
 )
+
 target_compile_features(tasinput-qt PRIVATE cxx_std_20)
 set_target_properties(tasinput-qt PROPERTIES
   AUTOMOC ON
   AUTOUIC ON
+  AUTORCC ON
+  ENABLE_EXPORTS ON
 )
 target_include_directories(tasinput-qt PRIVATE "${CONFIG_DIR}")
 target_link_libraries(tasinput-qt PRIVATE Qt6::Widgets Qt6::Gui m64p::api tasinput-ipc)

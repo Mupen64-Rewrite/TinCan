@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=TASInput
+Comment=Pixel-precise input plugin for Mupen64Plus
+# Does absolutely nothing
+Exec=/bin/true
+NoDisplay=true
+StartupNotify=true
+StartupWMClass=io.github.jgcodes.tasinput-qt
+Icon=io.github.jgcodes.tasinput-qt

@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="/">
+    <file>res/share/applications/io.github.jgcodes.tasinput-qt.desktop</file>
+    <file>res/share/icons/hicolor/128x128/apps/io.github.jgcodes.tasinput-qt.png</file>
+    <file>res/share/icons/hicolor/16x16/apps/io.github.jgcodes.tasinput-qt.png</file>
+    <file>res/share/icons/hicolor/32x32/apps/io.github.jgcodes.tasinput-qt.png</file>
+    <file>res/share/icons/hicolor/48x48/apps/io.github.jgcodes.tasinput-qt.png</file>
+    <file>res/share/icons/hicolor/64x64/apps/io.github.jgcodes.tasinput-qt.png</file>
+  </qresource>
+</RCC>
