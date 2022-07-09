@@ -83,10 +83,18 @@ public:
 }};
 )!cpp!"sv);
 
-constexpr std::string_view server_method_stub = literal_strip(
+constexpr std::string_view server_method_decl = literal_strip(
   R"!cpp!(
   void {0}(const {1}& query, {2}& reply) const;
 )!cpp!"sv);
+
+constexpr std::string_view server_method_stub_macro = literal_strip(R"!cpp!(
+#define {0}_SERVER_METHOD_STUBS \
+{1}static_assert(true, "this just makes it easier for me");
+)!cpp!");
+constexpr std::string_view server_method_stub_impl = literal_strip(R"!cpp!(
+void {0}Server::{1}(const {2}& query, {3}& reply) const {{}} \
+)!cpp!");
 
 constexpr std::string_view server_handle_def = literal_strip(R"!cpp!(
 bool {0}Server::handle_request(
@@ -194,14 +202,19 @@ public:
       std::string out_buffer;
       std::string server_methods;
       std::string client_methods;
+      std::string server_stubs;
       for (size_t i = 0; i < file->service_count(); i++) {
         const auto* service = file->service(i);
-
-        // SERVER
-        // =========
+        
+        std::string server_type = "::" + service->full_name();
+        boost::replace_all(server_type, ".", "::");
+        std::string screaming_snake_server = service->full_name();
+        boost::to_upper(screaming_snake_server);
+        boost::replace_all(screaming_snake_server, ".", "_");
 
         server_methods.clear();
         client_methods.clear();
+        server_stubs.clear();
         for (size_t j = 0; j < service->method_count(); j++) {
           const auto* method     = service->method(j);
           std::string input_type = "::" + method->input_type()->full_name();
@@ -209,14 +222,17 @@ public:
 
           std::string output_type = "::" + method->output_type()->full_name();
           boost::replace_all(output_type, ".", "::");
-
+          
           // Generates stubs for server and client
           fmt::format_to(
-            std::back_inserter(server_methods), server_method_stub,
+            std::back_inserter(server_methods), server_method_decl,
             method->name(), input_type, output_type);
           fmt::format_to(
             std::back_inserter(client_methods), client_method_stub,
             method->name(), input_type, output_type);
+          fmt::format_to(
+            std::back_inserter(server_stubs), server_method_stub_impl,
+            server_type, method->name(), input_type, output_type);
         }
 
         // combines stubs with class declaration
@@ -226,6 +242,9 @@ public:
         fmt::format_to(
           std::back_inserter(out_buffer), client_class_decl, service->name(),
           client_methods);
+        fmt::format_to(
+          std::back_inserter(out_buffer), server_method_stub_macro, 
+          screaming_snake_server, server_stubs);
       }
 
       std::unique_ptr file(
