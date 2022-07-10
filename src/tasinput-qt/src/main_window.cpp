@@ -32,7 +32,7 @@ namespace {
 namespace tnp {
   MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     setWindowTitle("TASInput");
-    setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     auto minSize = minimumSizeHint();
     resize(minSize);
