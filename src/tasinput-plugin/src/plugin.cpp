@@ -12,6 +12,7 @@
 #include <thread>
 #include <variant>
 #include "tnp_ipc.pb.h"
+#include <boost/interprocess/detail/os_thread_functions.hpp>
 #define M64P_PLUGIN_PROTOTYPES
 
 #include <mupen64plus/m64p_common.h>
@@ -70,7 +71,7 @@ namespace {
       new (&v) T(std::forward<Args>(args)...);
     }
   };
-  
+
   template <class... Fs>
   struct overload : Fs... {
     using Fs::operator()...;
@@ -102,7 +103,7 @@ namespace {
   delay_ctor<tnp::prtc::AppServiceClient> client;
   delay_ctor<std::thread> ipc_thread;
   std::atomic_bool ipc_run_flag = true;
-  
+
 #if defined(_WIN32)
   HMODULE self_hmod;
   fs::path get_own_path() {
@@ -130,7 +131,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, LPVOID reserved) {
 #endif
 
 namespace tnp {
-  void m64p_log(int level, const char* msg) { debug_fn(debug_ctx, level, msg); }
+  void m64p_log(int level, const char* msg) {
+    debug_fn(debug_ctx, level, msg);
+  }
 }  // namespace tnp
 
 extern "C" {
@@ -176,25 +179,27 @@ m64p_error PluginStartup(
 
   shm_server.construct();
   client.construct(shm_server->ipc_data().mq_p2e);
-  proc.emplace(tasinput_path.c_str(), shm_server.v.id());
-  
+  // arg 1: name of SHM server
+  // arg 2: current PID
+  proc.emplace(
+    tasinput_path.c_str(), shm_server.v.id(),
+    std::to_string(boost::interprocess::ipcdetail::get_current_process_id()));
+
   ipc_thread.construct([]() {
-    
     while (ipc_run_flag) {
       auto&& var = shm_server->ipc_data().pull(&tnp::ipc_layout::mq_e2p);
-      std::visit(overload {
-        [](const tnp::ipc::MessageQuery& x) -> void {
-          // handle other requests
-        },
-        [](const tnp::ipc::MessageReply& x) -> void {
-          decltype(client.v)::receive(x);
-        }
-      }, var);
+      std::visit(
+        overload {
+          [](const tnp::ipc::MessageQuery& x) -> void {
+            // handle other requests
+          },
+          [](const tnp::ipc::MessageReply& x) -> void {
+            decltype(client.v)::receive(x);
+          }},
+        var);
     }
   });
-  
-  
-  
+
   return M64ERR_SUCCESS;
 }
 
@@ -206,11 +211,11 @@ m64p_error PluginShutdown() {
   catch (const tnp::ipc::remote_call_error& e) {
     return M64ERR_INTERNAL;
   }
-  
+
   proc->wait();
   if (ipc_thread->joinable())
     ipc_thread->join();
-  
+
   return M64ERR_SUCCESS;
 }
 
@@ -265,7 +270,8 @@ void InitiateControllers(CONTROL_INFO ControlInfo) {
 
 void GetKeys(int ctrl, BUTTONS* keys) {
   // atomically get data
-  keys->Value = std::atomic_ref<uint32_t>(shm_server->ipc_data().ctrl_state[ctrl]);
+  keys->Value =
+    std::atomic_ref<uint32_t>(shm_server->ipc_data().ctrl_state[ctrl]);
 }
 
 void ControllerCommand(int Control, unsigned char* Command) {}

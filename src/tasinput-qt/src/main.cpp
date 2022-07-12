@@ -1,6 +1,6 @@
 #include <fmt/core.h>
-#include <qdir.h>
-#include <qdiriterator.h>
+#include <sched.h>
+#include <unistd.h>
 #include <QApplication>
 #include <QDirIterator>
 #include <QIcon>
@@ -10,6 +10,7 @@
 #include <Qt>
 
 #include <any>
+#include <atomic>
 #include <iomanip>
 #include <iostream>
 #include <memory>
@@ -28,6 +29,11 @@
 #include "tnp/ipc_layout.hpp"
 #include "tnp_prtc.pb.h"
 
+#if defined(__linux__) || defined(__APPLE__)
+  #include <signal.h>
+  #include <unistd.h>
+#endif
+
 #define ERR(str) ("ERR:" str)
 
 void set_icon_theme() {
@@ -37,7 +43,6 @@ void set_icon_theme() {
     if (!QFile::exists(
           local_share.path() + QDir::separator() +
           "applications/io.github.jgcodes.tasinput-qt.desktop")) {
-      
       // Wayland is special because it demands us to drop our icons
       // in the XDG theming folders and provide a .desktop.
       // Luckily I have this covered.
@@ -122,6 +127,24 @@ int main(int argc, char* argv[]) {
         break;
     }
   });
+#if defined(__linux__) || defined(__APPLE__)
+  // Automatic death thread: kills this process
+  // if it has been reparented
+  std::atomic_bool pid_watch_stop_flag {true};
+  std::thread killer([&]() {
+    pid_t prev_ppid = std::stoul(argv[2]);
+    while (pid_watch_stop_flag) {
+      if (getppid() != prev_ppid)
+        kill(getpid(), SIGTERM);
+      usleep(50000);
+    }
+  });
+#endif
   int res = a.exec();
   postOffice.join();
+
+#if defined(__linux__) || defined(__APPLE__)
+  pid_watch_stop_flag = false;
+  killer.join();
+#endif
 }
