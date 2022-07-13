@@ -143,7 +143,7 @@ namespace tnp {
         jsfSpinY, &QSpinBox::valueChanged, this,
         &MainWindow::onControlsChanged);
     }
-    jsfLayout->setColumnStretch(0, 0);
+    jsfLayout->setColumnStretch(0, 1);
     jsfLayout->setColumnStretch(1, 1);
     rootLayout->addWidget(jsFrame);
   }
