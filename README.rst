@@ -1,3 +1,4 @@
+===========
 TASInput-Qt
 ===========
 
@@ -84,24 +85,28 @@ to this:
 Open the project in Visual Studio, and you should be able to build it as
 normal.
 
-.. note::
-  There is currently a bug in Protobuf that results in a C2127 error (illegal
-  initialization of ``constinit`` entity with a non-constant expression).
-  
-  Here's the manual way of patching it, but there's probably a better way to patch Protobuf.
-  Open ``<vcpkg root>\installed\<triple>\include\google\protobuf\port_def.inc``, then go to 
-  line 641 and change this line:
-  
-  .. code:: cpp
-    #if defined(__cpp_constinit)
-    #define PROTOBUF_CONSTINIT constinit
-    #define PROTOBUF_CONSTEXPR constexpr
+Notes
+^^^^^^^^^^^^^^
 
-  to this:
-  
-  .. code:: cpp
-    #if defined(__cpp_constinit) && !defined(_MSC_VER)
-    #define PROTOBUF_CONSTINIT constinit
-    #define PROTOBUF_CONSTEXPR constexpr
+There is currently a bug in Protobuf that results in a C2127 error (illegal
+initialization of ``constinit`` entity with a non-constant expression).
 
-  Protobuf will now no longer bother you.
+Here's the manual way of patching it, but there's probably a better way to patch Protobuf.
+Open ``<vcpkg root>\installed\<triple>\include\google\protobuf\port_def.inc``, then go to 
+line 641 and change this line:
+
+.. code:: cpp
+  
+  #if defined(__cpp_constinit)
+  #define PROTOBUF_CONSTINIT constinit
+  #define PROTOBUF_CONSTEXPR constexpr
+
+to this:
+
+.. code:: cpp
+  
+  #if defined(__cpp_constinit) && !defined(_MSC_VER)
+  #define PROTOBUF_CONSTINIT constinit
+  #define PROTOBUF_CONSTEXPR constexpr
+
+Protobuf will now no longer bother you.
