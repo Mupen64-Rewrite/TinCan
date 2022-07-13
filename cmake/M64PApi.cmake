@@ -2,7 +2,7 @@ if (REFRESH_MUPEN_API OR NOT MUPEN_API_DOWNLOADED)
   set(MUPEN_API_DOWNLOADED TRUE CACHE INTERNAL "True if Mupen has been downloaded.")
   unset(REFRESH_MUPEN_API CACHE)
   # Download rerecording (in case of API differences)
-  file(DOWNLOAD "https://github.com/jgcodes2020/mupen64plus-core-rr/archive/master.tar.gz"
+  file(DOWNLOAD "https://github.com/Mupen64-Rewrite/mupen64plus-core-rr/archive/master.tar.gz"
     "${PROJECT_BINARY_DIR}/CMakeFiles/CMakeTmp/mupen.tar.gz"
   )
   # Extract the correct dir
