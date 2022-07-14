@@ -3,3 +3,4 @@ build-*/
 .*/
 
 CMakeUserPresets.json
+CMakeLists.txt.user
