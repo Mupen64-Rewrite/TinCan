@@ -8,6 +8,7 @@
 #include <wx/frame.h>
 #include <memory>
 #include "buttons_panel.hpp"
+#include "joystick.hpp"
 
 namespace tasinput {
 
@@ -16,6 +17,7 @@ namespace tasinput {
     MainWindow();
     
   private:
+    Joystick* stick;
     ButtonsPanel* btnPanel;
   };
 

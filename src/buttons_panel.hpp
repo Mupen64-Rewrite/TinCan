@@ -1,10 +1,7 @@
-//
-// Created by jgcodes on 23/08/22.
-//
-
 #ifndef TASINPUT2_BUTTONS_PANEL_HPP_INCLUDED
 #define TASINPUT2_BUTTONS_PANEL_HPP_INCLUDED
 
+#include <wx/sizer.h>
 #include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/tglbtn.h>
@@ -14,13 +11,19 @@
 
 namespace tasinput {
 
-  class ButtonsPanel : public wxStaticBox {
+  class ButtonsPanel {
   public:
     ButtonsPanel(wxWindow* parent);
 
     BUTTONS QueryState();
+    
+    wxStaticBoxSizer* GetSizer() {
+      return szrRoot;
+    }
 
   private:
+    wxStaticBoxSizer* szrRoot;
+  
     wxToggleButton* btnL;
     wxToggleButton* btnZ;
     wxToggleButton* btnR;

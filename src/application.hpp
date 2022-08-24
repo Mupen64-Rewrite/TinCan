@@ -1,7 +1,3 @@
-//
-// Created by jgcodes on 23/08/22.
-//
-
 #ifndef TASINPUT2_APPLICATION_HPP_INCLUDED
 #define TASINPUT2_APPLICATION_HPP_INCLUDED
 

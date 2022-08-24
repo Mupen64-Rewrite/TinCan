@@ -9,10 +9,12 @@
 namespace tasinput {
   MainWindow::MainWindow() :
     wxFrame(nullptr, wxID_ANY, "TASInput"),
-    btnPanel(new ButtonsPanel(this)){
+    stick(new Joystick(this, wxID_ANY)),
+    btnPanel(new ButtonsPanel(this)) {
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     
-    sizer->Add(btnPanel, 1, wxALL | wxEXPAND, 3);
+    sizer->Add(stick, 1, wxALL | wxEXPAND, 3);
+    sizer->Add(btnPanel->GetSizer(), 1, wxALL | wxEXPAND, 3);
     
     SetSizerAndFit(sizer);
   }
