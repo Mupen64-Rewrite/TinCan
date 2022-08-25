@@ -2,10 +2,14 @@
 #include <wx/event.h>
 #include <wx/colour.h>
 #include <wx/gdicmn.h>
+#include <wx/mousestate.h>
 #include <wx/pen.h>
 #include <wx/settings.h>
 #include <wx/validate.h>
 #include <wx/dcclient.h>
+
+#include <algorithm>
+#include <iostream>
 
 namespace tasinput {
   namespace {
@@ -40,7 +44,36 @@ namespace tasinput {
       const wxSize& size, long style,
       const wxString& name) {
     wxControl::Create(parent, winid, pos, size, style, wxDefaultValidator, name);
-    this->Bind(wxEVT_PAINT, &Joystick::OnPaint, this);
+    Bind(wxEVT_PAINT, &Joystick::OnPaint, this);
+    Bind(wxEVT_LEFT_DOWN, &Joystick::OnMouse, this);
+    Bind(wxEVT_MOTION, &Joystick::OnMouse, this);
+  }
+  
+  BUTTONS Joystick::QueryState() {
+    return BUTTONS {
+      .R_DPAD = 0,
+      .L_DPAD = 0,
+      .D_DPAD = 0,
+      .U_DPAD = 0,
+      
+      .START_BUTTON = 0,
+      .Z_TRIG = 0,
+      .B_BUTTON = 0,
+      .A_BUTTON = 0,
+      
+      .R_CBUTTON = 0,
+      .L_CBUTTON = 0,
+      .D_CBUTTON = 0,
+      .U_CBUTTON = 0,
+      
+      .R_TRIG = 0,
+      .L_TRIG = 0,
+      .Reserved1 = 0,
+      .Reserved2 = 0,
+      
+      .X_AXIS = posX,
+      .Y_AXIS = posY
+    };
   }
   
   wxSize Joystick::DoGetBestSize() const {
@@ -90,6 +123,16 @@ namespace tasinput {
   }
   
   void Joystick::OnMouse(wxMouseEvent& evt) {
+    if (!evt.ButtonIsDown(wxMOUSE_BTN_LEFT))
+      return;
+      
+    posX = (evt.m_x * 256 / m_width) - 128;
+    posY = (256 - (evt.m_y * 256 / m_height)) - 128;
     
+    // "Dumb" clamping: coordinates are capped based on closest side
+    posX = std::clamp(posX, -128, 127);
+    posY = std::clamp(posY, -128, 127);
+    
+    Refresh();
   }
 }  // namespace tasinput

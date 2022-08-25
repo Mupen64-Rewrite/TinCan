@@ -7,26 +7,16 @@
 #include <wx/anybutton.h>
 #include <wx/gdicmn.h>
 #include <wx/gbsizer.h>
-#include <wx/gtk/button.h>
-#include <wx/gtk/stattext.h>
+#include <wx/generic/panelg.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <initializer_list>
 
 namespace tasinput {
-  namespace {
-    void SizerAddAll(wxSizer* sizer, std::initializer_list<wxWindow*> windows) {
-      for (auto it = windows.begin(); it < windows.end(); it++) {
-        if (*it == nullptr)
-          sizer->AddSpacer(0);
-        else
-          sizer->Add(*it, wxSizerFlags(wxEXPAND).Align(wxALIGN_CENTER));
-      }
-    }
-  }  // namespace
 
   ButtonsPanel::ButtonsPanel(wxWindow* parent) :
-    szrRoot(new wxStaticBoxSizer(wxVERTICAL, parent, "Buttons")),
+    wxPanel(parent, wxID_ANY),
+    szrRoot(new wxStaticBoxSizer(wxVERTICAL, this, "Buttons")),
     btnL(new wxToggleButton(szrRoot->GetStaticBox(), wxID_ANY, "L", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT)),
     btnZ(new wxToggleButton(szrRoot->GetStaticBox(), wxID_ANY, "Z", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT)),
     btnR(new wxToggleButton(szrRoot->GetStaticBox(), wxID_ANY, "R", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT)),
@@ -86,10 +76,11 @@ namespace tasinput {
       gridSizer->AddGrowableRow(i, 1);
     
     szrRoot->Add(gridSizer, 1, wxEXPAND | wxALL, 4);
+    SetSizerAndFit(szrRoot);
   }
 
   BUTTONS ButtonsPanel::QueryState() {
-    BUTTONS result = {
+    return BUTTONS {
       .R_DPAD = btnDR->GetValue(),
       .L_DPAD = btnDL->GetValue(),
       .D_DPAD = btnDD->GetValue(),
@@ -107,10 +98,11 @@ namespace tasinput {
       
       .R_TRIG = btnR->GetValue(),
       .L_TRIG = btnL->GetValue(),
+      .Reserved1 = 0,
+      .Reserved2 = 0,
       
       .X_AXIS = 0,
       .Y_AXIS = 0
     };
-    return result;
   }
 }  // namespace tasinput

@@ -3,7 +3,9 @@
 
 #include <wx/control.h>
 #include <wx/event.h>
-#include <wx/rtti.h>
+
+#include <mupen64plus/m64p_plugin.h>
+#include <utility>
 
 namespace tasinput {
   class Joystick : public wxControl {
@@ -21,6 +23,8 @@ namespace tasinput {
       const wxPoint& pos = wxDefaultPosition,
       const wxSize& size = wxDefaultSize, long style = 0,
       const wxString& name = "tasinput::Joystick");
+      
+    BUTTONS QueryState();
 
   protected:
     void Init();

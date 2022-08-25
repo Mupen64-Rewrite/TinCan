@@ -3,7 +3,7 @@
 
 #include <wx/sizer.h>
 #include <wx/statbox.h>
-#include <wx/button.h>
+#include <wx/panel.h>
 #include <wx/tglbtn.h>
 #include <wx/stattext.h>
 #include <mupen64plus/m64p_plugin.h>
@@ -11,15 +11,11 @@
 
 namespace tasinput {
 
-  class ButtonsPanel {
+  class ButtonsPanel : public wxPanel {
   public:
     ButtonsPanel(wxWindow* parent);
 
     BUTTONS QueryState();
-    
-    wxStaticBoxSizer* GetSizer() {
-      return szrRoot;
-    }
 
   private:
     wxStaticBoxSizer* szrRoot;
