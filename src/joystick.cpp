@@ -86,7 +86,7 @@ namespace tasinput {
   }
   
   wxSize Joystick::DoGetBestSize() const {
-    return FromDIP(wxSize {256, 256});
+    return FromDIP(wxSize {64, 64});
   }
   
   void Joystick::Init() {
@@ -141,6 +141,10 @@ namespace tasinput {
     // "Dumb" clamping: coordinates are capped based on closest side
     posX = std::clamp(posX, -128, 127);
     posY = std::clamp(posY, -128, 127);
+    
+    // snap to axes
+    if (-8 < posX && posX < 8) posX = 0;
+    if (-8 < posY && posY < 8) posY = 0;
     
     // Fire an event
     auto* event = new JoystickControlEvent;

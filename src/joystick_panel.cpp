@@ -12,10 +12,12 @@ namespace tasinput {
     spnY(new wxSpinCtrl(
       this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
       -128, 127, 0)) {
+        
+      stick->SetMinSize({128, 128});
       
-      auto* hSizer = new wxBoxSizer(wxHORIZONTAL);
+      auto* hSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, "Joystick");
       {
-        hSizer->Add(stick, 1, wxSHAPED);
+        hSizer->Add(stick, 1, wxSHAPED | wxALIGN_CENTER | wxALL, 2);
         
         auto* vSizer = new wxBoxSizer(wxVERTICAL);
         {
@@ -28,7 +30,7 @@ namespace tasinput {
           vSizer->Add(spnXSizer, 1, wxEXPAND | wxALL, 2);
           vSizer->Add(spnYSizer, 1, wxEXPAND | wxALL, 2);
         }
-        hSizer->Add(vSizer);
+        hSizer->Add(vSizer, 0, wxALIGN_CENTER_VERTICAL);
       }
       
       SetSizerAndFit(hSizer);
