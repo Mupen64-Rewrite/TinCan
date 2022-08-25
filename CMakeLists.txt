@@ -9,9 +9,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/out")
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(M64PApi)
-include(ConfigGen)
 
 find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base)
+
+set(M64P_API_VERSION 2.1)
+include(ConfigGen)
 
 add_executable(tasinput-ui-test
   "src/gui/main.cpp"
@@ -27,5 +29,6 @@ add_executable(tasinput-ui-test
   "src/gui/joystick_panel.hpp"
 )
 target_compile_features(tasinput-ui-test PUBLIC cxx_std_20)
+target_include_directories(tasinput-ui-test PRIVATE ${CONFIG_DIR})
 
 target_link_libraries(tasinput-ui-test PUBLIC wx::wxcore m64p::api)
