@@ -17,6 +17,8 @@ namespace tasinput {
   public:
     MainWindow();
     
+    BUTTONS QueryState();
+    
   private:
     JoystickPanel* jsPanel;
     ButtonsPanel* btnPanel;

@@ -10,7 +10,8 @@
 #include "joystick_panel.hpp"
 
 namespace tasinput {
-  static constexpr long MAIN_WINDOW_STYLE_FLAGS = wxDEFAULT_FRAME_STYLE;
+  static constexpr long MAIN_WINDOW_STYLE_FLAGS =
+    wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX);
 
   MainWindow::MainWindow() :
     wxFrame(
@@ -25,5 +26,12 @@ namespace tasinput {
     sizer->AddStretchSpacer();
 
     SetSizerAndFit(sizer);
+  }
+
+  BUTTONS MainWindow::QueryState() {
+    auto js  = jsPanel->QueryState().Value;
+    auto btn = btnPanel->QueryState().Value;
+
+    return {.Value = js | btn};
   }
 }  // namespace tasinput

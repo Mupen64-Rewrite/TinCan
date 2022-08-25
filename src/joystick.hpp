@@ -26,11 +26,11 @@ namespace tasinput {
 
     wxEvent* Clone() const { return new wxCommandEvent(*this); }
 
-    wxPoint GetPosition() { return pos; }
-    void SetPosition(const wxPoint& p) { pos = p; }
+    wxPoint GetValue() { return value; }
+    void SetValue(const wxPoint& p) { value = p; }
 
   private:
-    wxPoint pos;
+    wxPoint value;
   };
 
   typedef void (wxEvtHandler::*JoystickControlEventFunction)(
@@ -59,6 +59,12 @@ namespace tasinput {
       const wxString& name = "tasinput::Joystick");
 
     BUTTONS QueryState();
+    
+    int GetPosX() { return posX; }
+    void SetPosX(int value) { posX = value; }
+    
+    int GetPosY() { return posY; }
+    void SetPosY(int value) { posY = value; }
 
   protected:
     void Init();

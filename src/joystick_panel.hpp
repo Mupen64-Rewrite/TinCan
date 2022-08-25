@@ -16,9 +16,9 @@ namespace tasinput {
     
   protected:
     
-    void OnSpinXChanged(JoystickControlEvent&);
+    void OnSpinXChanged(wxSpinEvent&);
     void OnSpinYChanged(wxSpinEvent&);
-    void OnJoystickChanged(wxSpinEvent&);
+    void OnJoystickChanged(JoystickControlEvent&);
     
   private:
     Joystick* stick;

@@ -148,7 +148,7 @@ namespace tasinput {
     
     // Fire an event
     auto* event = new JoystickControlEvent;
-    event->SetPosition({posX, posY});
+    event->SetValue({posX, posY});
     wxQueueEvent(this, event);
     
     Refresh();
