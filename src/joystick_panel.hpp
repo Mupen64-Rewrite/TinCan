@@ -2,12 +2,13 @@
 #define TASINPUT2_JOYSTICK_PANEL_HPP
 
 #include <wx/panel.h>
+#include <wx/spinbutt.h>
 #include <wx/spinctrl.h>
 #include <mupen64plus/m64p_plugin.h>
 #include "joystick.hpp"
 
 namespace tasinput {
-  class JoystickPanel : wxPanel {
+  class JoystickPanel : public wxPanel {
   public:
     JoystickPanel(wxWindow* parent);
     
@@ -15,9 +16,9 @@ namespace tasinput {
     
   protected:
     
-    void OnSpinXChanged();
-    void OnSpinYChanged();
-    void OnJoystickChanged();
+    void OnSpinXChanged(JoystickControlEvent&);
+    void OnSpinYChanged(wxSpinEvent&);
+    void OnJoystickChanged(wxSpinEvent&);
     
   private:
     Joystick* stick;

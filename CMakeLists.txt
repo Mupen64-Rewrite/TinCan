@@ -23,6 +23,8 @@ add_executable(tasinput-ui-test
   "src/buttons_panel.hpp"
   "src/joystick.cpp"
   "src/joystick.hpp"
+  "src/joystick_panel.cpp"
+  "src/joystick_panel.hpp"
 )
 target_compile_features(tasinput-ui-test PUBLIC cxx_std_20)
 

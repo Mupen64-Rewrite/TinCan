@@ -9,6 +9,7 @@
 #include <memory>
 #include "buttons_panel.hpp"
 #include "joystick.hpp"
+#include "joystick_panel.hpp"
 
 namespace tasinput {
 
@@ -17,7 +18,7 @@ namespace tasinput {
     MainWindow();
     
   private:
-    Joystick* stick;
+    JoystickPanel* jsPanel;
     ButtonsPanel* btnPanel;
   };
 

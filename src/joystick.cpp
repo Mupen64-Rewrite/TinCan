@@ -12,6 +12,15 @@
 #include <iostream>
 
 namespace tasinput {
+  
+  // Event
+  // ================
+  
+  wxDEFINE_EVENT(TASINPUT_EVT_JSCTRL, JoystickControlEvent);
+  
+  // Widget
+  // ================
+  
   namespace {
     
     /**
@@ -132,6 +141,11 @@ namespace tasinput {
     // "Dumb" clamping: coordinates are capped based on closest side
     posX = std::clamp(posX, -128, 127);
     posY = std::clamp(posY, -128, 127);
+    
+    // Fire an event
+    auto* event = new JoystickControlEvent;
+    event->SetPosition({posX, posY});
+    wxQueueEvent(this, event);
     
     Refresh();
   }

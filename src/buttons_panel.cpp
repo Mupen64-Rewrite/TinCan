@@ -37,10 +37,10 @@ namespace tasinput {
     btnCL(new wxToggleButton(szrRoot->GetStaticBox(), wxID_ANY, "<", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT)),
     btnCR(new wxToggleButton(szrRoot->GetStaticBox(), wxID_ANY, ">", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT)) {
       
-    for (auto* i : {btnDU, btnDD, btnDL, btnDR, btnCU, btnCD, btnCL, btnCR, btnStart, btnB, btnA}) {
-      auto currSize = i->GetSize();
-      i->SetMinSize({currSize.GetHeight(), currSize.GetHeight()});
-    }
+    // for (auto* i : {btnDU, btnDD, btnDL, btnDR, btnCU, btnCD, btnCL, btnCR, btnStart, btnB, btnA}) {
+    //   auto currSize = i->GetSize();
+    //   i->SetMinSize({currSize.GetHeight(), currSize.GetHeight()});
+    // }
     
     auto* gridSizer = new wxGridBagSizer(2, 2);
     gridSizer->SetFlexibleDirection(wxVERTICAL);
@@ -65,10 +65,6 @@ namespace tasinput {
     gridSizer->Add(btnCD, {3, 7}, wxDefaultSpan, wxEXPAND);
     gridSizer->Add(btnCL, {2, 6}, wxDefaultSpan, wxEXPAND);
     gridSizer->Add(btnCR, {2, 8}, wxDefaultSpan, wxEXPAND);
-    
-    for (auto* i : {btnDU, btnDD, btnDL, btnDR, btnCU, btnCD, btnCL, btnCR, btnStart, btnB, btnA}) {
-      gridSizer->SetItemMinSize(i, i->GetMinSize());
-    }
     
     for (int i = 0; i < gridSizer->GetCols(); i++)
       gridSizer->AddGrowableCol(i, 1);
