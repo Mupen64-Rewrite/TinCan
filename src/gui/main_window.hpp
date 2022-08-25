@@ -2,8 +2,8 @@
 // Created by jgcodes on 23/08/22.
 //
 
-#ifndef TASINPUT2_MAIN_WINDOW_HPP_INCLUDED
-#define TASINPUT2_MAIN_WINDOW_HPP_INCLUDED
+#ifndef TASINPUT2_GUI_MAIN_WINDOW_HPP_INCLUDED
+#define TASINPUT2_GUI_MAIN_WINDOW_HPP_INCLUDED
 
 #include <wx/frame.h>
 #include <memory>

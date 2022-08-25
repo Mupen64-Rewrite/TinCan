@@ -1,5 +1,5 @@
-#ifndef TASINPUT2_JOYSTICK_PANEL_HPP
-#define TASINPUT2_JOYSTICK_PANEL_HPP
+#ifndef TASINPUT2_GUI_JOYSTICK_PANEL_HPP
+#define TASINPUT2_GUI_JOYSTICK_PANEL_HPP
 
 #include <wx/panel.h>
 #include <wx/spinbutt.h>
