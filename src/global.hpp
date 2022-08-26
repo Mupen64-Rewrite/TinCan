@@ -26,6 +26,15 @@ namespace tasinput {
   
   // Log a debug message to the frontend.
   void DebugLog(m64p_msg_level level, const char* msg);
+  
+  // Start the GUI thread
+  void StartGuiThread();
+  
+  // Shows the GUI.
+  void ShowGui();
+  
+  // Shut down the GUI thread
+  void StopGuiThread();
 }  // namespace tasinput
 
 #endif

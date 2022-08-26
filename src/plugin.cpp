@@ -35,37 +35,56 @@ EXPORT m64p_error CALL PluginStartup(
   TASINPUT2_CHECK_NOT_INITED;
   
   tasinput::InitGlobals(core_hnd, debug_ctx, on_debug);
+  tasinput::StartGuiThread();
+  
+  
+  
+  return M64ERR_SUCCESS;
 }
 
 EXPORT m64p_error CALL PluginShutdown() {
   TASINPUT2_CHECK_INITED;
   
+  tasinput::StopGuiThread();
+  
   return M64ERR_SUCCESS;
 }
 
-// Hands control state to the
-EXPORT void CALL InitiateControllers(CONTROL_INFO info) {
+EXPORT int  CALL RomOpen(void) {
+  return true;
+}
+EXPORT void CALL RomClosed(void) {
   
 }
-EXPORT void CALL GetKeys(int idx, BUTTONS* keys) {}
+
+// Determines which controllers to plug in.
+EXPORT void CALL InitiateControllers(CONTROL_INFO info) {
+  tasinput::InitControls(info.Controls);
+  tasinput::ShowGui();
+}
+EXPORT void CALL GetKeys(int idx, BUTTONS* keys) {
+  *keys = {.Value = 0};
+}
 
 EXPORT void CALL ControllerCommand(int idx, unsigned char* cmd) {}
 // Exists because legacy reasons, but isn't used.
 EXPORT void CALL ReadController(int idx, unsigned char* cmd) {}
+
+
 EXPORT void CALL SDL_KeyDown(int keymod, int keysym) {}
 EXPORT void CALL SDL_KeyUp(int keymod, int keysym) {}
 
 // Used to allow the input plugin to draw some kind of HUD.
-// We don't need it.
-// EXPORT void CALL RenderCallback(void) {}
+// We don't need it, because we already have a UI.
+EXPORT void CALL RenderCallback(void) {}
 
 // VRU Functions (Not really useful unless someone TASes Hey You Pikachu)
 // ======================================================================
 
-// EXPORT void CALL SendVRUWord(uint16_t length, uint16_t* word, uint8_t lang)
-// {} EXPORT void CALL SetMicState(int state) {} EXPORT void CALL
-// ReadVRUResults(
-//   uint16_t* error_flags, uint16_t* num_results, uint16_t* mic_level,
-//   uint16_t* voice_level, uint16_t* voice_length, uint16_t* matches) {}
-// EXPORT void CALL ClearVRUWords(uint8_t length) {}
-// EXPORT void CALL SetVRUWordMask(uint8_t length, uint8_t* mask) {}
+EXPORT void CALL SendVRUWord(uint16_t length, uint16_t* word, uint8_t lang)
+{} EXPORT void CALL SetMicState(int state) {} EXPORT void CALL
+ReadVRUResults(
+  uint16_t* error_flags, uint16_t* num_results, uint16_t* mic_level,
+  uint16_t* voice_level, uint16_t* voice_length, uint16_t* matches) {}
+EXPORT void CALL ClearVRUWords(uint8_t length) {}
+EXPORT void CALL SetVRUWordMask(uint8_t length, uint8_t* mask) {}
