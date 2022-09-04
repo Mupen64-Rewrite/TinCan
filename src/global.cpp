@@ -121,9 +121,13 @@ namespace tasinput {
     wxQueueEvent(
       wxApp::GetInstance(),
       new wxThreadEvent(wxEVT_THREAD, tasinput::GUI_CLEANUP));
+      
+    tasinput::DebugLog(M64MSG_INFO, "Joined GUI thread");
 
     if (gui_thread.joinable())
       gui_thread.join();
+      
+    tasinput::DebugLog(M64MSG_INFO, "Joined GUI thread");
   }
 
 }  // namespace tasinput

@@ -3,6 +3,7 @@
 
 #include <wx/app.h>
 #include <wx/event.h>
+#include <wx/evtloop.h>
 #include <wx/utils.h>
 #include <memory>
 #include "main_window.hpp"
@@ -15,13 +16,14 @@ namespace tasinput {
   class MainApp : public wxApp {
   public:
     MainApp();
-
-    bool OnInit() override;
+    void OnEventLoopEnter(wxEventLoopBase*) override;
     
     void OnShowWindow(wxThreadEvent&);
     void OnCleanup(wxThreadEvent&);
 
   private:
+    wxEventLoopBase* activeEventLoop;
+  
     MainWindow* win;
   };
 } // tasinput

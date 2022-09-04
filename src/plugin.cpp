@@ -3,8 +3,13 @@
 #include <mupen64plus/m64p_plugin.h>
 #include <mupen64plus/m64p_types.h>
 
+#include <sstream>
+#include <gtk/gtk.h>
+
 #include "global.hpp"
 #include "config.hpp"
+
+#define OSS_FMT(content) (static_cast<std::ostringstream&&>(std::ostringstream {} << content).str())
 
 EXPORT m64p_error CALL PluginGetVersion(
   m64p_plugin_type* type, int* ver, int* api_ver, const char** name,
@@ -36,7 +41,6 @@ EXPORT m64p_error CALL PluginStartup(
   
   tasinput::InitGlobals(core_hnd, debug_ctx, on_debug);
   tasinput::StartGuiThread();
-  
   
   
   return M64ERR_SUCCESS;
@@ -81,9 +85,9 @@ EXPORT void CALL RenderCallback(void) {}
 // VRU Functions (Not really useful unless someone TASes Hey You Pikachu)
 // ======================================================================
 
-EXPORT void CALL SendVRUWord(uint16_t length, uint16_t* word, uint8_t lang)
-{} EXPORT void CALL SetMicState(int state) {} EXPORT void CALL
-ReadVRUResults(
+EXPORT void CALL SendVRUWord(uint16_t length, uint16_t* word, uint8_t lang) {} 
+EXPORT void CALL SetMicState(int state) {} 
+EXPORT void CALL ReadVRUResults(
   uint16_t* error_flags, uint16_t* num_results, uint16_t* mic_level,
   uint16_t* voice_level, uint16_t* voice_length, uint16_t* matches) {}
 EXPORT void CALL ClearVRUWords(uint8_t length) {}
