@@ -1,10 +1,14 @@
-#ifndef OSLIB_PLIBDL_HPP_INCLUDED
-#define OSLIB_PLIBDL_HPP_INCLUDED
+#ifndef OSLIB_DYNLIB_HPP_INCLUDED
+#define OSLIB_DYNLIB_HPP_INCLUDED
+
+#include "preproc.hpp"
 /*
 Implementation of a dlsym-like API for managing shared libraries.
 */
-#ifdef __GNUG__
 
+#if OSLIB_GCC_UNKNOWN_REGION_PRAGMA
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #endif
 
 #include <mupen64plus/m64p_types.h>
@@ -14,25 +18,25 @@ Implementation of a dlsym-like API for managing shared libraries.
 #include <type_traits>
 
 namespace oslib {
-  inline m64p_dynlib_handle pdlopen(const char* name);
+  inline m64p_dynlib_handle dlopen(const char* name);
 
   template <class T = void>
   requires(std::is_pointer_v<T>) inline T
-    pdlsym(m64p_dynlib_handle hnd, const char* name);
+    dlsym(m64p_dynlib_handle hnd, const char* name);
 
-  inline void pdlclose(m64p_dynlib_handle hnd);
+  inline void dlclose(m64p_dynlib_handle hnd);
 }  // namespace oslib
 
-#pragma region Implementation
 #if defined(__linux__) || defined(__APPLE__)
+#pragma region POSIX-compliant implementation
   #include <dlfcn.h>
 namespace oslib {
-  inline m64p_dynlib_handle pdlopen(const char* name) {
-    if (dlopen(name, RTLD_NOLOAD)) {
+  inline m64p_dynlib_handle dlopen(const char* name) {
+    if (::dlopen(name, RTLD_NOLOAD)) {
       throw std::runtime_error("Library is already loaded");
     }
 
-    void* res = dlopen(name, RTLD_LAZY);
+    void* res = ::dlopen(name, RTLD_LAZY);
     if (!res) {
       const std::string err = dlerror();
       throw std::runtime_error(err);
@@ -42,9 +46,9 @@ namespace oslib {
 
   template <class T>
   requires(std::is_pointer_v<T>) inline T
-    pdlsym(m64p_dynlib_handle hnd, const char* name) {
+    dlsym(m64p_dynlib_handle hnd, const char* name) {
     dlerror();
-    void* sym       = dlsym(hnd, name);
+    void* sym       = ::dlsym(hnd, name);
     const char* err = dlerror();
     if (err) {
       throw std::runtime_error(err);
@@ -52,11 +56,13 @@ namespace oslib {
     return reinterpret_cast<T>(sym);
   }
 
-  inline void pdlclose(m64p_dynlib_handle hnd) {
-    dlclose(hnd);
+  inline void dlclose(m64p_dynlib_handle hnd) {
+    ::dlclose(hnd);
   }
 }  // namespace oslib
+#pragma endregion
 #elif defined(_WIN32)
+#pragma region Windows impl
   #include <windows.h>
 namespace oslib {
   namespace detail {
@@ -69,7 +75,7 @@ namespace oslib {
     }
   }  // namespace detail
 
-  inline m64p_dynlib_handle pdlopen(const char* name) {
+  inline m64p_dynlib_handle dlopen(const char* name) {
     auto wstr_name = detail::to_utf16(name);
 
     HMODULE hnd = nullptr;
@@ -89,7 +95,7 @@ namespace oslib {
 
   template <class T>
   requires(std::is_pointer_v<T>) inline T
-    pdlsym(m64p_dynlib_handle hnd, const char* name) {
+    dlsym(m64p_dynlib_handle hnd, const char* name) {
     SetLastError(0);
     FARPROC fn = GetProcAddress(hnd, name);
     int err    = GetLastError();
@@ -99,11 +105,15 @@ namespace oslib {
     return reinterpret_cast<T>(fn);
   }
 
-  inline void pdlclose(m64p_dynlib_handle hnd) {
+  inline void dlclose(m64p_dynlib_handle hnd) {
     FreeLibrary(hnd);
   }
 }
-#endif
 #pragma endregion
+#endif
+
+#if OSLIB_GCC_UNKNOWN_REGION_PRAGMA
+#pragma GCC diagnostic pop
+#endif
 
 #endif
