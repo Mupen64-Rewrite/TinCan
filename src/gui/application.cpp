@@ -6,8 +6,6 @@
 #include <wx/event.h>
 #include <wx/evtloop.h>
 
-#include <gtk/gtk.h>
-
 #include <memory>
 #include <sstream>
 #include "main_window.hpp"

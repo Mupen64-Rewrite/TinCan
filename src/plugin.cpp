@@ -4,7 +4,6 @@
 #include <mupen64plus/m64p_types.h>
 
 #include <sstream>
-#include <gtk/gtk.h>
 
 #include "global.hpp"
 #include "config.hpp"

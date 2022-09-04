@@ -13,8 +13,6 @@ include(M64PApi)
 find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base)
 find_package(PkgConfig REQUIRED)
 
-pkg_check_modules(GTK3 REQUIRED IMPORTED_TARGET "gtk+-wayland-3.0")
-
 set(M64P_API_VERSION 2.1)
 include(ConfigGen)
 
@@ -62,4 +60,4 @@ add_library(tasinput2 MODULE
 target_compile_features(tasinput2 PUBLIC cxx_std_20)
 target_include_directories(tasinput2 PRIVATE ${CONFIG_DIR})
 
-target_link_libraries(tasinput2 PUBLIC wx::wxcore m64p::api PkgConfig::GTK3)
+target_link_libraries(tasinput2 PUBLIC wx::wxcore m64p::api)
