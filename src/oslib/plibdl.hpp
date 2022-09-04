@@ -3,18 +3,15 @@
 /*
 Implementation of a dlsym-like API for managing shared libraries.
 */
+#ifdef __GNUG__
+
+#endif
 
 #include <mupen64plus/m64p_types.h>
 #include <stdexcept>
 #include <string>
 #include <system_error>
 #include <type_traits>
-
-#if defined(__linux__) || defined(__APPLE__)
-  #include <dlfcn.h>
-#elif defined(_WIN32)
-  #include <windows.h>
-#endif
 
 namespace oslib {
   inline m64p_dynlib_handle pdlopen(const char* name);
@@ -24,9 +21,12 @@ namespace oslib {
     pdlsym(m64p_dynlib_handle hnd, const char* name);
 
   inline void pdlclose(m64p_dynlib_handle hnd);
+}  // namespace oslib
 
+#pragma region Implementation
 #if defined(__linux__) || defined(__APPLE__)
-
+  #include <dlfcn.h>
+namespace oslib {
   inline m64p_dynlib_handle pdlopen(const char* name) {
     if (dlopen(name, RTLD_NOLOAD)) {
       throw std::runtime_error("Library is already loaded");
@@ -52,10 +52,13 @@ namespace oslib {
     return reinterpret_cast<T>(sym);
   }
 
-  inline void pdlclose(m64p_dynlib_handle hnd) { dlclose(hnd); }
-
+  inline void pdlclose(m64p_dynlib_handle hnd) {
+    dlclose(hnd);
+  }
+}  // namespace oslib
 #elif defined(_WIN32)
-
+  #include <windows.h>
+namespace oslib {
   namespace detail {
     inline std::wstring to_utf16(const char* str) {
       int len = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, str, -1, NULL, 0);
@@ -96,10 +99,11 @@ namespace oslib {
     return reinterpret_cast<T>(fn);
   }
 
-  inline void pdlclose(m64p_dynlib_handle hnd) { FreeLibrary(hnd); }
-
-#else
+  inline void pdlclose(m64p_dynlib_handle hnd) {
+    FreeLibrary(hnd);
+  }
+}
 #endif
-}  // namespace oslib
+#pragma endregion
 
 #endif
