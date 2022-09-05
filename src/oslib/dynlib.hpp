@@ -27,7 +27,7 @@ namespace oslib {
   inline void dlclose(m64p_dynlib_handle hnd);
 }  // namespace oslib
 
-#if defined(__linux__) || defined(__APPLE__)
+#if defined(OSLIB_OS_POSIX)
 #pragma region POSIX-compliant implementation
   #include <dlfcn.h>
 namespace oslib {
@@ -61,7 +61,7 @@ namespace oslib {
   }
 }  // namespace oslib
 #pragma endregion
-#elif defined(_WIN32)
+#elif defined(OSLIB_OS_WIN32)
 #pragma region Windows impl
   #include <windows.h>
 namespace oslib {
@@ -110,6 +110,8 @@ namespace oslib {
   }
 }
 #pragma endregion
+#else
+#error Unsupported platform!
 #endif
 
 #if OSLIB_GCC_UNKNOWN_REGION_PRAGMA
