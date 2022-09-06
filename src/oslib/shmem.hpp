@@ -31,10 +31,11 @@ namespace oslib {
   #include <cerrno>
   #include <cstdint>
   #include <ctime>
-  
+
   #include "details/meta.hpp"
 
 namespace oslib {
+  // Shared memory with an inheritable handle.
   struct shm_object {
   public:
     using native_handle_type = int;
@@ -46,22 +47,29 @@ namespace oslib {
       }
       ftruncate(fd, size);
     }
-    
+
     // Opens an existing shared memory file descriptor.
     shm_object(native_handle_type fd, size_t size) : fd(fd), size(size) {
       if (fcntl(F_GETFD, fd) == -1) {
         throw std::system_error(errno, std::generic_category());
       }
     }
-    
-    shm_object(const shm_object&) = delete;
+
+    shm_object(const shm_object&)            = delete;
     shm_object& operator=(const shm_object&) = delete;
 
+    // Returns the native handle.
+    // The shm_object's handle should be inheritable from the child process,
+    // allowing it to be passed to `shm_object::shm_object(native_handle_type fd,
+    // size_t size)`
     native_handle_type native_handle() { return fd; }
-
+    
+    // Maps the shm object in the current process.
     shm_mapping map();
 
   private:
+    // Private method: get ahold of an anonymous shared-memory FD.
+    // This is accomplished by memfd_create on Linux, and shm_open on other Unices.
     static int acquire_shm_fd();
 
     int fd;
@@ -78,7 +86,7 @@ namespace oslib {
   inline int shm_object::acquire_shm_fd() {
     // Try to generate a name, shm_open it, then shm_unlink it.
     // This is the only (mostly) POSIX-compliant solution.
-    
+
     char name[16]   = "/shm-";
     char* const end = name + sizeof(name);
     struct timespec tv;
@@ -130,9 +138,9 @@ namespace oslib {
     friend class shm_object;
 
   public:
-    shm_mapping(const shm_mapping&) = delete;
+    shm_mapping(const shm_mapping&)            = delete;
     shm_mapping& operator=(const shm_mapping&) = delete;
-  
+
     // Returns a pointer to an address within the block of shared memory.
     template <class T>
     T addr(size_t addr = 0x0) {
@@ -141,7 +149,7 @@ namespace oslib {
           (std::is_object_v<std::remove_pointer_t<T>> ||
            std::is_void_v<std::remove_pointer_t<T>>),
         "T must be a pointer to an instantiable type");
-      
+
       bool bounds_check = addr >= size;
       if constexpr (!OSLIB_DETAILS_META_IS_COMPLETE(T)) {
         bounds_check |= addr + sizeof(T) >= size;
@@ -153,12 +161,13 @@ namespace oslib {
 
       return reinterpret_cast<T>(reinterpret_cast<std::byte*>(base) + addr);
     }
-
+    
+    // Gets a reference to an object in the block of shared memory.
     template <class T>
     T& read(size_t addr = 0x0) {
       static_assert(
         std::is_object_v<T>, "T must be a pointer to instantiable type");
-        
+
       if (addr + sizeof(T) >= size) {
         throw std::out_of_range(
           "Address {} is out of bounds for region of size {}");
@@ -186,7 +195,97 @@ namespace oslib {
 }  // namespace oslib
   #pragma endregion
 #elif defined(OSLIB_OS_WINDOWS)
-  #pragma 
+  #pragma region WinAPI implementation
+  // Shared memory with an inheritable handle.
+  struct shm_object {
+  public:
+    using native_handle_type = int;
+
+    // Creates a shm_object.
+    shm_object(size_t size) {
+    }
+
+    // Opens an existing shared memory file descriptor.
+    shm_object(native_handle_type fd, size_t size) {
+    }
+
+    shm_object(const shm_object&)            = delete;
+    shm_object& operator=(const shm_object&) = delete;
+
+    // Returns the native handle.
+    // The shm_object's handle should be inheritable from the child process,
+    // allowing it to be passed to `shm_object::shm_object(native_handle_type fd,
+    // size_t size)`
+    native_handle_type native_handle() { return fd; }
+    
+    // Maps the shm object in the current process.
+    shm_mapping map();
+
+  private:
+    // Private method: get ahold of an anonymous shared-memory FD.
+    // This is accomplished by memfd_create on Linux, and shm_open on other Unices.
+    static int acquire_shm_fd();
+
+    HANDLE mapHandle;
+    size_t size;
+  };
+  inline int shm_object::acquire_shm_fd() {
+  }
+
+  struct shm_mapping {
+    friend class shm_object;
+
+  public:
+    shm_mapping(const shm_mapping&)            = delete;
+    shm_mapping& operator=(const shm_mapping&) = delete;
+
+    // Returns a pointer to an address within the block of shared memory.
+    template <class T>
+    T addr(size_t addr = 0x0) {
+      static_assert(
+        std::is_pointer_v<T> &&
+          (std::is_object_v<std::remove_pointer_t<T>> ||
+           std::is_void_v<std::remove_pointer_t<T>>),
+        "T must be a pointer to an instantiable type");
+
+      bool bounds_check = addr >= size;
+      if constexpr (!OSLIB_DETAILS_META_IS_COMPLETE(T)) {
+        bounds_check |= addr + sizeof(T) >= size;
+      }
+      if (bounds_check) {
+        throw std::out_of_range(
+          "Address {} is out of bounds for region of size {}");
+      }
+
+      return reinterpret_cast<T>(reinterpret_cast<std::byte*>(base) + addr);
+    }
+    
+    // Gets a reference to an object in the block of shared memory.
+    template <class T>
+    T& read(size_t addr = 0x0) {
+      static_assert(
+        std::is_object_v<T>, "T must be a pointer to instantiable type");
+
+      if (addr + sizeof(T) >= size) {
+        throw std::out_of_range(
+          "Address {} is out of bounds for region of size {}");
+      }
+
+      return *reinterpret_cast<T*>(reinterpret_cast<std::byte*>(base) + addr);
+    }
+
+    ~shm_mapping() {  }
+
+  private:
+    shm_mapping(void* p, size_t size) : base(p), size(size) {}
+
+    void* base;
+    size_t size;
+  };
+
+  inline shm_mapping shm_object::map() {
+  }
+  #pragma endregion
 #endif
 
 #endif
