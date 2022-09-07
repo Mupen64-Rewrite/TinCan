@@ -196,10 +196,11 @@ namespace oslib {
   #pragma endregion
 #elif defined(OSLIB_OS_WINDOWS)
   #pragma region WinAPI implementation
+  #include <windows.h>
   // Shared memory with an inheritable handle.
   struct shm_object {
   public:
-    using native_handle_type = int;
+    using native_handle_type = HANDLE;
 
     // Creates a shm_object.
     shm_object(size_t size) {
