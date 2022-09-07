@@ -1,12 +1,19 @@
+#ifndef WIN32_LEAN_AND_MEAN
+  #define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef _WINSOCKAPI_
+  #define _WINSOCKAPI_
+#endif
+
 #include "core_fns.hpp"
 #include "global.hpp"
 #include "mupen64plus/m64p_config.h"
-#include "oslib/plibdl.hpp"
+#include "oslib/dynlib.hpp"
 
 #define TASINPUT_DEFINE_CORE_FN(                                              \
   return_t, name, params_with_types, params_without_types)                    \
   return_t name params_with_types {                                           \
-    static ptr_##name fn = oslib::pdlsym<ptr_##name>(GetCoreHandle(), #name); \
+    static ptr_##name fn = oslib::dlsym<ptr_##name>(GetCoreHandle(), #name); \
     return fn params_without_types;                                           \
   }
 

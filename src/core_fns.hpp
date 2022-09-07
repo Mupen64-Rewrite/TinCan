@@ -1,8 +1,15 @@
 #ifndef TASINPUT2_CORE_FNS_HPP
 #define TASINPUT2_CORE_FNS_HPP
 
+#ifndef WIN32_LEAN_AND_MEAN
+  #define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef _WINSOCKAPI_
+  #define _WINSOCKAPI_
+#endif
+
 #include <mupen64plus/m64p_config.h>
-#include "mupen64plus/m64p_types.h"
+#include <mupen64plus/m64p_types.h>
 
 #define TASINPUT2_CORE_FN(name, params) \
   ::tasinput::function_traits<ptr_##name>::type name params

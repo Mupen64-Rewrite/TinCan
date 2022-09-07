@@ -1,6 +1,11 @@
 #ifndef TASINPUT2_GUI_GUI_APPLICATION_HPP_INCLUDED
 #define TASINPUT2_GUI_GUI_APPLICATION_HPP_INCLUDED
 
+#ifdef _WIN32
+#include <wx/msw/winundef.h>
+#endif
+// wx/app.h includes this but I had to make sure it comes first
+#include <wx/init.h>
 #include <wx/app.h>
 #include <wx/event.h>
 #include <wx/evtloop.h>

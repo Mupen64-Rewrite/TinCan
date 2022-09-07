@@ -1,3 +1,5 @@
+
+
 #include "global.hpp"
 
 #include <wx/app.h>
@@ -8,7 +10,7 @@
 #include "core_fns.hpp"
 #include "gui/application.hpp"
 #include "mupen64plus/m64p_plugin.h"
-#include "mupen64plus/m64p_types.h"
+#include <mupen64plus/m64p_types.h>
 
 #include <atomic>
 #include <mutex>

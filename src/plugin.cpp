@@ -1,4 +1,6 @@
 #define M64P_PLUGIN_PROTOTYPES
+#define WIN32_LEAN_AND_MEAN
+#define _WINSOCKAPI_
 #include <mupen64plus/m64p_common.h>
 #include <mupen64plus/m64p_plugin.h>
 #include <mupen64plus/m64p_types.h>

@@ -10,6 +10,14 @@ Implementation of a dlsym-like API for managing shared libraries.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #endif
+#ifdef OSLIB_OS_WIN32
+  #ifndef WIN32_LEAN_AND_MEAN
+    #define WIN32_LEAN_AND_MEAN
+  #endif
+  #ifndef _WINSOCKAPI_
+    #define _WINSOCKAPI_
+  #endif
+#endif
 
 #include <mupen64plus/m64p_types.h>
 #include <stdexcept>
@@ -63,25 +71,21 @@ namespace oslib {
 #pragma endregion
 #elif defined(OSLIB_OS_WIN32)
 #pragma region Windows impl
+  #ifndef WIN32_LEAN_AND_MEAN
+    #define WIN32_LEAN_AND_MEAN
+  #endif
+  #ifndef _WINSOCKAPI_
+    #define _WINSOCKAPI_
+  #endif
   #include <windows.h>
+  #include "details/convert.hpp"
 namespace oslib {
-  namespace detail {
-    inline std::wstring to_utf16(const char* str) {
-      int len = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, str, -1, NULL, 0);
-      std::wstring res(len + 1, L'\0');
-      MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, str, -1, res.data(), 0);
-      res.pop_back();
-      return res;
-    }
-  }  // namespace detail
 
   inline m64p_dynlib_handle dlopen(const char* name) {
-    auto wstr_name = detail::to_utf16(name);
+    auto wstr_name = details::to_utf16(name);
 
     HMODULE hnd = nullptr;
-    if (!GetModuleHandleExW(
-          GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, wstr_name.c_str(),
-          &hnd)) {
+    if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, wstr_name.c_str(), &hnd)) {
       throw std::runtime_error("Library is already loaded");
     }
 

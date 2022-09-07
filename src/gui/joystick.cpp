@@ -134,9 +134,13 @@ namespace tasinput {
   void Joystick::OnMouse(wxMouseEvent& evt) {
     if (!evt.ButtonIsDown(wxMOUSE_BTN_LEFT))
       return;
+
+    int width;
+    int height;
+    this->GetSize(&width, &height);
       
-    posX = (evt.m_x * 256 / m_width) - 128;
-    posY = (256 - (evt.m_y * 256 / m_height)) - 128;
+    posX = (evt.m_x * 256 / width) - 128;
+    posY = (256 - (evt.m_y * 256 / height)) - 128;
     
     // "Dumb" clamping: coordinates are capped based on closest side
     posX = std::clamp(posX, -128, 127);

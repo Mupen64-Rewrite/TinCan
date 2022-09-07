@@ -7,11 +7,24 @@ project(tasinput2
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/out")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/out")
 
+if (MSVC)
+  if (${VCPKG_TARGET_TRIPLET} MATCHES "-static$")
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  else()
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+  endif()
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(M64PApi)
 
-find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base)
-find_package(PkgConfig REQUIRED)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base)
+else()
+  find_package(wxWidgets REQUIRED COMPONENTS core base)
+endif()
+include(${wxWidgets_USE_FILE})
+
 
 set(M64P_API_VERSION 2.1)
 include(ConfigGen)
@@ -49,6 +62,13 @@ add_library(tasinput2 MODULE
   "src/gui/joystick.hpp"
   "src/gui/joystick_panel.cpp"
   "src/gui/joystick_panel.hpp"
+
+  "src/oslib/details/convert.hpp"
+  "src/oslib/details/meta.hpp"
+  "src/oslib/dynlib.hpp"
+  "src/oslib/preproc.hpp"
+  "src/oslib/process.hpp"
+  "src/oslib/shmem.hpp"
   
   "src/core_fns.cpp"
   "src/core_fns.hpp"
@@ -60,4 +80,4 @@ add_library(tasinput2 MODULE
 target_compile_features(tasinput2 PUBLIC cxx_std_20)
 target_include_directories(tasinput2 PRIVATE ${CONFIG_DIR})
 
-target_link_libraries(tasinput2 PUBLIC wx::wxcore m64p::api)
+target_link_libraries(tasinput2 PUBLIC ${wxWidgets_LIBRARIES} m64p::api)

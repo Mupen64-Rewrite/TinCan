@@ -1,0 +1,641 @@
+>------ Build All started: Project: tas-input-qt, Configuration: win-vcpkg ------
+  Microsoft (R) Build Engine version 17.2.1+52cd2da31 for .NET Framework
+  Copyright (C) Microsoft Corporation. All rights reserved.
+  
+    global.cpp
+C:\Users\jacky\Documents\Code\tas-input-qt\src\global.hpp
+[
+ C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\mupen64plus-api_download\include\mupen64plus/m64p_types.h
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\stdint.h
+   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vcruntime.h
+    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\sal.h
+     C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\concurrencysal.h
+    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vadefs.h
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\windows.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winapifamily.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winpackagefamily.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\sdkddkver.h
+   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\excpt.h
+   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\stdarg.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\windef.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\specstrings.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\specstrings_strict.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\specstrings_undef.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\driverspecs.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\sdv_driverspecs.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winnt.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\ctype.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wctype.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\kernelspecs.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\basetsd.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\guiddef.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\string.h
+        C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_memory.h
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_memcpy_s.h
+          C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\errno.h
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vcruntime_string.h
+        C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wstring.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack4.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack4.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack4.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack2.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack2.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack2.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\apiset.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ktmtypes.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winbase.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\apisetcconv.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\minwinbase.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\apiquery2.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\processenv.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\fileapifromapp.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\fileapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\debugapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\utilapiset.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\handleapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\errhandlingapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\fibersapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\namedpipeapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\profileapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\heapapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\ioapiset.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\synchapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\interlockedapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\processthreadsapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\sysinfoapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\memoryapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\enclaveapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\threadpoollegacyapiset.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\threadpoolapiset.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\jobapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\jobapi2.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\wow64apiset.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\libloaderapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\securitybaseapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\namespaceapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\systemtopologyapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\processtopologyapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\securityappcontainer.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\realtimeapiset.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\timezoneapi.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\wingdi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack2.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack2.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack4.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack4.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winuser.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack2.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\tvout.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winnls.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\datetimeapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\stringapiset.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winnls.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\wincon.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\wincontypes.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\consoleapi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\consoleapi2.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\consoleapi3.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winver.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\verrsrc.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winreg.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\reason.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winnetwk.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\wnnc.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\cderr.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dde.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\ddeml.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dlgs.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\lzexpand.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsystem.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mciapi.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmiscapi.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmiscapi2.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\playsoundapi.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmeapi.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\timeapi.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\joystickapi.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mmsyscom.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\nb30.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\rpc.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\rpcdce.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\rpcdcep.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\rpcnsi.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\rpcnterr.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\rpcasync.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\shellapi.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winperf.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\inaddr.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\wincrypt.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\bcrypt.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\ncrypt.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dpapi.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winefs.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winscard.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\wtypes.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\rpcndr.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\rpcnsip.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\rpcsal.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\wtypesbase.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\guiddef.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winioctl.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack1.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winsmcrd.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winspool.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\prsht.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\ole2.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\objbase.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\combaseapi.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\stdlib.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_malloc.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_search.h
+        C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\stddef.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wstdlib.h
+       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\limits.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\unknwnbase.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\objidlbase.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\guiddef.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\cguid.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\coml2api.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\objidl.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\unknwn.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\propidlbase.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\oaidl.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\urlmon.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\oleidl.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\servprov.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\msxml.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\propidl.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\oleauto.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\pshpack8.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\poppack.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\commdlg.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\prsht.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\stralign.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsvc.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\mcx.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\imm.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\ime_cmodes.h
+ C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\mupen64plus-api_download\include\mupen64plus/m64p_plugin.h
+  C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\mupen64plus-api_download\include\mupen64plus\m64p_types.h
+C:\vcpkg\installed\x64-windows-static\include\wx/app.h
+ C:\vcpkg\installed\x64-windows-static\include\wx/event.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/platform.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/compiler.h
+    C:\vcpkg\installed\x64-windows-static\lib\mswu\wx/setup.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/libraries.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/chkconf.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/msw/chkconf.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/version.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/cpp.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/dlimpexp.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/types.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/debug.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\assert.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/chartype.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\wchar.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wconio.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_stdio_config.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wdirect.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wio.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_share.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wprocess.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wstdio.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wtime.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\sys/stat.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\sys/types.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\tchar.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/features.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/object.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/memory.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/string.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\stdio.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/wxcrtbase.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\wctype.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\time.h
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\io.h
+       C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_io.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/strvararg.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/strconv.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/buffer.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+         C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/fontenc.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/unichar.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/stringimpl.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+         C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/beforestd.h
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\string
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\yvals_core.h
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xkeycheck.h
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xstring
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\iosfwd
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\yvals.h
+            C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\crtdbg.h
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vcruntime_new_debug.h
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vcruntime_new.h
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\crtdefs.h
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\use_ansi.h
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cstdio
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cstring
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cwchar
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xstddef
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cstddef
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xtr1common
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cstdlib
+             C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\math.h
+              C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_math.h
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\initializer_list
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xmemory
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cstdint
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\limits
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cfloat
+             C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\float.h
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\climits
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\intrin0.h
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\intrin0.inl.h
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\isa_availability.h
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\new
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\exception
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\type_traits
+             C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\malloc.h
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vcruntime_exception.h
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\eh.h
+               C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_terminate.h
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xatomic.h
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xutility
+            C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\utility
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\concepts
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\compare
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\bit
+           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\tuple
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xpolymorphic_allocator.h
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cctype
+        C:\vcpkg\installed\x64-windows-static\include\wx/afterstd.h
+         C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\algorithm
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\string_view
+     C:\vcpkg\installed\x64-windows-static\include\wx/stringops.h
+     C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\functional
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\typeinfo
+       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vcruntime_typeinfo.h
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\memory
+       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\atomic
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xatomic_wait.h
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xthreads.h
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xtimec.h
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\ctime
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\unordered_map
+       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xhash
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\cmath
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\list
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\vector
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xbit_ops.h
+        C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\xnode_handle.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/iosfwrap.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msgout.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/xti.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/rtti.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/flags.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/xti2.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/clntdata.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/hashmap.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/wxcrt.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/math.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\math.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/gdicmn.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/list.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/vector.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/scopeguard.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/except.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/meta/movable.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/meta/pod.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/meta/if.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/beforestd.h
+     C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include\iterator
+     C:\vcpkg\installed\x64-windows-static\include\wx/afterstd.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/cursor.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/gdiobj.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/msw/gdiimage.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/msw/cursor.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/utils.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/filefn.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/arrstr.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/dynarray.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+        C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/beforestd.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/afterstd.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\direct.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\dos.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\fcntl.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/versioninfo.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/meta/implicitconversion.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/mousestate.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/kbdstate.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+       C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/longlong.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/iosfwrap.h
+      C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/platinfo.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/thread.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/tracker.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/typeinfo.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/any.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/datetime.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/anystr.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/variant.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/iosfwrap.h
+     C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/any.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/meta/convertible.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/meta/removeref.h
+ C:\vcpkg\installed\x64-windows-static\include\wx/eventfilter.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+ C:\vcpkg\installed\x64-windows-static\include\wx/build.h
+ C:\vcpkg\installed\x64-windows-static\include\wx/cmdargs.h
+ C:\vcpkg\installed\x64-windows-static\include\wx/init.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/defs.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+  C:\vcpkg\installed\x64-windows-static\include\wx/msw/init.h
+   C:\vcpkg\installed\x64-windows-static\include\wx/msw/wrapwin.h
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winver.h
+    C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(103,1): warning C4005: 'AF_IPX': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(457): message : see previous definition of 'AF_IPX' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(147,1): warning C4005: 'AF_MAX': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(476): message : see previous definition of 'AF_MAX' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(187,1): warning C4005: 'SO_DONTLINGER': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(399): message : see previous definition of 'SO_DONTLINGER' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(240,25): error C2011: 'sockaddr': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(482): message : see declaration of 'sockaddr' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(442,5): error C2143: syntax error: missing '}' before 'constant' 
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(442,5): error C2059: syntax error: 'constant' 
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(496,1): error C2143: syntax error: missing ';' before '}' 
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(496,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int 
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(496,20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int 
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(577,1): warning C4005: 'IN_CLASSA': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(284): message : see previous definition of 'IN_CLASSA' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(583,1): warning C4005: 'IN_CLASSB': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(290): message : see previous definition of 'IN_CLASSB' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(589,1): warning C4005: 'IN_CLASSC': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(296): message : see previous definition of 'IN_CLASSC' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(600,1): warning C4005: 'INADDR_ANY': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(301): message : see previous definition of 'INADDR_ANY' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(602,1): warning C4005: 'INADDR_BROADCAST': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(303): message : see previous definition of 'INADDR_BROADCAST' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\ws2def.h(638,28): error C2011: 'sockaddr_in': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(309): message : see declaration of 'sockaddr_in' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(136,23): error C2011: 'fd_set': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(65): message : see declaration of 'fd_set' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(156,1): warning C4005: 'FD_CLR': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(94): message : see previous definition of 'FD_CLR' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(171,1): warning C4005: 'FD_SET': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(99): message : see previous definition of 'FD_SET' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(180,16): error C2011: 'timeval': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(108): message : see declaration of 'timeval' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(236,17): error C2011: 'hostent': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(164): message : see declaration of 'hostent' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(249,16): error C2011: 'netent': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(177): message : see declaration of 'netent' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(256,17): error C2011: 'servent': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(184): message : see declaration of 'servent' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(268,18): error C2011: 'protoent': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(196): message : see declaration of 'protoent' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(364,24): error C2011: 'WSAData': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(319): message : see declaration of 'WSAData' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(462,18): error C2011: 'sockproto': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(491): message : see declaration of 'sockproto' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(504,16): error C2011: 'linger': 'struct' type redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(528): message : see declaration of 'linger' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(517,1): warning C4005: 'SOMAXCONN': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(541): message : see previous definition of 'SOMAXCONN' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(552,1): warning C4005: 'FD_READ': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(559): message : see previous definition of 'FD_READ' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(555,1): warning C4005: 'FD_WRITE': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(560): message : see previous definition of 'FD_WRITE' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(558,1): warning C4005: 'FD_OOB': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(561): message : see previous definition of 'FD_OOB' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(561,1): warning C4005: 'FD_ACCEPT': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(562): message : see previous definition of 'FD_ACCEPT' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(564,1): warning C4005: 'FD_CONNECT': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(563): message : see previous definition of 'FD_CONNECT' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(567,1): warning C4005: 'FD_CLOSE': macro redefinition 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(564): message : see previous definition of 'FD_CLOSE' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+     C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\qos.h
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1625,1): error C2375: 'accept': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(739): message : see declaration of 'accept' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1647,1): error C2375: 'bind': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(744): message : see declaration of 'bind' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1668,1): error C2375: 'closesocket': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(749): message : see declaration of 'closesocket' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1685,1): error C2375: 'connect': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(751): message : see declaration of 'connect' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1706,1): error C2375: 'ioctlsocket': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(756): message : see declaration of 'ioctlsocket' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1729,1): error C2375: 'getpeername': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(761): message : see declaration of 'getpeername' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1750,1): error C2375: 'getsockname': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(766): message : see declaration of 'getsockname' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1771,1): error C2375: 'getsockopt': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(771): message : see declaration of 'getsockopt' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1796,1): error C2375: 'htonl': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(778): message : see declaration of 'htonl' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1813,1): error C2375: 'htons': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(780): message : see declaration of 'htons' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1831,1): error C2375: 'inet_addr': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(782): message : see declaration of 'inet_addr' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1849,1): error C2375: 'inet_ntoa': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(784): message : see declaration of 'inet_ntoa' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1949,1): error C2375: 'listen': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(786): message : see declaration of 'listen' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1968,1): error C2375: 'ntohl': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(790): message : see declaration of 'ntohl' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(1985,1): error C2375: 'ntohs': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(792): message : see declaration of 'ntohs' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2002,1): error C2375: 'recv': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(794): message : see declaration of 'recv' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2025,1): error C2375: 'recvfrom': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(800): message : see declaration of 'recvfrom' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2052,1): error C2375: 'select': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(808): message : see declaration of 'select' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2077,1): error C2375: 'send': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(815): message : see declaration of 'send' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2100,1): error C2375: 'sendto': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(821): message : see declaration of 'sendto' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2127,1): error C2375: 'setsockopt': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(829): message : see declaration of 'setsockopt' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2152,1): error C2375: 'shutdown': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(836): message : see declaration of 'shutdown' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2172,1): error C2375: 'socket': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(840): message : see declaration of 'socket' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2197,1): error C2375: 'gethostbyaddr': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(847): message : see declaration of 'gethostbyaddr' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2219,1): error C2375: 'gethostbyname': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(852): message : see declaration of 'gethostbyname' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2236,1): error C2375: 'gethostname': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(854): message : see declaration of 'gethostname' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2276,1): error C2375: 'getservbyport': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(858): message : see declaration of 'getservbyport' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2295,1): error C2375: 'getservbyname': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(862): message : see declaration of 'getservbyname' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2314,1): error C2375: 'getprotobynumber': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(866): message : see declaration of 'getprotobynumber' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2331,1): error C2375: 'getprotobyname': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(868): message : see declaration of 'getprotobyname' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2351,1): error C2375: 'WSAStartup': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(872): message : see declaration of 'WSAStartup' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2371,1): error C2375: 'WSACleanup': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(876): message : see declaration of 'WSACleanup' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2388,1): error C2375: 'WSASetLastError': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(878): message : see declaration of 'WSASetLastError' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2405,1): error C2375: 'WSAGetLastError': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(880): message : see declaration of 'WSAGetLastError' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2426,1): error C2375: 'WSAIsBlocking': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(882): message : see declaration of 'WSAIsBlocking' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2444,1): error C2375: 'WSAUnhookBlockingHook': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(884): message : see declaration of 'WSAUnhookBlockingHook' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2462,1): error C2375: 'WSASetBlockingHook': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(886): message : see declaration of 'WSASetBlockingHook' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2480,1): error C2375: 'WSACancelBlockingCall': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(888): message : see declaration of 'WSACancelBlockingCall' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2498,1): error C2375: 'WSAAsyncGetServByName': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(890): message : see declaration of 'WSAAsyncGetServByName' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2526,1): error C2375: 'WSAAsyncGetServByPort': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(898): message : see declaration of 'WSAAsyncGetServByPort' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2554,1): error C2375: 'WSAAsyncGetProtoByName': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(906): message : see declaration of 'WSAAsyncGetProtoByName' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2580,1): error C2375: 'WSAAsyncGetProtoByNumber': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(913): message : see declaration of 'WSAAsyncGetProtoByNumber' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2606,1): error C2375: 'WSAAsyncGetHostByName': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(920): message : see declaration of 'WSAAsyncGetHostByName' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2632,1): error C2375: 'WSAAsyncGetHostByAddr': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(927): message : see declaration of 'WSAAsyncGetHostByAddr' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2662,1): error C2375: 'WSACancelAsyncRequest': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(936): message : see declaration of 'WSACancelAsyncRequest' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(2680,1): error C2375: 'WSAAsyncSelect': redefinition; different linkage 
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock.h(938): message : see declaration of 'WSAAsyncSelect' [C:\Users\jacky\Documents\Code\tas-input-qt\build-vs\tasinput2.vcxproj]
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(4206,1): error C2059: syntax error: '}' 
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winsock2.h(4206,1): error C2143: syntax error: missing ';' before '}' 
+    C:\vcpkg\installed\x64-windows-static\include\wx/msw/winundef.h
+C:\vcpkg\installed\x64-windows-static\include\wx\msw\init.h(41,17): error C2061: syntax error: identifier 'wxCmdLineArgType' 
+C:\vcpkg\installed\x64-windows-static\include\wx\msw\init.h(47,13): error C2061: syntax error: identifier 'wxCmdLineArgType' 

@@ -7,7 +7,6 @@
 #include <wx/anybutton.h>
 #include <wx/gbsizer.h>
 #include <wx/gdicmn.h>
-#include <wx/generic/panelg.h>
 #include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>

@@ -1,6 +1,13 @@
 #ifndef TASINPUT2_GLOBAL_HPP_INCLUDED
 #define TASINPUT2_GLOBAL_HPP_INCLUDED
 
+#ifndef WIN32_LEAN_AND_MEAN
+  #define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef _WINSOCKAPI_
+  #define _WINSOCKAPI_
+#endif
+
 #include <mupen64plus/m64p_types.h>
 #include <mupen64plus/m64p_plugin.h>
 
