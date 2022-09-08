@@ -14,7 +14,7 @@
 
 #define OSS_FMT(content) (static_cast<std::ostringstream&&>(std::ostringstream {} << content).str())
 
-wxIMPLEMENT_APP_NO_MAIN(tasinput::MainApp);
+wxIMPLEMENT_APP(tasinput::MainApp);
 
 namespace tasinput {
   MainApp::MainApp() : activeEventLoop(nullptr) {

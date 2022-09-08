@@ -43,22 +43,22 @@ namespace oslib {
     using native_handle_type = int;
 
     // Creates a shm_object.
-    shm_object(size_t size) : fd(acquire_shm_fd(), is_owner(true) {
-      if (fd == -1) {
+    shm_object(size_t size) : m_fd(acquire_shm_fd()) {
+      if (m_fd == -1) {
         throw std::system_error(errno, std::generic_category());
       }
-      ftruncate(fd, size);
+      ftruncate(m_fd, size);
     }
 
     // Opens an existing shared memory file descriptor.
-    shm_object(native_handle_type fd, size_t size) : fd(fd), is_owner(false), size(size) {
+    shm_object(native_handle_type fd, size_t size) : m_fd(fd), m_size(size) {
       if (fcntl(F_GETFD, fd) == -1) {
         throw std::system_error(errno, std::generic_category());
       }
     }
 
     ~shm_object() {
-      close(fd);
+      close(m_fd);
     }
 
     shm_object(const shm_object&)            = delete;
@@ -69,10 +69,9 @@ namespace oslib {
     // allowing it to be passed to `shm_object::shm_object(native_handle_type fd,
     // size_t size)`
     native_handle_type native_handle() {
-      return fd; }
+      return m_fd; }
 
-    size_t size() {
-      return size; }
+    size_t size() { return m_size; }
     
     // Maps the shm object in the current process.
     shm_mapping map();
@@ -82,9 +81,8 @@ namespace oslib {
     // This is accomplished by memfd_create on Linux, and shm_open on other Unices.
     static int acquire_shm_fd();
 
-    int fd;
-    bool is_owner;
-    size_t size;
+    int m_fd;
+    size_t m_size;
   };
 
   #if defined(OSLIB_OS_LINUX)
@@ -197,11 +195,11 @@ namespace oslib {
   };
 
   inline shm_mapping shm_object::map() {
-    void* p = mmap(nullptr, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    void* p = mmap(nullptr, size(), PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, 0);
     if (p == MAP_FAILED) {
       throw std::system_error(errno, std::generic_category());
     }
-    return shm_mapping(p, size);
+    return shm_mapping(p, size());
   }
 }  // namespace oslib
   #pragma endregion
@@ -224,7 +222,7 @@ public:
     map_handle(acquire_mapping_handle(size)), size(size) {}
 
   // Opens an existing shared memory file descriptor.
-  shm_object(native_handle_type hnd, size_t size) {}
+  shm_object(native_handle_type hnd, size_t size) : map_handle(hnd), size(size) {}
 
   shm_object(const shm_object&) = delete;
   shm_object& operator=(const shm_object&) = delete;

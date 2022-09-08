@@ -18,11 +18,7 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(M64PApi)
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base)
-else()
-  find_package(wxWidgets REQUIRED COMPONENTS core base)
-endif()
+find_package(wxWidgets REQUIRED COMPONENTS core base)
 include(${wxWidgets_USE_FILE})
 
 
@@ -50,6 +46,19 @@ target_include_directories(tasinput-ui-test PRIVATE ${CONFIG_DIR})
 
 target_link_libraries(tasinput-ui-test PUBLIC wx::wxcore m64p::api)
 ]=========]
+
+add_executable(tasinput2-ui WIN32
+  "src/gui/main_window.cpp"
+  "src/gui/main_window.hpp"
+  "src/gui/application.cpp"
+  "src/gui/application.hpp" 
+  "src/gui/buttons_panel.cpp" 
+  "src/gui/buttons_panel.hpp"
+  "src/gui/joystick.cpp"
+  "src/gui/joystick.hpp"
+  "src/gui/joystick_panel.cpp"
+  "src/gui/joystick_panel.hpp"
+)
 
 add_library(tasinput2 MODULE
   "src/gui/main_window.cpp"
