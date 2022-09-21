@@ -21,6 +21,8 @@ include(M64PApi)
 find_package(wxWidgets REQUIRED COMPONENTS core base)
 include(${wxWidgets_USE_FILE})
 
+find_package(Threads REQUIRED)
+
 
 set(M64P_API_VERSION 2.1)
 include(ConfigGen)
@@ -89,4 +91,4 @@ add_library(tasinput2 MODULE
 target_compile_features(tasinput2 PUBLIC cxx_std_20)
 target_include_directories(tasinput2 PRIVATE ${CONFIG_DIR})
 
-target_link_libraries(tasinput2 PUBLIC ${wxWidgets_LIBRARIES} m64p::api)
+target_link_libraries(tasinput2 PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)

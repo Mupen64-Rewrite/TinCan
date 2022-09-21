@@ -2,52 +2,37 @@
   "version": 3,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 21,
+    "minor": 20,
     "patch": 0
   },
   "configurePresets": [
     {
-      "name": "default-debug",
-      "displayName": "Debug (Ninja)",
-      "description": "Debug build using Ninja",
-      "generator": "Ninja",
+      "name": "uses-vcpkg",
+      "hidden": true,
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "CMAKE_EXPORT_COMPILE_COMMANDS": true
-      },
-      "condition": {
-        "type": "notEquals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
       }
     },
     {
-      "name": "default-release",
-      "displayName": "Release (Ninja)",
-      "description": "Release build using Ninja",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": true
-      },
+      "name": "linux-ninja-multi",
+      "hidden": false,
+      "inherits": "uses-vcpkg",
+      "displayName": "Linux (Ninja Multi-Config)",
+      "generator": "Ninja Multi-Config",
       "condition": {
-        "type": "notEquals",
+        "type": "equals",
         "lhs": "${hostSystemName}",
-        "rhs": "Windows"
+        "rhs": "Linux"
       }
     },
     {
-      "name": "win-vcpkg",
-      "displayName": "Visual Studio + vcpkg",
-      "description": "Windows build using VS2022 and vcpkg",
-      "binaryDir": "${sourceDir}/build-vs",
-      "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
-      },
-      "generator": "Visual Studio 17 2022",
+      "name": "win32-vs-2022",
+      "hidden": false,
+      "inherits": "uses-vcpkg",
+      "displayName": "Windows (Visual Studio 2022)",
+      "generator": "Visual Studio 16 2022",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -57,26 +42,28 @@
   ],
   "buildPresets": [
     {
-      "name": "default-debug",
+      "name": "linux-dbg",
       "displayName": "Debug",
-      "configurePreset": "default-debug"
+      "configurePreset": "linux-ninja-multi",
+      "configuration": "Debug"
     },
     {
-      "name": "default-release",
+      "name": "linux-rel",
       "displayName": "Release",
-      "configurePreset": "default-release"
+      "configurePreset": "linux-ninja-multi",
+      "configuration": "Release"
     },
     {
-      "name": "win-debug",
+      "name": "win32-dbg",
       "displayName": "Debug",
-      "configuration": "Debug",
-      "configurePreset": "win-vcpkg"
+      "configurePreset": "win32-vs-2022",
+      "configuration": "Debug"
     },
     {
-      "name": "win-release",
+      "name": "win32-rel",
       "displayName": "Release",
-      "configuration": "Release",
-      "configurePreset": "win-vcpkg"
+      "configurePreset": "win32-vs-2022",
+      "configuration": "Release"
     }
   ]
 }
