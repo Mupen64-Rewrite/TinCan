@@ -1,6 +1,7 @@
 #ifndef TASINPUT2_GUI_BUTTONS_PANEL_HPP_INCLUDED
 #define TASINPUT2_GUI_BUTTONS_PANEL_HPP_INCLUDED
 
+#include <wx/event.h>
 #include <wx/sizer.h>
 #include <wx/statbox.h>
 #include <wx/panel.h>
@@ -16,6 +17,8 @@ namespace tasinput {
     ButtonsPanel(wxWindow* parent);
 
     BUTTONS QueryState();
+    
+    void OnAnyButtonClicked(wxCommandEvent& evt);
 
   private:
     wxStaticBoxSizer* szrRoot;

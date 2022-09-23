@@ -63,6 +63,9 @@ namespace oslib {
 
     shm_object(const shm_object&)            = delete;
     shm_object& operator=(const shm_object&) = delete;
+    
+    shm_object(shm_object&&) = default;
+    shm_object& operator=(shm_object&&) = default;
 
     // Returns the native handle.
     // The shm_object's handle should be inheritable from the child process,
@@ -149,6 +152,9 @@ namespace oslib {
   public:
     shm_mapping(const shm_mapping&) = delete;
     shm_mapping& operator=(const shm_mapping&) = delete;
+    
+    shm_mapping(shm_mapping&&) = default;
+    shm_mapping& operator=(shm_mapping&&) = delete;
 
     // Returns a pointer to an address within the block of shared memory.
     template <class T>
@@ -226,6 +232,9 @@ public:
 
   shm_object(const shm_object&) = delete;
   shm_object& operator=(const shm_object&) = delete;
+    
+  shm_mapping(shm_mapping&&) = default;
+  shm_mapping& operator=(shm_mapping&&) = delete;
 
   ~shm_object() { CloseHandle(map_handle); }
 
@@ -278,6 +287,8 @@ struct shm_mapping {
 public:
   shm_mapping(const shm_mapping&) = delete;
   shm_mapping& operator=(const shm_mapping&) = delete;
+  
+  
 
   // Returns a pointer to an address within the block of shared memory.
   template <class T>

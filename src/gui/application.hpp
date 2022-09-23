@@ -1,39 +1,39 @@
 #ifndef TASINPUT2_GUI_GUI_APPLICATION_HPP_INCLUDED
 #define TASINPUT2_GUI_GUI_APPLICATION_HPP_INCLUDED
 
+#include <thread>
 #ifdef _WIN32
-#include <wx/msw/winundef.h>
+  #include <wx/msw/winundef.h>
 #endif
 // wx/app.h includes this but I had to make sure it comes first
-#include <wx/init.h>
 #include <wx/app.h>
 #include <wx/event.h>
 #include <wx/evtloop.h>
+#include <wx/init.h>
 #include <wx/utils.h>
 #include <memory>
+#include <optional>
+#include "../oslib/shmem.hpp"
+#include "../ipc/shm_block.hpp"
 #include "main_window.hpp"
 
 namespace tasinput {
-  
-  inline const int GUI_SHOW_WINDOW = wxNewId();
-  inline const int GUI_CLEANUP = wxNewId();
 
   class MainApp : public wxApp {
   public:
     MainApp();
-    void OnEventLoopEnter(wxEventLoopBase*) override;
-    
-    void OnShowWindow(wxThreadEvent&);
-    void OnCleanup(wxThreadEvent&);
-
-  private:
-    wxEventLoopBase* activeEventLoop;
+    bool OnInit() override;
   
-    MainWindow* win;
+    ipc::shm_block& GetSHM();
+  private:
+    std::array<MainWindow*, 4> main_wins;
+
+    std::thread shm_thread;
+    std::optional<oslib::shm_object> shm_handle;
+    std::optional<oslib::shm_mapping> shm_data;
   };
-} // tasinput
+}  // namespace tasinput
 
 wxDECLARE_APP(tasinput::MainApp);
 
-
-#endif //TASINPUT2_GUI_APPLICATION_HPP_INCLUDED
+#endif  // TASINPUT2_GUI_APPLICATION_HPP_INCLUDED

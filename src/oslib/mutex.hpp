@@ -1,9 +1,9 @@
 #ifndef OSLIB_SEMAPHORE_HPP
 #define OSLIB_SEMAPHORE_HPP
 
+#include <exception>
 #include <stdexcept>
 #include <system_error>
-#include <exception>
 #include "preproc.hpp"
 
 namespace oslib {
@@ -28,7 +28,8 @@ namespace oslib {
     ~ipc_mutex() { p_check(pthread_mutex_destroy(&m_mutex)); }
 
     // Call from the client to clean up the mutex.
-    // Does ABSOLUTELY NOTHING on POSIX where mutexes are only destroyed once.
+    // On Windows, mutexes are a kernel handle and must be cleaned up
+    // in all participating processes.
     void client_cleanup() noexcept {}
 
     void lock() { p_check(pthread_mutex_lock(&m_mutex)); }
@@ -71,12 +72,11 @@ namespace oslib {
 #elif defined(OSLIB_OS_WIN32)
   #pragma region Win32 implementation
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#include <cstdio>
-
+  #ifndef WIN32_LEAN_AND_MEAN
+    #define WIN32_LEAN_AND_MEAN
+  #endif
+  #include <windows.h>
+  #include <cstdio>
 
 namespace oslib {
   class ipc_mutex {
@@ -92,9 +92,9 @@ namespace oslib {
     // Call from the client to clean up the mutex.
     void client_cleanup() noexcept { CloseHandle(m_hmutex); }
 
-    void lock() { 
+    void lock() {
       DWORD res = WaitForSingleObject(m_hmutex, INFINITE);
-      switch (res) { 
+      switch (res) {
         case WAIT_OBJECT_0:
           break;
         case WAIT_FAILED: {
@@ -107,7 +107,7 @@ namespace oslib {
       throw std::runtime_error("This should never happen. Report it as a bug.");
     }
 
-    void unlock() { 
+    void unlock() {
       BOOL res = ReleaseMutex(m_hmutex);
       if (!res) {
         auto err = std::system_error(GetLastError(), std::system_category());
@@ -135,9 +135,8 @@ namespace oslib {
 
   private:
     static inline LPSECURITY_ATTRIBUTES p_init_secattrs() {
-      static struct SECURITY_ATTRIBUTES attrs { 
-        .nLength = sizeof(SECURITY_ATTRIBUTES),
-        .lpSecurityDescriptor = nullptr,
+      static struct SECURITY_ATTRIBUTES attrs {
+        .nLength = sizeof(SECURITY_ATTRIBUTES), .lpSecurityDescriptor = nullptr,
         .bInheritHandle = TRUE,
       };
       return &attrs;

@@ -49,7 +49,17 @@ target_include_directories(tasinput-ui-test PRIVATE ${CONFIG_DIR})
 target_link_libraries(tasinput-ui-test PUBLIC wx::wxcore m64p::api)
 ]=========]
 
+set(OSLIB_SOURCES
+  "src/oslib/details/convert.hpp"
+  "src/oslib/details/meta.hpp"
+  "src/oslib/dynlib.hpp"
+  "src/oslib/preproc.hpp"
+  "src/oslib/process.hpp"
+  "src/oslib/shmem.hpp"
+)
+
 add_executable(tasinput2-ui WIN32
+  ${OSLIB_SOURCES}
   "src/gui/main_window.cpp"
   "src/gui/main_window.hpp"
   "src/gui/application.cpp"
@@ -62,25 +72,13 @@ add_executable(tasinput2-ui WIN32
   "src/gui/joystick_panel.hpp"
 )
 
-add_library(tasinput2 MODULE
-  "src/gui/main_window.cpp"
-  "src/gui/main_window.hpp"
-  "src/gui/application.cpp"
-  "src/gui/application.hpp" 
-  "src/gui/buttons_panel.cpp" 
-  "src/gui/buttons_panel.hpp"
-  "src/gui/joystick.cpp"
-  "src/gui/joystick.hpp"
-  "src/gui/joystick_panel.cpp"
-  "src/gui/joystick_panel.hpp"
+target_compile_features(tasinput2-ui PUBLIC cxx_std_20)
+target_include_directories(tasinput2-ui PRIVATE ${CONFIG_DIR})
+target_link_libraries(tasinput2-ui PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)
 
-  "src/oslib/details/convert.hpp"
-  "src/oslib/details/meta.hpp"
-  "src/oslib/dynlib.hpp"
-  "src/oslib/preproc.hpp"
-  "src/oslib/process.hpp"
-  "src/oslib/shmem.hpp"
-  
+
+add_library(tasinput2 MODULE
+  ${OSLIB_SOURCES}
   "src/core_fns.cpp"
   "src/core_fns.hpp"
   "src/global.cpp"

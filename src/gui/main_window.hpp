@@ -5,6 +5,7 @@
 #ifndef TASINPUT2_GUI_MAIN_WINDOW_HPP_INCLUDED
 #define TASINPUT2_GUI_MAIN_WINDOW_HPP_INCLUDED
 
+#include <wx/event.h>
 #include <wx/frame.h>
 #include <memory>
 #include "buttons_panel.hpp"
@@ -12,16 +13,21 @@
 #include "joystick_panel.hpp"
 
 namespace tasinput {
-
+  
+  wxDEFINE_EVENT(TASINPUT_EVT_STATE_UPDATE, wxCommandEvent);
+  
   class MainWindow : public wxFrame {
   public:
-    MainWindow();
+    MainWindow(uint32_t idx);
+    
+    void OnStateUpdated(wxCommandEvent&);
     
     BUTTONS QueryState();
     
   private:
-    JoystickPanel* jsPanel;
-    ButtonsPanel* btnPanel;
+    JoystickPanel* js_panel;
+    ButtonsPanel* btn_panel;
+    uint32_t ctrl_num;
   };
 
 } // tasinput

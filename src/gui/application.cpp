@@ -12,35 +12,38 @@
 
 #include "../global.hpp"
 
-#define OSS_FMT(content) (static_cast<std::ostringstream&&>(std::ostringstream {} << content).str())
+#define OSS_FMT(content) \
+  (static_cast<std::ostringstream&&>(std::ostringstream {} << content).str())
 
 wxIMPLEMENT_APP(tasinput::MainApp);
 
 namespace tasinput {
-  MainApp::MainApp() : activeEventLoop(nullptr) {
+  MainApp::MainApp() {
     SetExitOnFrameDelete(false);
-    
-    Bind(wxEVT_THREAD, &MainApp::OnShowWindow, this, GUI_SHOW_WINDOW);
-    Bind(wxEVT_THREAD, &MainApp::OnCleanup, this, GUI_CLEANUP);
   }
-  
-  void MainApp::OnEventLoopEnter(wxEventLoopBase* loop) {
-    activeEventLoop = wxEventLoop::GetActive();
+
+  bool MainApp::OnInit() {
+    if (argc < 3) {
+      return false;
+    }
+    
+    unsigned long long handle_int, size_int;
+    this->argv[1].ToULongLong(&handle_int, 16);
+    this->argv[2].ToULongLong(&size_int, 16);
+
+    shm_handle.emplace(
+      static_cast<oslib::shm_object::native_handle_type>(handle_int),
+      static_cast<size_t>(size_int));
+    shm_data.emplace(shm_handle->map());
+    
+    for (uint32_t i = 0; i < main_wins.size(); i++) {
+      main_wins[i] = new MainWindow(i);
+    }
+    
+    return true;
   }
-  
-  void MainApp::OnShowWindow(wxThreadEvent& evt) {
-    tasinput::DebugLog(M64MSG_STATUS, "TASInput window showing...");
-    
-    win = new MainWindow;
-    
-    auto fmt_msg = OSS_FMT("Pointer to active event loop: " << ((void*) activeEventLoop));
-    
-    DebugLog(M64MSG_INFO, fmt_msg.c_str());
-    
-    win->Show();
+
+  ipc::shm_block& MainApp::GetSHM() {
+    return shm_data->read<ipc::shm_block>(0x0000);
   }
-  
-  void MainApp::OnCleanup(wxThreadEvent &) {
-    ExitMainLoop();
-  }
-} // tasinput
+}  // namespace tasinput

@@ -41,7 +41,6 @@ EXPORT m64p_error CALL PluginStartup(
   TASINPUT2_CHECK_NOT_INITED;
   
   tasinput::InitGlobals(core_hnd, debug_ctx, on_debug);
-  tasinput::StartGuiThread();
   
   
   return M64ERR_SUCCESS;
@@ -50,7 +49,6 @@ EXPORT m64p_error CALL PluginStartup(
 EXPORT m64p_error CALL PluginShutdown() {
   TASINPUT2_CHECK_INITED;
   
-  tasinput::StopGuiThread();
   
   return M64ERR_SUCCESS;
 }
@@ -64,8 +62,6 @@ EXPORT void CALL RomClosed(void) {
 
 // Determines which controllers to plug in.
 EXPORT void CALL InitiateControllers(CONTROL_INFO info) {
-  tasinput::InitControls(info.Controls);
-  tasinput::ShowGui();
 }
 EXPORT void CALL GetKeys(int idx, BUTTONS* keys) {
   *keys = {.Value = 0};
