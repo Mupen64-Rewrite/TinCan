@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <system_error>
+#include <exception>
 #include "preproc.hpp"
 
 namespace oslib {
@@ -36,6 +37,7 @@ namespace oslib {
       int res = pthread_mutex_unlock(&m_mutex);
       if (res != 0) {
         perror("ipc_mutex::unlock failed");
+        std::terminate();
       }
     }
 
@@ -67,10 +69,82 @@ namespace oslib {
 
   #pragma endregion
 #elif defined(OSLIB_OS_WIN32)
-  #pragma region Win32
+  #pragma region Win32 implementation
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#include <cstdio>
+
 
 namespace oslib {
-  class ipc_mutex {};
+  class ipc_mutex {
+  public:
+    ipc_mutex() : m_hmutex(CreateMutexW(p_init_secattrs(), FALSE, nullptr)) {
+      if (m_hmutex == nullptr) {
+        throw std::system_error(GetLastError(), std::system_category());
+      }
+    }
+
+    ~ipc_mutex() { CloseHandle(m_hmutex); }
+
+    // Call from the client to clean up the mutex.
+    void client_cleanup() noexcept { CloseHandle(m_hmutex); }
+
+    void lock() { 
+      DWORD res = WaitForSingleObject(m_hmutex, INFINITE);
+      switch (res) { 
+        case WAIT_OBJECT_0:
+          break;
+        case WAIT_FAILED: {
+          throw std::system_error(GetLastError(), std::system_category());
+        } break;
+        case WAIT_ABANDONED: {
+          throw std::runtime_error("Owning process of mutex died");
+        } break;
+      }
+      throw std::runtime_error("This should never happen. Report it as a bug.");
+    }
+
+    void unlock() { 
+      BOOL res = ReleaseMutex(m_hmutex);
+      if (!res) {
+        auto err = std::system_error(GetLastError(), std::system_category());
+        fprintf(stderr, "ipc_mutex::unlock failed: %s\n", err.what());
+        std::terminate();
+      }
+    }
+
+    bool try_lock() {
+      DWORD res = WaitForSingleObject(m_hmutex, 0);
+      switch (res) {
+        case WAIT_OBJECT_0:
+          return true;
+        case WAIT_TIMEOUT:
+          return false;
+        case WAIT_FAILED: {
+          throw std::system_error(GetLastError(), std::system_category());
+        } break;
+        case WAIT_ABANDONED: {
+          throw std::runtime_error("Owning process of mutex died");
+        } break;
+      }
+      throw std::runtime_error("This should never happen. Report it as a bug.");
+    }
+
+  private:
+    static inline LPSECURITY_ATTRIBUTES p_init_secattrs() {
+      static struct SECURITY_ATTRIBUTES attrs { 
+        .nLength = sizeof(SECURITY_ATTRIBUTES),
+        .lpSecurityDescriptor = nullptr,
+        .bInheritHandle = TRUE,
+      };
+      return &attrs;
+    }
+
+    HANDLE m_hmutex;
+  };
 }  // namespace oslib
 
   #pragma endregion

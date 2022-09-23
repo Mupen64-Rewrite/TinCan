@@ -32,11 +32,16 @@
       "hidden": false,
       "inherits": "uses-vcpkg",
       "displayName": "Windows (Visual Studio 2022)",
-      "generator": "Visual Studio 16 2022",
+      "generator": "Visual Studio 17 2022",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
       }
     }
   ],
