@@ -23,12 +23,14 @@ namespace tasinput {
   public:
     MainApp();
     bool OnInit() override;
+    
+    void OnIdle(wxIdleEvent&);
   
     ipc::shm_block& GetSHM();
   private:
     std::array<MainWindow*, 4> main_wins;
-
-    std::thread shm_thread;
+    uint32_t prev_flags;
+    
     std::optional<oslib::shm_object> shm_handle;
     std::optional<oslib::shm_mapping> shm_data;
   };

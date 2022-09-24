@@ -24,6 +24,8 @@ namespace tasinput {
     
     BUTTONS QueryState();
     
+    void UpdateVisibleState();
+    
   private:
     JoystickPanel* js_panel;
     ButtonsPanel* btn_panel;

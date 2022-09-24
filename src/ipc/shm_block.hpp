@@ -2,25 +2,35 @@
 #define TASINPUT_IPC_SHM_BLOCK_HPP_INCLUDED
 #include <array>
 #include <atomic>
-#include "mupen64plus/m64p_plugin.h"
+#include "../oslib/gate.hpp"
 #include "../oslib/mutex.hpp"
+#include "mupen64plus/m64p_plugin.h"
 
 namespace tasinput::ipc {
-  // Contents of the shared-memory block
-  // between client and server.
+  // Contents of the shared-memory block.
   struct shm_block {
+    struct shmflags {
+      enum : uint32_t {
+        // True if stopped
+        stop = (uint32_t(1) << 0),
+        // True to show dialogs.
+        show = (uint32_t(1) << 1),
+        dfl  = (uint32_t(1) << 2),
+      };
+    };
     std::array<CONTROL, 4> cstate {};
     oslib::ipc_mutex cstate_lock {};
     
+    // This gate sends a signal FROM the client.
+    oslib::ipc_gate client_signal_gate {};
+
     std::array<std::atomic_uint32_t, 4> inputs {};
-    
-    std::atomic_bool input_dfr_flag {};
-    std::atomic_bool stop_flag {};
-    std::atomic_bool show_flag {};
-    
+    std::atomic_uint32_t flags;
+
     void client_cleanup() {
       cstate_lock.client_cleanup();
+      client_signal_gate.client_cleanup();
     }
   };
-}
+}  // namespace tasinput::ipc
 #endif

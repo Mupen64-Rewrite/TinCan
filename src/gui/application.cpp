@@ -20,6 +20,8 @@ wxIMPLEMENT_APP(tasinput::MainApp);
 namespace tasinput {
   MainApp::MainApp() {
     SetExitOnFrameDelete(false);
+    
+    Bind(wxEVT_IDLE, &MainApp::OnIdle, this);
   }
 
   bool MainApp::OnInit() {
@@ -28,8 +30,8 @@ namespace tasinput {
     }
     
     unsigned long long handle_int, size_int;
-    this->argv[1].ToULongLong(&handle_int, 16);
-    this->argv[2].ToULongLong(&size_int, 16);
+    this->argv[1].ToULongLong(&handle_int);
+    this->argv[2].ToULongLong(&size_int);
 
     shm_handle.emplace(
       static_cast<oslib::shm_object::native_handle_type>(handle_int),
@@ -40,7 +42,26 @@ namespace tasinput {
       main_wins[i] = new MainWindow(i);
     }
     
+    prev_flags = 0;
+    
     return true;
+  }
+  
+  void MainApp::OnIdle(wxIdleEvent&) {
+    using shmflags = ipc::shm_block::shmflags;
+    
+    uint32_t flags = GetSHM().flags;
+    if (flags & shmflags::stop) {
+      ExitMainLoop();
+    }
+    
+    if (flags != prev_flags) {
+      prev_flags = flags;
+      
+      for (uint32_t i = 0; i < main_wins.size(); i++) {
+        main_wins[i]->UpdateVisibleState();
+      }
+    }
   }
 
   ipc::shm_block& MainApp::GetSHM() {

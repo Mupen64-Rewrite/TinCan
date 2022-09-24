@@ -9,7 +9,9 @@ namespace oslib {
   // will block until the gate is opened.
   class ipc_gate;
 }  // namespace oslib
-#if defined(OSLIB_OS_LINUX)
+#if defined(OSLIB_OS_LINUX) && 0
+  // Currently disabled, because I have no idea
+  // what I'm even doing here.
   #pragma region Linux futex implementation
 
   #include <linux/futex.h>
@@ -30,6 +32,8 @@ namespace oslib {
       syscall(
         SYS_futex, &m_value, FUTEX_WAKE, std::numeric_limits<uint32_t>::max());
     }
+    
+    void client_cleanup() noexcept {}
 
     void wait() {
       // spin a few times before sleeping
@@ -74,6 +78,8 @@ namespace oslib {
       p_check(pthread_mutex_destroy(&m_mutex));
       p_check(pthread_cond_destroy(&m_cond));
     }
+    
+    void client_cleanup() noexcept {}
 
     void wait() {
       if (m_flag)
@@ -129,7 +135,7 @@ namespace oslib {
 }  // namespace oslib
   #pragma endregion
 #elif defined(OSLIB_OS_WIN32)
-
+#pragma region WinAPI event implementation
   #ifndef WIN32_LEAN_AND_MEAN
     #define WIN32_LEAN_AND_MEAN
   #endif
@@ -145,6 +151,10 @@ namespace oslib {
     }
 
     ~ipc_gate() { CloseHandle(m_hevent); }
+    
+    void client_cleanup() noexcept {
+      CloseHandle(m_hevent);
+    }
 
     void wait() {
       DWORD res = WaitForSingleObject(m_hevent, INFINITE);
@@ -185,5 +195,6 @@ namespace oslib {
     HANDLE m_hevent;
   };
 }  // namespace oslib
+#pragma endregion
 #endif
 #endif

@@ -29,7 +29,7 @@ namespace tasinput {
     sizer->AddStretchSpacer();
 
     SetSizerAndFit(sizer);
-    
+
     // Events
     Bind(TASINPUT_EVT_STATE_UPDATE, &MainWindow::OnStateUpdated, this);
   }
@@ -44,5 +44,14 @@ namespace tasinput {
   void MainWindow::OnStateUpdated(wxCommandEvent& evt) {
     auto& shm                  = wxGetApp().GetSHM();
     shm.inputs[this->ctrl_num] = QueryState().Value;
+  }
+
+  void MainWindow::UpdateVisibleState() {
+    using shmflags = ipc::shm_block::shmflags;
+    auto& shm      = wxGetApp().GetSHM();
+
+    bool should_show = bool(shm.flags & shmflags::show) &&
+      bool(shm.cstate[this->ctrl_num].Present);
+    Show(should_show);
   }
 }  // namespace tasinput

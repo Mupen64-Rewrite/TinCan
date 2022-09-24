@@ -15,6 +15,7 @@ namespace oslib {
   class process;
 }
 
+
 #if defined(OSLIB_OS_POSIX)
   #pragma region POSIX implementation
   #include <unistd.h>
@@ -25,7 +26,7 @@ namespace oslib {
   #include <cerrno>
   #include <numeric>
   #include <system_error>
-  
+namespace oslib {
   class process {
   public:
     process(std::string_view program, std::initializer_list<std::string_view> args = {}) : rc(std::nullopt) {
@@ -114,6 +115,7 @@ namespace oslib {
     pid_t pid;
     std::optional<int> rc;
   };
+}
   #pragma endregion
 #elif defined(OSLIB_OS_WIN32)
   #pragma region WinAPI implementation
@@ -129,6 +131,7 @@ namespace oslib {
   #endif
   #include <windows.h>
 
+namespace oslib {
   class process {
   public:
     process(std::string_view program, std::initializer_list<std::string_view> args = {}) : rc(std::nullopt) {
@@ -234,6 +237,7 @@ namespace oslib {
     PROCESS_INFORMATION proc_info;
     std::optional<int> rc;
   };
+}
   #pragma endregion
 #endif
 
