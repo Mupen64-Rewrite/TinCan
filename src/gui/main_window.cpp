@@ -6,9 +6,13 @@
 
 #include <wx/gdicmn.h>
 #include <wx/sizer.h>
+#include <wx/spinctrl.h>
+#include <wx/tglbtn.h>
 #include <wx/toplevel.h>
+#include <syncstream>
 #include "application.hpp"
 #include "buttons_panel.hpp"
+#include "joystick.hpp"
 #include "joystick_panel.hpp"
 
 namespace tasinput {
@@ -31,7 +35,9 @@ namespace tasinput {
     SetSizerAndFit(sizer);
 
     // Events
-    Bind(TASINPUT_EVT_STATE_UPDATE, &MainWindow::OnStateUpdated, this);
+    Bind(wxEVT_TOGGLEBUTTON, &MainWindow::OnStateUpdated, this);
+    Bind(wxEVT_SPINCTRL, &MainWindow::OnStateUpdated, this);
+    Bind(TASINPUT_EVT_JSCTRL, &MainWindow::OnStateUpdated, this);
   }
 
   BUTTONS MainWindow::QueryState() {

@@ -12,7 +12,9 @@
 #include <wx/stattext.h>
 #include <wx/tglbtn.h>
 #include <initializer_list>
+#include <iostream>
 
+#include "application.hpp"
 #include "main_window.hpp"
 
 namespace tasinput {
@@ -102,53 +104,6 @@ namespace tasinput {
 
     szrRoot->Add(gridSizer, 1, wxEXPAND | wxALL, 4);
     SetSizerAndFit(szrRoot);
-
-    // Bind every button to this event
-    btnL->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnZ->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnR->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-
-    btnDU->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnDD->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnDL->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnDR->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-
-    btnStart->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnB->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnA->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-
-    btnCU->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnCD->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnCL->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
-    btnCR->Bind(
-      wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &ButtonsPanel::OnAnyButtonClicked,
-      this);
   }
 
   BUTTONS ButtonsPanel::QueryState() {
@@ -175,10 +130,5 @@ namespace tasinput {
 
       .X_AXIS = 0,
       .Y_AXIS = 0};
-  }
-
-  void ButtonsPanel::OnAnyButtonClicked(wxCommandEvent& evt) {
-    auto* fwd_evt = new wxCommandEvent(TASINPUT_EVT_STATE_UPDATE);
-    wxQueueEvent(this, fwd_evt);
   }
 }  // namespace tasinput

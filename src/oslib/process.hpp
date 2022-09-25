@@ -89,6 +89,9 @@ namespace oslib {
       int stat;
       while (true) {
         if (waitpid(pid, &stat, 0) == -1)  {
+          if (errno == ECHILD) {
+            return *rc;
+          }
           throw std::system_error(errno, std::generic_category());
         }
         

@@ -26,6 +26,13 @@ namespace tasinput {
     
   void InitControls(CONTROL* ctrl_states);
   
+  void ShowUI();
+  void CloseUI();
+  
+  BUTTONS GetInputs(int ctrl);
+  
+  void Shutdown();
+  
   // Returns true if initialized.
   bool IsInit();
   
@@ -33,15 +40,6 @@ namespace tasinput {
   
   // Log a debug message to the frontend.
   void DebugLog(m64p_msg_level level, const char* msg);
-  
-  // Start the GUI thread
-  void StartGuiThread();
-  
-  // Shows the GUI.
-  void ShowGui();
-  
-  // Shut down the GUI thread
-  void StopGuiThread();
 }  // namespace tasinput
 
 #endif

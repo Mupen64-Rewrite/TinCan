@@ -49,22 +49,24 @@ EXPORT m64p_error CALL PluginStartup(
 EXPORT m64p_error CALL PluginShutdown() {
   TASINPUT2_CHECK_INITED;
   
-  
+  tasinput::Shutdown();
   return M64ERR_SUCCESS;
 }
 
 EXPORT int  CALL RomOpen(void) {
+  tasinput::ShowUI();
   return true;
 }
 EXPORT void CALL RomClosed(void) {
-  
+  tasinput::CloseUI();
 }
 
 // Determines which controllers to plug in.
 EXPORT void CALL InitiateControllers(CONTROL_INFO info) {
+  tasinput::InitControls(info.Controls);
 }
 EXPORT void CALL GetKeys(int idx, BUTTONS* keys) {
-  *keys = {.Value = 0};
+  *keys = tasinput::GetInputs(idx);
 }
 
 EXPORT void CALL ControllerCommand(int idx, unsigned char* cmd) {}

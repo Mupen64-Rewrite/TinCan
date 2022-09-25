@@ -17,8 +17,6 @@ namespace tasinput {
     ButtonsPanel(wxWindow* parent);
 
     BUTTONS QueryState();
-    
-    void OnAnyButtonClicked(wxCommandEvent& evt);
 
   private:
     wxStaticBoxSizer* szrRoot;

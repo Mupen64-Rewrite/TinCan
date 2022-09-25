@@ -10,8 +10,10 @@
 #include <wx/event.h>
 #include <wx/evtloop.h>
 #include <wx/init.h>
+#include <wx/timer.h>
 #include <wx/utils.h>
 #include <memory>
+#include <chrono>
 #include <optional>
 #include "../oslib/shmem.hpp"
 #include "../ipc/shm_block.hpp"
@@ -25,11 +27,18 @@ namespace tasinput {
     bool OnInit() override;
     
     void OnIdle(wxIdleEvent&);
+    
+    void OnSyncTimer(wxTimerEvent&);
+    
+    void OnUnhandledException() override;
   
     ipc::shm_block& GetSHM();
   private:
     std::array<MainWindow*, 4> main_wins;
     uint32_t prev_flags;
+    std::chrono::system_clock::time_point prev_idle;
+    
+    std::unique_ptr<wxTimer> sync_timer;
     
     std::optional<oslib::shm_object> shm_handle;
     std::optional<oslib::shm_mapping> shm_data;

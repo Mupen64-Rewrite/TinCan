@@ -3,6 +3,8 @@
 
 #include <cstddef>
 
+#include <cstdlib>
+#include <iostream>
 #include <source_location>
 #include <stdexcept>
 #include <system_error>
@@ -15,8 +17,6 @@ namespace oslib {
   struct shm_object;
   struct shm_mapping;
 }  // namespace oslib
-
-#define OSLIB_OS_WINDOWS
 
 #if defined(OSLIB_OS_POSIX)
   #pragma region Generally POSIX implementation
@@ -34,8 +34,6 @@ namespace oslib {
   #include <cstdint>
   #include <ctime>
 
-  #include "details/meta.hpp"
-
 namespace oslib {
   // Shared memory with an inheritable handle.
   struct shm_object {
@@ -43,7 +41,7 @@ namespace oslib {
     using native_handle_type = int;
 
     // Creates a shm_object.
-    shm_object(size_t size) : m_fd(acquire_shm_fd()) {
+    shm_object(size_t size) : m_fd(acquire_shm_fd()), m_size(size) {
       if (m_fd == -1) {
         throw std::system_error(errno, std::generic_category());
       }
@@ -52,9 +50,9 @@ namespace oslib {
 
     // Opens an existing shared memory file descriptor.
     shm_object(native_handle_type fd, size_t size) : m_fd(fd), m_size(size) {
-      if (fcntl(F_GETFD, fd) == -1) {
-        throw std::system_error(errno, std::generic_category());
-      }
+      // if (fcntl(F_GETFD, fd) == -1) {
+      //   throw std::system_error(errno, std::generic_category());
+      // }
     }
 
     ~shm_object() {
@@ -92,7 +90,10 @@ namespace oslib {
   inline int shm_object::acquire_shm_fd() {
     // Call memfd_create on Linux. This can operate under
     // the same semantics as a shm_open'd FD.
-    return syscall(__NR_memfd_create, (unsigned int) 0);
+    char name[] = "tasinput-memfd-############.shm";
+    mkstemp(name);
+    
+    return memfd_create(name, 0);
   }
   #else
   inline int shm_object::acquire_shm_fd() {
@@ -153,8 +154,16 @@ namespace oslib {
     shm_mapping(const shm_mapping&) = delete;
     shm_mapping& operator=(const shm_mapping&) = delete;
     
-    shm_mapping(shm_mapping&&) = default;
-    shm_mapping& operator=(shm_mapping&&) = delete;
+    shm_mapping(shm_mapping&& rhs) : base(rhs.base), size(rhs.size) {
+      rhs.base = nullptr;
+    }
+    shm_mapping& operator=(shm_mapping&& rhs) {
+      base = rhs.base;
+      size = rhs.size;
+      rhs.base = nullptr;
+      
+      return *this;
+    }
 
     // Returns a pointer to an address within the block of shared memory.
     template <class T>
@@ -166,9 +175,6 @@ namespace oslib {
         "T must be a pointer to an instantiable type");
 
       bool bounds_check = addr >= size;
-      if constexpr (!OSLIB_DETAILS_META_IS_COMPLETE(T)) {
-        bounds_check |= addr + sizeof(T) >= size;
-      }
       if (bounds_check) {
         throw std::out_of_range(
           "Address {} is out of bounds for region of size {}");
@@ -182,8 +188,9 @@ namespace oslib {
     T& read(size_t addr = 0x0) {
       static_assert(
         std::is_object_v<T>, "T must be a pointer to instantiable type");
-
-      if (addr + sizeof(T) >= size) {
+        
+      bool bounds_check = addr >= size;
+      if (bounds_check) {
         throw std::out_of_range(
           "Address {} is out of bounds for region of size {}");
       }
@@ -191,7 +198,10 @@ namespace oslib {
       return *reinterpret_cast<T*>(reinterpret_cast<std::byte*>(base) + addr);
     }
 
-    ~shm_mapping() { munmap(base, size); }
+    ~shm_mapping() {
+      if (base != nullptr)
+        munmap(base, size); 
+    }
 
   private:
     shm_mapping(void* p, size_t size) : base(p), size(size) {}
@@ -201,7 +211,7 @@ namespace oslib {
   };
 
   inline shm_mapping shm_object::map() {
-    void* p = mmap(nullptr, size(), PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, 0);
+    void* p = mmap(0, size(), PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, 0);
     if (p == MAP_FAILED) {
       throw std::system_error(errno, std::generic_category());
     }
@@ -209,7 +219,7 @@ namespace oslib {
   }
 }  // namespace oslib
   #pragma endregion
-#elif defined(OSLIB_OS_WINDOWS)
+#elif defined(OSLIB_OS_WIN32)
   #pragma region WinAPI implementation
   #ifndef WIN32_LEAN_AND_MEAN
     #define WIN32_LEAN_AND_MEAN

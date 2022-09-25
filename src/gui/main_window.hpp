@@ -14,8 +14,6 @@
 
 namespace tasinput {
   
-  wxDEFINE_EVENT(TASINPUT_EVT_STATE_UPDATE, wxCommandEvent);
-  
   class MainWindow : public wxFrame {
   public:
     MainWindow(uint32_t idx);

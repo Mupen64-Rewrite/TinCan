@@ -2,7 +2,9 @@
 #include <wx/event.h>
 #include <wx/sizer.h>
 #include <wx/spinbutt.h>
+#include <wx/app.h>
 #include <wx/spinctrl.h>
+#include <wx/window.h>
 
 #include <iostream>
 #include "joystick.hpp"
@@ -54,21 +56,18 @@ namespace tasinput {
     spnX->SetValue(pos.x);
     spnY->SetValue(pos.y);
     
-    auto* fwd_evt = new wxCommandEvent(TASINPUT_EVT_STATE_UPDATE);
-    wxQueueEvent(this, fwd_evt);
+    evt.Skip();
   }
   void JoystickPanel::OnSpinXChanged(wxSpinEvent& evt) {
     auto val = evt.GetValue();
     stick->SetPosX(val);
     
-    auto* fwd_evt = new wxCommandEvent(TASINPUT_EVT_STATE_UPDATE);
-    wxQueueEvent(this, fwd_evt);
+    evt.Skip();
   }
   void JoystickPanel::OnSpinYChanged(wxSpinEvent& evt) {
     auto val = evt.GetValue();
     stick->SetPosY(val);
     
-    auto* fwd_evt = new wxCommandEvent(TASINPUT_EVT_STATE_UPDATE);
-    wxQueueEvent(this, fwd_evt);
+    evt.Skip();
   }
 }  // namespace tasinput
