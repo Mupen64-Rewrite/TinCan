@@ -43,10 +43,52 @@ namespace oslib {
   };
 }
 #elif defined(OSLIB_OS_WIN32)
+#define NOMINMAX
+#include <windows.h>
+#include <bit>
+#include <limits>
+
+#undef min
+#undef max
+
 namespace oslib {
   class secure_random_device {
   public:
     using result_type = unsigned int;
+
+    secure_random_device() {}
+    secure_random_device(const secure_random_device&) = delete;
+
+    result_type operator()() { 
+      std::array<uint8_t, sizeof(result_type)> bytes;
+      BCryptGenRandom(get_bcrypt_alg(), &bytes[0], sizeof(result_type), 0);
+      return std::bit_cast<result_type>(bytes);
+    }
+    static constexpr result_type min() {
+      return std::numeric_limits<result_type>::min();
+    }
+    static constexpr result_type max() { 
+      return std::numeric_limits<result_type>::max();
+    }
+  private:
+    static BCRYPT_ALG_HANDLE get_bcrypt_alg() {
+      static BCRYPT_ALG_HANDLE res = nullptr;
+      if (res == nullptr) {
+        auto status = BCryptOpenAlgorithmProvider(
+          &res, MS_PRIMITIVE_PROVIDER, nullptr, 0
+        );
+        switch (status) { 
+          case STATUS_SUCCESS:
+            break;
+          case STATUS_NOT_FOUND:
+          case STATUS_INVALID_PARAMETER:
+          case STATUS_NO_MEMORY: {
+            throw std::runtime_error("BCryptOpenAlgorithmProvider failed");
+          } break;
+        }
+      }
+      return res;
+    }
   };
 }
 #endif
