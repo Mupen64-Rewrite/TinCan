@@ -6,16 +6,18 @@
 #include "core_fns.hpp"
 #include "ipc/shm_block.hpp"
 #include "mupen64plus/m64p_plugin.h"
+#include "oslib/cfile.hpp"
 #include "oslib/mutex.hpp"
 #include "oslib/process.hpp"
 #include "oslib/shmem.hpp"
+#include "resdata.hpp"
 
 #include <atomic>
+#include <filesystem>
 #include <initializer_list>
 #include <mutex>
 #include <optional>
 #include <semaphore>
-#include <filesystem>
 #include <string>
 #include <string_view>
 #include <thread>
@@ -36,12 +38,19 @@ namespace tasinput {
     std::optional<oslib::shm_object> shm_obj;
     std::optional<oslib::shm_mapping> shm_data;
     std::optional<oslib::process> gui_process;
-    
+
     std::filesystem::path tmp_path;
 
     ipc::shm_block& shm_block() {
       return shm_data.value().read<ipc::shm_block>(0);
     }
+    
+    #if defined (OSLIB_OS_LINUX)
+    inline constexpr std::string_view executable_extension = "";
+    #elif defined(OSLIB_OS_WIN32)
+    inline constexpr std::string_view executable_extension = ".exe";
+    #endif
+    
   }  // namespace
 
   void InitGlobals(
@@ -53,8 +62,6 @@ namespace tasinput {
     ::tasinput::debug_callback = on_debug;
 
     init_flag = true;
-    
-    
   }
 
   void InitControls(CONTROL* ctrl_states) {
@@ -79,8 +86,22 @@ namespace tasinput {
 
     // Start the GUI process and pray
     using namespace std::literals;
+
+    auto [tmpfile, path] = oslib::create_tempfile(executable_extension);
+    fwrite(_data_exedata, 1, _size_exedata, tmpfile);
+    tmp_path = path;
+    tmpfile.close();
+    
+    // In POSIX, chmod +x the file
+    // This does nothing on Windows where file execution is arbitrary
+    auto tmp_stat = std::filesystem::status(tmp_path);
+    std::filesystem::perms plus_x = tmp_stat.permissions() | std::filesystem::perms::owner_exec;
+    std::filesystem::permissions(tmp_path, plus_x);
+    
+    std::cerr << "Temporary path: " << tmp_path << '\n';
+    
     gui_process.emplace(
-      "/home/jgcodes/Documents/Code/C++/tas-input-qt/build/out/Debug/tasinput2-ui"sv,
+      tmp_path.string(),
       std::initializer_list<std::string_view> {
         std::to_string(uintptr_t(shm_obj->native_handle())),
         std::to_string(uintptr_t(shm_obj->size()))});
@@ -103,6 +124,9 @@ namespace tasinput {
     if (gui_process->joinable())
       gui_process->join();
     shm_block().~shm_block();
+    
+    std::filesystem::remove(tmp_path);
+    
     init_flag = false;
   }
 

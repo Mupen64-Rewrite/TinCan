@@ -58,7 +58,8 @@ namespace oslib {
 
     secure_random_device() {}
     secure_random_device(const secure_random_device&) = delete;
-
+    
+    // Uses BCryptGenRandom to generate a random number.
     result_type operator()() { 
       std::array<uint8_t, sizeof(result_type)> bytes;
       BCryptGenRandom(get_bcrypt_alg(), &bytes[0], sizeof(result_type), 0);

@@ -30,13 +30,15 @@ if (NOT IS_DIRECTORY "${PROJECT_BINARY_DIR}/tools/rc-gen")
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/tools/rc-gen")
 endif()
 add_custom_command(
-  OUTPUT "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp"
-  COMMAND rc_tool $<TARGET_FILE:tasinput2-ui> "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp" tasinput exedata
+  OUTPUT "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp" "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.hpp"
+  COMMAND rc_tool $<TARGET_FILE:tasinput2-ui> "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp" 
+    tasinput exedata "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.hpp"
 )
 
 add_library(tasinput2 MODULE
   ${OSLIB_SOURCES}
   "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp"
+  "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.hpp"
   "resdata.hpp"
   "core_fns.cpp"
   "core_fns.hpp"
@@ -44,6 +46,7 @@ add_library(tasinput2 MODULE
   "global.hpp"
   "plugin.cpp"
 )
+target_include_directories(tasinput2 PRIVATE "${PROJECT_BINARY_DIR}/tools/rc-gen")
 target_compile_features(tasinput2 PUBLIC cxx_std_20)
 target_include_directories(tasinput2 PRIVATE ${CONFIG_DIR})
 

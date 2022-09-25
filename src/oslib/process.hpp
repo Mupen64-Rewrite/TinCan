@@ -60,7 +60,7 @@ namespace oslib {
           *ps++ = '\0';
         }
         
-        if (execvp(argv[0], argv.get()) == -1) {
+        if (execv(argv[0], argv.get()) == -1) {
           throw std::system_error(errno, std::generic_category());
         }
       }

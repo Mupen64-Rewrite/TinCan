@@ -45,6 +45,17 @@ namespace oslib {
       if (m_file != nullptr)
         fclose(m_file);
     }
+    
+    void close() {
+      if (m_file != nullptr) {
+        fclose(m_file);
+        m_file = nullptr;
+      }
+    }
+    
+    operator FILE*() {
+      return m_file;
+    }
 
     void flush() {
       if (fflush(m_file) == EOF) {
@@ -99,7 +110,7 @@ namespace oslib {
     }
   }
 
-  inline c_file create_tempfile(std::string_view extension) {
+  inline std::pair<c_file, std::filesystem::path> create_tempfile(std::string_view extension) {
     using namespace std::string_literals;
     
     const auto temp_dir = std::filesystem::temp_directory_path();
@@ -113,12 +124,16 @@ namespace oslib {
     constexpr size_t tmp_len = 18;
     constexpr std::string_view tmp_template = "tmpXXXXXXXXXXXXXXXXXX";
 #endif
+
     auto tmp_name = std::string(tmp_template) + std::string(extension);
     FILE* res = nullptr;
     do {
+      // try to create a file
       temp_chars(std::span<char, tmp_len>(&tmp_name[3], tmp_len));
       const auto test_path = temp_dir/tmp_name;
       
+      // if we try to create the file exclusively, it fails, and the file exists
+      // we know that we need to try again.
       res = fopen(test_path.string().c_str(), "w+xb");
       if (res == nullptr && !std::filesystem::exists(test_path)) {
 #if defined(OSLIB_OS_POSIX)
@@ -134,7 +149,7 @@ namespace oslib {
       }
     } while (res == nullptr);
     
-    return res;
+    return {res, temp_dir/tmp_name};
   }
 }  // namespace oslib
 #endif
