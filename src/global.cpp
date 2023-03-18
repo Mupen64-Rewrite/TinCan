@@ -82,7 +82,7 @@ namespace tasinput {
 
     // Copy ctrl_states to the shared block
     // Since the GUI process hasn't started yet I don't have to lock the mutex
-    shm_block().cstate[0] = ctrl_states[0];
+    std::copy_n(ctrl_states, 4, shm_block().cstate.begin());
 
     // Start the GUI process and pray
     using namespace std::literals;
@@ -94,11 +94,13 @@ namespace tasinput {
     
     // In POSIX, chmod +x the file
     // This does nothing on Windows where file execution is arbitrary
+#if defined(OSLIB_OS_POSIX)
     auto tmp_stat = std::filesystem::status(tmp_path);
     std::filesystem::perms plus_x = tmp_stat.permissions() | std::filesystem::perms::owner_exec;
     std::filesystem::permissions(tmp_path, plus_x);
     
     std::cerr << "Temporary path: " << tmp_path << '\n';
+#endif
     
     gui_process.emplace(
       tmp_path.string(),
