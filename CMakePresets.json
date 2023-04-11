@@ -18,13 +18,15 @@
     {
       "name": "linux-ninja-multi",
       "hidden": false,
-      "inherits": "uses-vcpkg",
       "displayName": "Linux (Ninja Multi-Config)",
       "generator": "Ninja Multi-Config",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Linux"
+      },
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
       }
     },
     {

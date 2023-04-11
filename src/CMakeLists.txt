@@ -7,7 +7,7 @@ set(OSLIB_SOURCES
   "oslib/shmem.hpp"
 )
 
-add_executable(tasinput2-ui WIN32
+add_executable(tincan-ui WIN32
   ${OSLIB_SOURCES}
   "gui/main_window.cpp"
   "gui/main_window.hpp"
@@ -21,9 +21,9 @@ add_executable(tasinput2-ui WIN32
   "gui/joystick_panel.hpp"
 )
 
-target_compile_features(tasinput2-ui PUBLIC cxx_std_20)
-target_include_directories(tasinput2-ui PRIVATE ${CONFIG_DIR})
-target_link_libraries(tasinput2-ui PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)
+target_compile_features(tincan-ui PUBLIC cxx_std_20)
+target_include_directories(tincan-ui PRIVATE ${CONFIG_DIR})
+target_link_libraries(tincan-ui PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)
 
 # rc-based generator for resdata_exedata.cpp
 if (NOT IS_DIRECTORY "${PROJECT_BINARY_DIR}/tools/rc-gen")
@@ -31,11 +31,11 @@ if (NOT IS_DIRECTORY "${PROJECT_BINARY_DIR}/tools/rc-gen")
 endif()
 add_custom_command(
   OUTPUT "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp" "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.hpp"
-  COMMAND rc_tool $<TARGET_FILE:tasinput2-ui> "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp" 
+  COMMAND rc_tool $<TARGET_FILE:tincan-ui> "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp" 
     tasinput exedata "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.hpp"
 )
 
-add_library(tasinput2 MODULE
+add_library(tincan MODULE
   ${OSLIB_SOURCES}
   "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.cpp"
   "${PROJECT_BINARY_DIR}/tools/rc-gen/resdata_exedata.hpp"
@@ -46,8 +46,8 @@ add_library(tasinput2 MODULE
   "global.hpp"
   "plugin.cpp"
 )
-target_include_directories(tasinput2 PRIVATE "${PROJECT_BINARY_DIR}/tools/rc-gen")
-target_compile_features(tasinput2 PUBLIC cxx_std_20)
-target_include_directories(tasinput2 PRIVATE ${CONFIG_DIR})
+target_include_directories(tincan PRIVATE "${PROJECT_BINARY_DIR}/tools/rc-gen")
+target_compile_features(tincan PUBLIC cxx_std_20)
+target_include_directories(tincan PRIVATE ${CONFIG_DIR})
 
-target_link_libraries(tasinput2 PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)
+target_link_libraries(tincan PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)

@@ -2,8 +2,9 @@ cmake_policy(VERSION 3.20)
 cmake_policy(SET CMP0112 NEW)
 
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(tasinput2
+project(tincan
   LANGUAGES CXX
+  DESCRIPTION "TinCan is a TASing-oriented input plugin for Mupen64Plus."
   VERSION 0.1.0
 )
 

@@ -18,13 +18,17 @@ namespace tasinput::ipc {
         dfl  = (uint32_t(1) << 2),
       };
     };
+    // State of the controllers (whether they're plugged in or not)
     std::array<CONTROL, 4> cstate {};
+    // Mutex controlling access to cstate.
     oslib::ipc_mutex cstate_lock {};
     
     // This gate sends a signal FROM the client.
     oslib::ipc_gate client_signal_gate {};
-
+    
+    // The inputs themselves.
     std::array<std::atomic_uint32_t, 4> inputs {};
+    // Stores flags to show the window, etc.
     std::atomic_uint32_t flags;
 
     void client_cleanup() {

@@ -17,11 +17,11 @@
 
 namespace tasinput {
   static constexpr long MAIN_WINDOW_STYLE_FLAGS =
-    wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX);
+    wxSTAY_ON_TOP | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN;
 
   MainWindow::MainWindow(uint32_t idx) :
     wxFrame(
-      nullptr, wxID_ANY, "TASInput", wxDefaultPosition, wxDefaultSize,
+      nullptr, wxID_ANY, "TinCan", wxDefaultPosition, wxDefaultSize,
       MAIN_WINDOW_STYLE_FLAGS),
     js_panel(new JoystickPanel(this)),
     btn_panel(new ButtonsPanel(this)),
