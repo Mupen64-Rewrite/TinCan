@@ -23,10 +23,16 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(M64PApi)
 
 find_package(wxWidgets REQUIRED COMPONENTS core base)
+message(STATUS "wxWidgets use file: ${wxWidgets_USE_FILE}")
 include(${wxWidgets_USE_FILE})
 
 find_package(Threads REQUIRED)
 find_package(fmt REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(zeromq IMPORTED_TARGET
+  "libzmq >= 4.3.4"
+)
 
 
 set(M64P_API_VERSION 2.1)

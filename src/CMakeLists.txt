@@ -50,4 +50,9 @@ target_include_directories(tincan PRIVATE "${PROJECT_BINARY_DIR}/tools/rc-gen")
 target_compile_features(tincan PUBLIC cxx_std_20)
 target_include_directories(tincan PRIVATE ${CONFIG_DIR})
 
-target_link_libraries(tincan PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)
+target_link_libraries(tincan PUBLIC 
+  ${wxWidgets_LIBRARIES} 
+  ${CMAKE_DL_LIBS} 
+  Threads::Threads 
+  m64p::api
+)
