@@ -4,7 +4,7 @@
 namespace tincan::ipc {
   struct message {
     uint32_t type;
-    uint32_t len;
+    uint32_t request_id;
     char data[];
   };
 }

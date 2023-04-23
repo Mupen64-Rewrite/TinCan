@@ -23,7 +23,14 @@ add_executable(tincan-ui WIN32
 
 target_compile_features(tincan-ui PUBLIC cxx_std_20)
 target_include_directories(tincan-ui PRIVATE ${CONFIG_DIR})
-target_link_libraries(tincan-ui PUBLIC ${wxWidgets_LIBRARIES} ${CMAKE_DL_LIBS} Threads::Threads m64p::api)
+target_link_libraries(tincan-ui PUBLIC 
+  ${wxWidgets_LIBRARIES} 
+  ${CMAKE_DL_LIBS} 
+  Threads::Threads 
+  m64p::api
+  msgpackc-cxx
+  PkgConfig::zeromq
+)
 
 # rc-based generator for resdata_exedata.cpp
 if (NOT IS_DIRECTORY "${PROJECT_BINARY_DIR}/tools/rc-gen")
@@ -55,4 +62,6 @@ target_link_libraries(tincan PUBLIC
   ${CMAKE_DL_LIBS} 
   Threads::Threads 
   m64p::api
+  msgpackc-cxx
+  PkgConfig::zeromq
 )

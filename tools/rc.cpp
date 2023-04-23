@@ -1,7 +1,6 @@
-// Fast, SSE-powered resource generator.
-// I can still add the 1MB table improvement, but that is a HUGE pain.
+// Fast resource generator. Could be sped up with some kind of
+// vectorization, but I am NOT doing that.
 
-#include <nmmintrin.h>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -42,92 +41,6 @@ namespace {0} {{
   extern const uint8_t _data_{1}[];
 }}
 )"_txt;
-
-std::array<char, 8>x={};
-
-// uint16_t(0xFFFF) / 100 + 1
-constexpr uint16_t d100_c = uint16_t(0xFFFF) / 100 + 1;
-constexpr uint16_t d10_c  = uint16_t(0xFFFF) / 10 + 1;
-
-template <class T>
-void simd_fmt(const char*& data, T& out) {
-  struct local {
-    static __m128i format_groups(__m128i chunk) {
-      // This algorithm formats the register into
-      // usable text after the division algorithm.
-
-      // first mask.
-      const __m128i conv = _mm_setr_epi8(
-        '0', '0', '0', ',', '0', '0', '0', ',', '0', '0', '0', ',', '0', '0',
-        '0', ',');
-      const __m128i shuf1 = _mm_setr_epi8(
-        0x00, 0x00, 0xFF, 0xFF, 0x04, 0x04, 0xFF, 0xFF, 0x08, 0x08, 0xFF, 0xFF,
-        0x0C, 0x0C, 0xFF, 0xFF);
-
-      chunk = _mm_srli_si128(chunk, 1);
-      // digits become ASCII, commas are added
-      chunk = _mm_add_epi8(chunk, conv);
-
-      __m128i lz_mask = _mm_cmpeq_epi8(chunk, _mm_set1_epi8('0'));
-      // clear 3rd and 4th chars of cell,
-      // check if 1st cell is a leading '0', as 2nd cell cannot be
-      // a leading '0' if the 1st cell isn't.
-      __m128i lz_mask_shuf = _mm_shuffle_epi8(lz_mask, shuf1);
-      lz_mask              = _mm_and_si128(lz_mask, lz_mask_shuf);
-      // clear the set cells from lz_mask
-      chunk = _mm_andnot_si128(lz_mask, chunk);
-      
-      return chunk;
-    }
-  };
-
-  const __m128i d100 = _mm_set1_epi16(d100_c);
-  const __m128i m100 = _mm_set1_epi16(100);
-
-  const __m128i d10 = _mm_set1_epi16(d10_c);
-  const __m128i m10 = _mm_set1_epi16(10);
-
-  uint64_t chunk_int = *reinterpret_cast<const uint64_t*>(data);
-
-  __m128i chunk = _mm_cvtsi64_si128(chunk_int);
-  chunk         = _mm_cvtepu8_epi16(chunk);
-
-  // divmod 100 via Daniel Lemire's fastmod
-  __m128i pl_100s = _mm_mulhi_epu16(chunk, d100);
-  __m128i mod_100 = _mm_mullo_epi16(chunk, d100);
-  mod_100         = _mm_mulhi_epu16(mod_100, m100);
-
-  // divmod 10 via Daniel Lemire's fastmod
-  __m128i pl_10s = _mm_mulhi_epu16(mod_100, d10);
-  __m128i pl_1s  = _mm_mullo_epi16(mod_100, d10);
-  pl_1s          = _mm_mulhi_epu16(pl_1s, m10);
-
-  // join ones and tens places
-  pl_1s  = _mm_slli_si128(pl_1s, 1);
-  pl_10s = _mm_or_si128(pl_10s, pl_1s);
-
-  // interleave with hundreds place
-  pl_100s           = _mm_slli_si128(pl_100s, 1);
-  __m128i groups_lo = _mm_unpacklo_epi16(pl_100s, pl_10s);
-  __m128i groups_hi = _mm_unpackhi_epi16(pl_100s, pl_10s);
-  
-  // format the groups
-  groups_lo = local::format_groups(groups_lo);
-  groups_hi = local::format_groups(groups_hi);
-  
-  // dump to buffer
-  char buffer[32];
-  _mm_storeu_si128(reinterpret_cast<__m128i_u*>(buffer), groups_lo);
-  _mm_storeu_si128(reinterpret_cast<__m128i_u*>(buffer) + 1, groups_hi);
-  
-  // scalar copy from buffer, ignoring zeros
-  // If I tried to do this in SIMD, I'd have a 1MB lookup table
-  for (int i = 0; i < 32; i++) {
-    if (buffer[i] != 0)
-      *out = buffer[i];
-    out++;
-  }
-}
 
 int main(int argc, char* argv[]) {
   std::ios_base::sync_with_stdio(false);

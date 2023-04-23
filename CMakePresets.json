@@ -11,13 +11,13 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       }
     },
     {
       "name": "linux-ninja-multi",
       "hidden": false,
+      "inherits": "uses-vcpkg",
       "displayName": "Linux (Ninja Multi-Config)",
       "generator": "Ninja Multi-Config",
       "condition": {
@@ -42,7 +42,6 @@
       },
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
         "VCPKG_TARGET_TRIPLET": "x64-windows-static"
       }
     }
