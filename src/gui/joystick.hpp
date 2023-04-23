@@ -1,5 +1,5 @@
-#ifndef TASINPUT2_GUI_JOYSTICK_PANEL_HPP_INCLUDED
-#define TASINPUT2_GUI_JOYSTICK_PANEL_HPP_INCLUDED
+#ifndef TINCAN_GUI_JOYSTICK_PANEL_HPP_INCLUDED
+#define TINCAN_GUI_JOYSTICK_PANEL_HPP_INCLUDED
 
 #include <wx/control.h>
 #include <wx/event.h>
@@ -8,7 +8,7 @@
 #include <wx/gdicmn.h>
 #include <utility>
 
-namespace tasinput {
+namespace tincan {
   
   // Event thing
   // ================
@@ -78,6 +78,6 @@ namespace tasinput {
     int32_t posX;
     int32_t posY;
   };
-}  // namespace tasinput
+}  // namespace tincan
 
 #endif

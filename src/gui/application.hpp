@@ -1,5 +1,5 @@
-#ifndef TASINPUT2_GUI_GUI_APPLICATION_HPP_INCLUDED
-#define TASINPUT2_GUI_GUI_APPLICATION_HPP_INCLUDED
+#ifndef TINCAN_GUI_GUI_APPLICATION_HPP_INCLUDED
+#define TINCAN_GUI_GUI_APPLICATION_HPP_INCLUDED
 
 #include <thread>
 #ifdef _WIN32
@@ -17,9 +17,10 @@
 #include <optional>
 #include "../oslib/shmem.hpp"
 #include "../ipc/shm_block.hpp"
+#include <zmq.hpp>
 #include "main_window.hpp"
 
-namespace tasinput {
+namespace tincan {
 
   class MainApp : public wxApp {
   public:
@@ -38,13 +39,11 @@ namespace tasinput {
     uint32_t prev_flags;
     std::chrono::system_clock::time_point prev_idle;
     
-    std::unique_ptr<wxTimer> sync_timer;
-    
-    std::optional<oslib::shm_object> shm_handle;
-    std::optional<oslib::shm_mapping> shm_data;
+    zmq::context_t zmq_context;
+    zmq::socket_t zmq_socket;
   };
-}  // namespace tasinput
+}  // namespace tincan
 
-wxDECLARE_APP(tasinput::MainApp);
+wxDECLARE_APP(tincan::MainApp);
 
 #endif  // TASINPUT2_GUI_APPLICATION_HPP_INCLUDED

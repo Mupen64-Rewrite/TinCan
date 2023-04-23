@@ -1,5 +1,5 @@
-#ifndef TASINPUT2_GLOBAL_HPP_INCLUDED
-#define TASINPUT2_GLOBAL_HPP_INCLUDED
+#ifndef TINCAN_GLOBAL_HPP_INCLUDED
+#define TINCAN_GLOBAL_HPP_INCLUDED
 
 #ifndef WIN32_LEAN_AND_MEAN
   #define WIN32_LEAN_AND_MEAN
@@ -19,7 +19,7 @@ if (!::tasinput::IsInit()) \
 if (::tasinput::IsInit()) \
   return M64ERR_ALREADY_INIT
 
-namespace tasinput {
+namespace tincan {
   void InitGlobals(
     m64p_dynlib_handle core_handle, void* context,
     void (*on_debug)(void*, int, const char*));
@@ -40,6 +40,6 @@ namespace tasinput {
   
   // Log a debug message to the frontend.
   void DebugLog(m64p_msg_level level, const char* msg);
-}  // namespace tasinput
+}  // namespace tincan
 
 #endif

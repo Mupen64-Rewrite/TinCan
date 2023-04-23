@@ -15,7 +15,7 @@
 #include "joystick.hpp"
 #include "joystick_panel.hpp"
 
-namespace tasinput {
+namespace tincan {
   static constexpr long MAIN_WINDOW_STYLE_FLAGS =
     wxSTAY_ON_TOP | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN;
 
@@ -60,4 +60,4 @@ namespace tasinput {
       bool(shm.cstate[this->ctrl_num].Present);
     Show(should_show);
   }
-}  // namespace tasinput
+}  // namespace tincan

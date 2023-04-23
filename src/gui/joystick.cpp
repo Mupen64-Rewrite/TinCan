@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <iostream>
 
-namespace tasinput {
+namespace tincan {
   
   // Event
   // ================
@@ -157,4 +157,4 @@ namespace tasinput {
     
     Refresh();
   }
-}  // namespace tasinput
+}  // namespace tincan

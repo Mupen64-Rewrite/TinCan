@@ -1,12 +1,12 @@
-#ifndef TASINPUT_IPC_SHM_BLOCK_HPP_INCLUDED
-#define TASINPUT_IPC_SHM_BLOCK_HPP_INCLUDED
+#ifndef TINCAN_IPC_SHM_BLOCK_HPP_INCLUDED
+#define TINCAN_IPC_SHM_BLOCK_HPP_INCLUDED
 #include <array>
 #include <atomic>
 #include "../oslib/gate.hpp"
 #include "../oslib/mutex.hpp"
 #include "mupen64plus/m64p_plugin.h"
 
-namespace tasinput::ipc {
+namespace tincan::ipc {
   // Contents of the shared-memory block.
   struct shm_block {
     struct shmflags {
@@ -36,5 +36,5 @@ namespace tasinput::ipc {
       client_signal_gate.client_cleanup();
     }
   };
-}  // namespace tasinput::ipc
+}  // namespace tincan::ipc
 #endif

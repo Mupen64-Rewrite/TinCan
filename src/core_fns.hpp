@@ -1,5 +1,5 @@
-#ifndef TASINPUT2_CORE_FNS_HPP
-#define TASINPUT2_CORE_FNS_HPP
+#ifndef TINCAN_CORE_FNS_HPP
+#define TINCAN_CORE_FNS_HPP
 
 #ifndef WIN32_LEAN_AND_MEAN
   #define WIN32_LEAN_AND_MEAN
@@ -14,7 +14,7 @@
 #define TASINPUT2_CORE_FN(name, params) \
   ::tasinput::function_traits<ptr_##name>::type name params
 
-namespace tasinput::core {
+namespace tincan::core {
   // List sections in the config file. The callback is called once
   // for each section.
   m64p_error ConfigListSections(
@@ -81,6 +81,6 @@ namespace tasinput::core {
   // Unsafe: get a parameter's value. Errors are reported through the debug callback.
   const char* ConfigGetParamString(m64p_handle section, const char* name);
 
-}  // namespace tasinput::core
+}  // namespace tincan::core
 
 #endif

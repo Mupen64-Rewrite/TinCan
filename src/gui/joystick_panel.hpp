@@ -1,5 +1,5 @@
-#ifndef TASINPUT2_GUI_JOYSTICK_PANEL_HPP
-#define TASINPUT2_GUI_JOYSTICK_PANEL_HPP
+#ifndef TINCAN_GUI_JOYSTICK_PANEL_HPP
+#define TINCAN_GUI_JOYSTICK_PANEL_HPP
 
 #include <wx/panel.h>
 #include <wx/spinbutt.h>
@@ -7,7 +7,7 @@
 #include <mupen64plus/m64p_plugin.h>
 #include "joystick.hpp"
 
-namespace tasinput {
+namespace tincan {
   class JoystickPanel : public wxPanel {
   public:
     JoystickPanel(wxWindow* parent);

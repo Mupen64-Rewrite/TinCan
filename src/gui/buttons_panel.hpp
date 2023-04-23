@@ -1,5 +1,5 @@
-#ifndef TASINPUT2_GUI_BUTTONS_PANEL_HPP_INCLUDED
-#define TASINPUT2_GUI_BUTTONS_PANEL_HPP_INCLUDED
+#ifndef TINCAN_GUI_BUTTONS_PANEL_HPP_INCLUDED
+#define TINCAN_GUI_BUTTONS_PANEL_HPP_INCLUDED
 
 #include <wx/event.h>
 #include <wx/sizer.h>
@@ -10,7 +10,7 @@
 #include <mupen64plus/m64p_plugin.h>
 #include <memory>
 
-namespace tasinput {
+namespace tincan {
 
   class ButtonsPanel : public wxPanel {
   public:

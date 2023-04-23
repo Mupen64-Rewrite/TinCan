@@ -18,17 +18,14 @@
 #include <thread>
 #include <typeinfo>
 #include "main_window.hpp"
+#include <zmq.hpp>
 
-#include "../oslib/preproc.hpp"
 
 #ifdef __GNUG__
   #include <cxxabi.h>
   #include <cstdlib>
   #include <memory>
 #endif
-
-#define OSS_FMT(content) \
-  (static_cast<std::ostringstream&&>(std::ostringstream {} << content).str())
 
 namespace {
 #ifdef __GNUG__
@@ -66,10 +63,9 @@ namespace {
   const auto SYNC_TIMER_ID = wxNewId();
 }  // namespace
 
-namespace tasinput {
-  MainApp::MainApp() : sync_timer(new wxTimer()) {
+namespace tincan {
+  MainApp::MainApp() {
     SetExitOnFrameDelete(false);
-    sync_timer->Bind(wxEVT_TIMER, &MainApp::OnSyncTimer, this);
 
     Bind(wxEVT_IDLE, &MainApp::OnIdle, this);
   }
@@ -83,20 +79,9 @@ namespace tasinput {
       unsigned long long handle_int, size_int;
       this->argv[1].ToULongLong(&handle_int);
       this->argv[2].ToULongLong(&size_int);
-
-      shm_handle.emplace(
-        static_cast<oslib::shm_object::native_handle_type>(handle_int),
-        static_cast<size_t>(size_int));
-      shm_data.emplace(shm_handle->map());
-
-      for (uint32_t i = 0; i < main_wins.size(); i++) {
-        main_wins[i] = new MainWindow(i);
-        main_wins[i]->UpdateVisibleState();
-      }
-
-      prev_flags = 0;
       
-      sync_timer->Start(30);
+      MainWindow* mw = new MainWindow(0);
+      mw->Show();
     }
     catch (const std::exception& e) {
       print_exception(e);
@@ -106,23 +91,7 @@ namespace tasinput {
     return true;
   }
 
-  void MainApp::OnIdle(wxIdleEvent& evt) {}
-  
-  void MainApp::OnSyncTimer(wxTimerEvent& evt) {
-    using shmflags = ipc::shm_block::shmflags;
-    
-    uint32_t flags = GetSHM().flags;
-    if (flags & shmflags::stop) {
-      ExitMainLoop();
-    }
-
-    if (flags != prev_flags) {
-      prev_flags = flags;
-
-      for (uint32_t i = 0; i < main_wins.size(); i++) {
-        main_wins[i]->UpdateVisibleState();
-      }
-    }
+  void MainApp::OnIdle(wxIdleEvent& evt) {
   }
 
   void MainApp::OnUnhandledException() {
@@ -136,10 +105,6 @@ namespace tasinput {
       std::cerr << "Unknown exception thrown\n";
     }
   }
+}  // namespace tincan
 
-  ipc::shm_block& MainApp::GetSHM() {
-    return shm_data->read<ipc::shm_block>(0x0000);
-  }
-}  // namespace tasinput
-
-wxIMPLEMENT_APP(tasinput::MainApp);
+wxIMPLEMENT_APP(tincan::MainApp);

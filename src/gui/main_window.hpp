@@ -2,8 +2,8 @@
 // Created by jgcodes on 23/08/22.
 //
 
-#ifndef TASINPUT2_GUI_MAIN_WINDOW_HPP_INCLUDED
-#define TASINPUT2_GUI_MAIN_WINDOW_HPP_INCLUDED
+#ifndef TINCAN_GUI_MAIN_WINDOW_HPP_INCLUDED
+#define TINCAN_GUI_MAIN_WINDOW_HPP_INCLUDED
 
 #include <wx/event.h>
 #include <wx/frame.h>
@@ -12,7 +12,7 @@
 #include "joystick.hpp"
 #include "joystick_panel.hpp"
 
-namespace tasinput {
+namespace tincan {
   
   class MainWindow : public wxFrame {
   public:

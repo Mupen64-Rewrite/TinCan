@@ -10,7 +10,7 @@
 #include "joystick.hpp"
 #include "main_window.hpp"
 
-namespace tasinput {
+namespace tincan {
   JoystickPanel::JoystickPanel(wxWindow* parent) :
     wxPanel(parent, wxID_ANY),
     stick(new Joystick(this, wxID_ANY)),
@@ -70,4 +70,4 @@ namespace tasinput {
     
     evt.Skip();
   }
-}  // namespace tasinput
+}  // namespace tincan

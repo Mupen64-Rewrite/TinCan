@@ -22,7 +22,7 @@
 #include <string_view>
 #include <thread>
 
-namespace tasinput {
+namespace tincan {
   namespace {
     bool init_flag = false;
 
@@ -149,4 +149,4 @@ namespace tasinput {
       debug_callback(debug_context, level, msg);
   }
 
-}  // namespace tasinput
+}  // namespace tincan

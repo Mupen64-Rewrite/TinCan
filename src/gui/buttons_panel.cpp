@@ -17,7 +17,7 @@
 #include "application.hpp"
 #include "main_window.hpp"
 
-namespace tasinput {
+namespace tincan {
 
   ButtonsPanel::ButtonsPanel(wxWindow* parent) :
     wxPanel(parent, wxID_ANY),
@@ -131,4 +131,4 @@ namespace tasinput {
       .X_AXIS = 0,
       .Y_AXIS = 0};
   }
-}  // namespace tasinput
+}  // namespace tincan

@@ -17,7 +17,7 @@
     return fn params_without_types;                                           \
   }
 
-namespace tasinput::core {
+namespace tincan::core {
   // I wish I could make a code generator for this stuff, but macros will have to do
 
   TASINPUT_DEFINE_CORE_FN(
@@ -85,4 +85,4 @@ namespace tasinput::core {
   TASINPUT_DEFINE_CORE_FN(
     const char*, ConfigGetParamString, (m64p_handle section, const char* name),
     (section, name))
-}  // namespace tasinput::core
+}  // namespace tincan::core
