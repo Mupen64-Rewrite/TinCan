@@ -5,6 +5,8 @@ set(OSLIB_SOURCES
   "oslib/preproc.hpp"
   "oslib/process.hpp"
   "oslib/shmem.hpp"
+  "ipc/socket.hpp"
+  "ipc/function_ref.hpp"
 )
 
 add_executable(tincan-ui WIN32
@@ -19,7 +21,7 @@ add_executable(tincan-ui WIN32
   "gui/joystick.hpp"
   "gui/joystick_panel.cpp"
   "gui/joystick_panel.hpp"
-)
+  )
 
 target_compile_features(tincan-ui PUBLIC cxx_std_20)
 target_include_directories(tincan-ui PRIVATE ${CONFIG_DIR})
@@ -28,8 +30,8 @@ target_link_libraries(tincan-ui PUBLIC
   ${CMAKE_DL_LIBS} 
   Threads::Threads 
   m64p::api
-  msgpackc-cxx
   PkgConfig::zeromq
+  PkgConfig::msgpack
 )
 
 # rc-based generator for resdata_exedata.cpp
@@ -51,8 +53,7 @@ add_library(tincan MODULE
   "core_fns.hpp"
   "global.cpp"
   "global.hpp"
-  "plugin.cpp"
-)
+  "plugin.cpp")
 target_include_directories(tincan PRIVATE "${PROJECT_BINARY_DIR}/tools/rc-gen")
 target_compile_features(tincan PUBLIC cxx_std_20)
 target_include_directories(tincan PRIVATE ${CONFIG_DIR})
@@ -64,4 +65,5 @@ target_link_libraries(tincan PUBLIC
   m64p::api
   msgpackc-cxx
   PkgConfig::zeromq
+  PkgConfig::msgpack
 )

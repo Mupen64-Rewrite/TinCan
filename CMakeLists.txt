@@ -29,10 +29,12 @@ message(STATUS "wxWidgets use file: ${wxWidgets_USE_FILE}")
 include(${wxWidgets_USE_FILE})
 
 find_package(fmt CONFIG REQUIRED)
-find_package(msgpack CONFIG REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(zeromq IMPORTED_TARGET
   "libzmq >= 4.3.4"
+)
+pkg_check_modules(msgpack IMPORTED_TARGET
+  "msgpack"
 )
 
 set(M64P_API_VERSION 2.1)
