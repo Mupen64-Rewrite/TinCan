@@ -1,0 +1,9 @@
+{
+  "dependencies": [
+    "fmt",
+    "boost-process", 
+    "boost-filesystem",
+    "msgpack",
+    "cppzmq"
+  ]
+}

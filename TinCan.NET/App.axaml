@@ -1,0 +1,9 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="TinCan.NET.App">
+    <Application.Styles>
+        <FluentTheme/>
+        <i:MaterialIconStyles/>
+    </Application.Styles>
+</Application>

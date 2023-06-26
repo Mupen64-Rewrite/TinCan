@@ -1,0 +1,82 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:TinCan.NET.Controls"
+        xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:viewModels="clr-namespace:TinCan.NET.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        Width="300" Height="470"
+        x:Class="TinCan.NET.Views.MainWindow"
+        x:DataType="viewModels:MainWindowViewModel"
+        x:CompileBindings="True"
+        Title="MainWindow">
+    <StackPanel>
+        <Expander HorizontalAlignment="Stretch" ExpandDirection="Down" Header="Joystick" IsExpanded="True">
+            <Expander.Styles>
+                <Style Selector="StackPanel > :is(Layoutable)">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style Selector="StackPanel">
+                    <Setter Property="Margin" Value="5,0,5,0"/>
+                </Style>
+                <Style Selector="NumericUpDown">
+                    <Setter Property="Minimum" Value="-128"/>
+                    <Setter Property="Maximum" Value="127"/>
+                    <Setter Property="FormatString" Value="{}{0:F0}"/>
+                    <Setter Property="ClipValueToMinMax" Value="True"/>
+                    <Setter Property="MinWidth" Value="100"/>
+                </Style>
+            </Expander.Styles>
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*">
+                <Viewbox Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Stretch="Uniform">
+                    <controls:Joystick JoyX="{Binding JoyX}" JoyY="{Binding JoyY}" MinWidth="128" MinHeight="128"/>
+                </Viewbox>
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                    <Label Content="X" />
+                    <NumericUpDown Value="{Binding JoyX}" Minimum="-128" Maximum="127"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                    <Label Content="Y" />
+                    <NumericUpDown Value="{Binding JoyY}" Minimum="-128" Maximum="127"/>
+                </StackPanel>
+            </Grid>
+        </Expander>
+        <Expander HorizontalAlignment="Stretch" ExpandDirection="Down" Header="Buttons" IsExpanded="True">
+            <Expander.Styles>
+                <Style Selector="Grid > ToggleButton">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+                <Style Selector="Grid > TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </Expander.Styles>
+            <Grid RowDefinitions="*,*,*,*,*,*" ColumnDefinitions="*,*,*,*,*,*,*,*,*">
+                <!-- L, Z, R -->
+                <ToggleButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="L" IsChecked="{Binding BtnL}"/>
+                <ToggleButton Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Content="Z" IsChecked="{Binding BtnZ}"/>
+                <ToggleButton Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="3" Content="R" IsChecked="{Binding BtnR}"/>
+                <!-- D-Pad -->
+                <ToggleButton Grid.Row="1" Grid.Column="1" Content="{icons:MaterialIconExt ArrowUpBold}" IsChecked="{Binding BtnDUp}"/>
+                <ToggleButton Grid.Row="3" Grid.Column="1" Content="{icons:MaterialIconExt ArrowDownBold}" IsChecked="{Binding BtnDDown}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="0" Content="{icons:MaterialIconExt ArrowLeftBold}" IsChecked="{Binding BtnDLeft}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="2" Content="{icons:MaterialIconExt ArrowRightBold}" IsChecked="{Binding BtnDRight}"/>
+
+                <!-- C buttons -->
+                <ToggleButton Grid.Row="1" Grid.Column="7" Content="{icons:MaterialIconExt MenuUp}" IsChecked="{Binding BtnCUp}"/>
+                <ToggleButton Grid.Row="3" Grid.Column="7" Content="{icons:MaterialIconExt MenuDown}" IsChecked="{Binding BtnCDown}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="6" Content="{icons:MaterialIconExt MenuLeft}" IsChecked="{Binding BtnCLeft}"/>
+                <ToggleButton Grid.Row="2" Grid.Column="8" Content="{icons:MaterialIconExt MenuRight}" IsChecked="{Binding BtnCRight}"/>
+                <TextBlock Grid.Row="2" Grid.Column="7" Text="C" />
+
+                <!-- A, B, Start -->
+                <ToggleButton Grid.Row="2" Grid.Column="4" Content="S" IsChecked="{Binding BtnStart}"/>
+                <ToggleButton Grid.Row="4" Grid.Column="5" Content="B" IsChecked="{Binding BtnB}"/>
+                <ToggleButton Grid.Row="5" Grid.Column="6" Content="A" IsChecked="{Binding BtnA}"/>
+            </Grid>
+        </Expander>
+    </StackPanel>
+</Window>

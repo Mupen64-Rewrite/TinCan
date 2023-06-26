@@ -1,13 +1,14 @@
-# TinCan
-(waiting for someone to come up with a clever backronym)
+# TinCan.NET (WIP)
+A work-in-progress GUI input plugin for N64 emulators.
 
-The successor to the original TASInput. Powered by wxWidgets to appear native on all target platforms.
-Note: the GUI had to be moved to a separate process to keep it portable.
+## Architecture
+The process split is inevitable—there's no clean way to have two GUI event loops running in the same process. Thus, 
+this plugin uses ZeroMQ as a middleman to send requests to and from the GUI.
 
-## Building
+## Building instructions
+You'll need .NET 6, CMake (minimum version 3.24), and vcpkg (Windows only). Be sure to set the environment variable 
+`VCPKG_ROOT` if you're using vcpkg; this is required for the CMake preset to work.
 
-This project uses vcpkg on Windows and system libraries on Linux.
-
-For Windows, install `wxwidgets:x64-windows-static`. This ensures that the entire wxWidgets toolkit will be
-linked statically. This is a necessary evil, as it ensures that the user does not have to add any additional
-library files to use TINCAN.
+- Build `TinCan.NET.Native` using the provided presets, and `TinCan.NET` as you would any other .NET project.
+- Publish `TinCan.NET` as a single-file executable, and place it in the same folder as `tincan-bridge.dll`.
+- Use it as a plugin in your favourite frontend and pray it works.
